@@ -19,8 +19,7 @@ jobs:
 
       - name: Sphinx
         run: |
-          conda env create -f environment.yml
-          conda activate docs
+          conda env update -f environment.yml --prune
           cd docs
           make html
 
