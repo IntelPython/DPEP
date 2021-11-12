@@ -19,21 +19,9 @@ jobs:
       - name: Add conda to system path
         run: echo $CONDA/bin >> $GITHUB_PATH
 
-      - name: Install documentation tools
-        run: |
-          which pip
-          pip install \
-            sphinx \
-            autodoc \
-            recommonmark \
-            sphinx-rtd-theme
-
       - name: Sphinx
         run: |
-          # conda env update -f environment.yml --prune
-          which python
-          which sphinx-build
-          echo $PATH
+          conda env update -n base -f environment.yml --prune
           cd docs
           make html
 
