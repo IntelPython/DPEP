@@ -1,0 +1,11 @@
+name: docs
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+    - sphinx
+    - autodoc
+    - recommonmark
+    - sphinx-rtd-theme
