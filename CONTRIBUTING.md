@@ -20,12 +20,14 @@ pip install sphinx autodoc recommonmark sphinx-rtd-theme
 
 Generate HTML:
 ```bash
-cd docs && make html
+cd docs
+make html
 ```
 
 Run HTTP server:
 ```bash
-cd docs/_build/html && python -m http.server 8000
+cd docs/_build/html
+python -m http.server 8000
 ```
 
 Don't forget to change the version in `docs/conf.py` before generating.
