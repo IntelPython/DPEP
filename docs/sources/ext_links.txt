@@ -1,0 +1,7 @@
+..
+    **********************************************************
+    THESE ARE EXTERNAL PROJECT LINKS USED IN THE DOCUMENTATION
+    **********************************************************
+.. _NumPy*: https://numpy.org/
+.. _Numba*: https://numba.pydata.org/
+.. _Python Array API Standard: https://data-apis.org/array-api/
