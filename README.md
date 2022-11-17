@@ -11,5 +11,4 @@ gains on data parallel devices such as GPUs. It consists of three related projec
               selection, allocation of data on devices, tensor data structure along with Python Array API standard 
               implementation, and support for creation of user-defined data-parallel extensions.
 
-Read more about Data Parallel Extensions for Python https://intelpython.github.io/DPPY/main/
-
+Read more about Data Parallel Extensions for Python https://intelpython.github.io/DPEP/main/
