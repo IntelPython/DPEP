@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Welcome to DPPY documentation! &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
+    <title>Data Parallel Extensions for Python &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sdc.css" />
     
@@ -20,6 +20,7 @@
     <script type="text/javascript" src="_static/copybutton.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Prerequisites and installation" href="prerequisites_and_installation.html" />
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600' rel='stylesheet' type='text/css'/>
 
   </head><body>
@@ -48,6 +49,11 @@
 <div class="related">
     <h3>Navigation</h3>
     <ul>
+      <li class="right">
+	<a href="prerequisites_and_installation.html" title="Prerequisites and installation">
+	  next &raquo;
+	</a>
+      </li>
       <li>
 	<a href="#">Data Parallel Extensions for Python* 0.1 documentation</a>
 	 &#187;
@@ -63,25 +69,32 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="welcome-to-dppy-documentation">
-<h1>Welcome to DPPY documentation!<a class="headerlink" href="#welcome-to-dppy-documentation" title="Permalink to this heading">¶</a></h1>
-<p>…</p>
-</section>
-<section id="about">
-<h1>About<a class="headerlink" href="#about" title="Permalink to this heading">¶</a></h1>
-<p>…</p>
-</section>
-<section id="license">
-<h1>License<a class="headerlink" href="#license" title="Permalink to this heading">¶</a></h1>
-<p>…</p>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
+  <span class="target" id="index"></span><a class="reference internal image-reference" href="_images/dpep-large.png"><img alt="Data Parallel Extensions for Python" class="align-center" src="_images/dpep-large.png" style="width: 400px;" /></a>
+<section id="data-parallel-extensions-for-python">
+<h1>Data Parallel Extensions for Python<a class="headerlink" href="#data-parallel-extensions-for-python" title="Permalink to this heading">¶</a></h1>
+<p>Data Parallel Extensions for Python* extend numerical Python capabilities beyond CPU and allow even higher performance
+gains on data parallel devices such as GPUs. It consists of three foundational packages:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+<li><p><strong>dpnp</strong> - Data Parallel Extensions for <a class="reference external" href="https://numpy.org/">Numpy*</a> - a library that implements a subset of
+Numpy that can be executed on any data parallel device. The subset is a drop-in replacement
+of core Numpy functions and numerical data types.</p></li>
+<li><p><strong>numba_dpex</strong> - Data Parallel Extensions for <a class="reference external" href="https://numba.pydata.org/">Numba*</a> - extension for Numba compiler
+that enables programming data parallel devices the same way you program CPU with Numba.</p></li>
+<li><p><strong>dpctl - Data Parallel Control library</strong> that provides utilities for device selection,
+allocation of data on devices, tensor data structure along with <a class="reference external" href="https://data-apis.org/array-api/">Python Array API Standard</a> implementation, and support for creation of user-defined data-parallel extensions.</p></li>
 </ul>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites_and_installation.html">Prerequisites and installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallelism.html">Parallelism in modern data parallel architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heterogeneous_computing.html">Heterogeneous computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="programming_dpep.html">Programming with Data Parallel Extensions for Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="useful_links.html">Useful links</a></li>
+</ul>
+</div>
+</section>
 </section>
 
 
@@ -91,6 +104,13 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper"><h3>Table of Contents</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites_and_installation.html">Prerequisites and installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallelism.html">Parallelism in modern data parallel architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heterogeneous_computing.html">Heterogeneous computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="programming_dpep.html">Programming with Data Parallel Extensions for Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="useful_links.html">Useful links</a></li>
+</ul>
 
 
 <form action="search.html" method="get">
@@ -98,6 +118,11 @@
   <input type="hidden" name="check_keywords" value="yes" />
   <input type="hidden" name="area" value="default" />
 </form>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="prerequisites_and_installation.html"
+                          title="next chapter">Prerequisites and installation</a></p>
+  </div>
         </div>
       </div>
       <div class="clearer"></div>
