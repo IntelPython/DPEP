@@ -81,7 +81,7 @@ of core Numpy functions and numerical data types.</p></li>
 <li><p><strong>numba_dpex</strong> - Data Parallel Extensions for <a class="reference external" href="https://numba.pydata.org/">Numba*</a> - extension for Numba compiler
 that enables programming data parallel devices the same way you program CPU with Numba.</p></li>
 <li><p><strong>dpctl - Data Parallel Control library</strong> that provides utilities for device selection,
-allocation of data on devices, tensor data structure along with <a class="reference external" href="https://data-apis.org/array-api/">Python Array API Standard</a> implementation, and support for creation of user-defined data-parallel extensions.</p></li>
+allocation of data on devices, tensor data structure along with <a class="reference external" href="https://data-apis.org/array-api/">Python* Array API Standard</a> implementation, and support for creation of user-defined data-parallel extensions.</p></li>
 </ul>
 <section id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">¶</a></h2>
@@ -94,7 +94,14 @@ allocation of data on devices, tensor data structure along with <a class="refere
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="parallelism.html">Parallelism in modern data parallel architectures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="heterogeneous_computing.html">Heterogeneous computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heterogeneous_computing.html">Heterogeneous computing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="heterogeneous_computing.html#device-offload">Device Offload</a></li>
+<li class="toctree-l2"><a class="reference internal" href="heterogeneous_computing.html#unified-shared-memory">Unified Shared Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="heterogeneous_computing.html#compute-follows-data">Compute-Follows-Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="heterogeneous_computing.html#copying-data-between-devices-and-queues">Copying data between devices and queues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="heterogeneous_computing.html#creating-additional-queues">Creating additional queues</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="programming_dpep.html">Programming with Data Parallel Extensions for Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples.html">List of examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="useful_links.html">Useful links</a></li>

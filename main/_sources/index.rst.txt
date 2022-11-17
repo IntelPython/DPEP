@@ -18,7 +18,7 @@ gains on data parallel devices such as GPUs. It consists of three foundational p
 * **numba_dpex** - Data Parallel Extensions for `Numba*`_ - extension for Numba compiler
   that enables programming data parallel devices the same way you program CPU with Numba.
 * **dpctl - Data Parallel Control library** that provides utilities for device selection,
-  allocation of data on devices, tensor data structure along with `Python Array API Standard`_ implementation, and support for creation of user-defined data-parallel extensions.
+  allocation of data on devices, tensor data structure along with `Python* Array API Standard`_ implementation, and support for creation of user-defined data-parallel extensions.
 
 Table of Contents
 *****************
