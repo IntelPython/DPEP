@@ -109,6 +109,13 @@ to execute your <a class="reference external" href="https://numpy.org/">Numpy*</
 </pre></div>
 </div>
 </div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python ./01-hello_dpnp.py
+Traceback (most recent call last):
+  File &quot;/home/runner/work/DPEP/DPEP/examples/./01-hello_dpnp.py&quot;, line 27, in &lt;module&gt;
+    import dpnp as np
+ModuleNotFoundError: No module named &#39;dpnp&#39;
+</pre></div>
+</div>
 <p>In this example <code class="docutils literal notranslate"><span class="pre">np.asarray()</span></code> creates an array on the default <a class="reference external" href="https://www.khronos.org/sycl/">SYCL*</a> device, which is <code class="docutils literal notranslate"><span class="pre">&quot;gpu&quot;</span></code> on systems
 with integrated or discrete GPU (it is <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code> on systems that do not have GPU).
 The queue associated with this array is now carried with <code class="docutils literal notranslate"><span class="pre">x</span></code>, and <code class="docutils literal notranslate"><span class="pre">np.sum(x)</span></code> will derive it from <code class="docutils literal notranslate"><span class="pre">x</span></code>,
@@ -120,16 +127,24 @@ the tensor data to be created along with USM memory type to be used (<code class
 In the following example we create the array <code class="docutils literal notranslate"><span class="pre">x</span></code> on the GPU device, and perform a reduction sum on it:</p>
 <div class="literal-block-wrapper docutils container" id="ex-02-dpnp-device">
 <div class="code-block-caption"><span class="caption-text">Select device type while creating array</span><a class="headerlink" href="#ex-02-dpnp-device" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>import dpnp as np
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 
-try:
-    x = np.asarray([1, 2, 3], device=”gpu”)
-except:
-    print(“GPU device is not available”)
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GPU device is not available&quot;</span><span class="p">)</span>
 
-y = np.sum(x)
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>$ python ./02-dpnp_device.py
+Traceback (most recent call last):
+  File &quot;/home/runner/work/DPEP/DPEP/examples/./02-dpnp_device.py&quot;, line 27, in &lt;module&gt;
+    import dpnp as np
+ModuleNotFoundError: No module named &#39;dpnp&#39;
+</pre></div>
 </div>
 </section>
 <section id="data-parallel-extension-for-numba-numba-dpex">
