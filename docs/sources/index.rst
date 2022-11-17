@@ -1,7 +1,7 @@
 .. _index:
 .. include:: ./ext_links.txt
 
-.. image:: ./_images/dpep-large.png
+.. image:: ./_images/DPEP-large.png
     :width: 400px
     :align: center
     :alt: Data Parallel Extensions for Python
