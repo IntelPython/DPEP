@@ -22,7 +22,7 @@ Data Parallel Extensions for Python.
 **********************
 
 You will need Python 3.8, 3.9, or 3.10 installed on your system. If you do not have one yet the easiest way to do
-that is to install `Intel Distribution for Python`_.
+that is to install `Intel Distribution for Python*`_.
 It will install all essential Python numerical and machine
 learning packages optimized for Intel hardware, including Data Parallel Extensions for Python*.
 If you have Python installation from another vendor, it is fine too. All you need is to install Data Parallel
