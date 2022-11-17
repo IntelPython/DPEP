@@ -6,6 +6,4 @@ dependencies:
   - pip
   - pip:
     - sphinx
-    - autodoc
-    - recommonmark
-    - sphinx-rtd-theme
+    - sphinxcontrib-programoutput
