@@ -11,3 +11,4 @@
 .. _Data Parallel Extension for Numba*: https://intelpython.github.io/numba-dpex/latest/index.html
 .. _SYCL*: https://www.khronos.org/sycl/
 .. _Data Parallel Control: https://intelpython.github.io/dpctl/latest/index.html
+.. _Data Parallel Extension for Numpy*: https://intelpython.github.io/dpnp/
