@@ -5,3 +5,4 @@
 .. _NumPy*: https://numpy.org/
 .. _Numba*: https://numba.pydata.org/
 .. _Python Array API Standard: https://data-apis.org/array-api/
+.. _Intel Distribution for Python: https://www.intel.com/content/www/us/en/developer/tools/oneapi/distribution-for-python.html
