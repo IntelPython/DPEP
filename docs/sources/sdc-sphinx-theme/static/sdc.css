@@ -95,7 +95,7 @@ ol {
 }
 li {
   line-height: 18px;
-  color: #0070c5;
+  color: #000010;
 }
 ul.unstyled {
   list-style: none;
@@ -245,20 +245,6 @@ div.topbar {
   overflow-y: hidden;
   width: 100%;
 }
-
-/* Intel logo png */
-/*
-div.topbar a.brand {
-  width: 50px;
-  float: left;
-  display: block;
-  height: 60px;
-  padding: 8px 12px 0px 45px;
-  margin-left: -10px;
-  background: transparent url("intel_logo.png") no-repeat 10px 4px;
-  background-size: 86px 60px;
-}
-*/
 
 /* Scalable Dataframe Compiler png */
 div.topbar a.brand_sdc {

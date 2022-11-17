@@ -1,34 +1,32 @@
-.. documentation master file, created by
-   sphinx-quickstart.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. _index:
+.. include:: ./ext_links.txt
 
-Welcome to DPPY documentation!
-======================================
+.. image:: ./_images/dpep-large.png
+    :width: 400px
+    :align: center
+    :alt: Data Parallel Extensions for Python
 
-...
+Data Parallel Extensions for Python
+===================================
 
-About
-=====
+Data Parallel Extensions for Python* extend numerical Python capabilities beyond CPU and allow even higher performance
+gains on data parallel devices such as GPUs. It consists of three foundational packages:
 
-...
+* **dpnp** - Data Parallel Extensions for `Numpy*`_ - a library that implements a subset of
+  Numpy that can be executed on any data parallel device. The subset is a drop-in replacement
+  of core Numpy functions and numerical data types.
+* **numba_dpex** - Data Parallel Extensions for `Numba*`_ - extension for Numba compiler
+  that enables programming data parallel devices the same way you program CPU with Numba.
+* **dpctl - Data Parallel Control library** that provides utilities for device selection,
+  allocation of data on devices, tensor data structure along with `Python Array API Standard`_ implementation, and support for creation of user-defined data-parallel extensions.
 
-License
-=======
+Table of Contents
+*****************
+.. toctree::
+    :maxdepth: 2
 
-...
-
-Indices and tables
-==================
-
-.. only:: builder_html
-
-   * :ref:`genindex`
-   * :ref:`modindex`
-   * :ref:`search`
-
-.. only:: not builder_html
-
-   * :ref:`modindex`
-
-.. |reg|    unicode:: U+000AE .. REGISTERED SIGN
+    prerequisites_and_installation
+    parallelism
+    heterogeneous_computing
+    programming_dpep
+    useful_links

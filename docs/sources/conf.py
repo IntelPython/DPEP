@@ -170,7 +170,7 @@ html_theme = "sphinx_rtd_theme"
 # -- Project information -----------------------------------------------------
 
 project = 'Data Parallel Extensions for Python*'
-copyright = '2022, Intel Corporation'
+copyright = '2021-2022, Intel Corporation'
 author = 'Intel Corporation'
 
 # The full version, including alpha/beta/rc tags
