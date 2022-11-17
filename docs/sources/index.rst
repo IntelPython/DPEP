@@ -29,5 +29,6 @@ Table of Contents
     parallelism
     heterogeneous_computing
     programming_dpep
+    examples
     useful_links
 
