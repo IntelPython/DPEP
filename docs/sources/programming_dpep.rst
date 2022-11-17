@@ -37,6 +37,9 @@ to execute your `Numpy*`_ script on GPU usually requires changing just a few lin
    :caption: Your first NumPy code running on GPU
    :name: ex_01_hello_dpnp
 
+.. command-output:: python ./01-hello_dpnp.py
+   :cwd: ../../examples
+
 In this example ``np.asarray()`` creates an array on the default `SYCL*`_ device, which is ``"gpu"`` on systems
 with integrated or discrete GPU (it is ``"cpu"`` on systems that do not have GPU).
 The queue associated with this array is now carried with ``x``, and ``np.sum(x)`` will derive it from ``x``,
@@ -53,6 +56,9 @@ In the following example we create the array ``x`` on the GPU device, and perfor
    :lines: 27-
    :caption: Select device type while creating array
    :name: ex_02_dpnp_device
+
+.. command-output:: python ./02-dpnp_device.py
+   :cwd: ../../examples
 
 Data Parallel Extension for Numba - numba-dpex
 **********************************************

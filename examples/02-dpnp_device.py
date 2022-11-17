@@ -26,9 +26,10 @@
 
 import dpnp as np
 
+x = np.empty(3)
 try:
-    x = np.asarray([1, 2, 3], device=”gpu”)
+    x = np.asarray([1, 2, 3], device="gpu")
 except:
-    print(“GPU device is not available”)
+    print("GPU device is not available")
 
 y = np.sum(x)
