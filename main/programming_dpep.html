@@ -78,6 +78,68 @@
             
   <span class="target" id="programming-dpep"></span><section id="programming-with-data-parallel-extensions-for-python">
 <h1>Programming with Data Parallel Extensions for Python<a class="headerlink" href="#programming-with-data-parallel-extensions-for-python" title="Permalink to this heading">¶</a></h1>
+<p>As we briefly outlined, <strong>Data Parallel Extensions for Python</strong> consist of three foundational packages:</p>
+<ul class="simple">
+<li><p>the <a class="reference external" href="https://numpy.org/">Numpy*</a>-like library, <code class="docutils literal notranslate"><span class="pre">dpnp</span></code>;</p></li>
+<li><p>the compiler extension for <a class="reference external" href="https://numba.pydata.org/">Numba*</a>, <code class="docutils literal notranslate"><span class="pre">numba-dpex</span></code></p></li>
+<li><p>the library for managing devices, queues, and heterogeneous data, <code class="docutils literal notranslate"><span class="pre">dpctl</span></code>.</p></li>
+</ul>
+<p>Their underlying implementation is based on <a class="reference external" href="https://www.khronos.org/sycl/">SYCL*</a> standard, which is a cross-platform abstraction layer
+for heterogeneous computing on data parallel devices, such as CPU, GPU, or domain specific accelerators.</p>
+<section id="scalars-vs-0-dimensional-arrays">
+<h2>Scalars vs. 0-dimensional arrays<a class="headerlink" href="#scalars-vs-0-dimensional-arrays" title="Permalink to this heading">¶</a></h2>
+<p>Primitive types such as Python’s and Numpy’s <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, or <code class="docutils literal notranslate"><span class="pre">complex</span></code>, used to represent scalars,
+have the host storage. In contrast, <code class="docutils literal notranslate"><span class="pre">dpctl.tensor.usm_ndarray</span></code> and <code class="docutils literal notranslate"><span class="pre">dpnp.ndarray</span></code> have USM storage
+and carry associated allocation queue. For the <a class="reference internal" href="heterogeneous_computing.html#compute-follows-data"><span class="std std-ref">Compute-Follows-Data</span></a> consistent behavior
+all <code class="docutils literal notranslate"><span class="pre">dpnp</span></code> operations that produce scalars will instead produce respective 0-dimensional arrays.</p>
+<p>That implies, that some code changes may be needed to replace scalar math operations with respective
+<code class="docutils literal notranslate"><span class="pre">dpnp</span></code> array operations. See <a class="reference external" href="https://intelpython.github.io/dpnp/">Data Parallel Extension for Numpy*</a> - <strong>API Reference</strong> section for details.</p>
+</section>
+<section id="data-parallel-extension-for-numpy-dpnp">
+<h2>Data Parallel Extension for Numpy - dpnp<a class="headerlink" href="#data-parallel-extension-for-numpy-dpnp" title="Permalink to this heading">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">dpnp</span></code> library is a bare minimum to start programming numerical codes for data parallel devices.
+You may already have a Python script written in <a class="reference external" href="https://numpy.org/">Numpy*</a>. Being a drop-in replacement of (a subset of) <a class="reference external" href="https://numpy.org/">Numpy*</a>,
+to execute your <a class="reference external" href="https://numpy.org/">Numpy*</a> script on GPU usually requires changing just a few lines of the code:</p>
+<div class="literal-block-wrapper docutils container" id="ex-01-hello-dpnp">
+<div class="code-block-caption"><span class="caption-text">Your first NumPy code running on GPU</span><a class="headerlink" href="#ex-01-hello-dpnp" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>In this example <code class="docutils literal notranslate"><span class="pre">np.asarray()</span></code> creates an array on the default <a class="reference external" href="https://www.khronos.org/sycl/">SYCL*</a> device, which is <code class="docutils literal notranslate"><span class="pre">&quot;gpu&quot;</span></code> on systems
+with integrated or discrete GPU (it is <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code> on systems that do not have GPU).
+The queue associated with this array is now carried with <code class="docutils literal notranslate"><span class="pre">x</span></code>, and <code class="docutils literal notranslate"><span class="pre">np.sum(x)</span></code> will derive it from <code class="docutils literal notranslate"><span class="pre">x</span></code>,
+and respective pre-compiled kernel implementing <code class="docutils literal notranslate"><span class="pre">np.sum()</span></code> will be submitted to that queue.
+The result <code class="docutils literal notranslate"><span class="pre">y</span></code> will be allocated on the device 0-dimensional array associated with that queue too.</p>
+<p>All <code class="docutils literal notranslate"><span class="pre">dpnp</span></code> array creation routines as well as random number generators have additional optional keyword arguments
+<code class="docutils literal notranslate"><span class="pre">device</span></code>, <code class="docutils literal notranslate"><span class="pre">queue</span></code>, and <code class="docutils literal notranslate"><span class="pre">usm_type</span></code>, using which you can explicitly specify on which device or queue you want
+the tensor data to be created along with USM memory type to be used (<code class="docutils literal notranslate"><span class="pre">&quot;host&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;device&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;shared&quot;</span></code>).
+In the following example we create the array <code class="docutils literal notranslate"><span class="pre">x</span></code> on the GPU device, and perform a reduction sum on it:</p>
+<div class="literal-block-wrapper docutils container" id="ex-02-dpnp-device">
+<div class="code-block-caption"><span class="caption-text">Select device type while creating array</span><a class="headerlink" href="#ex-02-dpnp-device" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>import dpnp as np
+
+try:
+    x = np.asarray([1, 2, 3], device=”gpu”)
+except:
+    print(“GPU device is not available”)
+
+y = np.sum(x)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="data-parallel-extension-for-numba-numba-dpex">
+<h2>Data Parallel Extension for Numba - numba-dpex<a class="headerlink" href="#data-parallel-extension-for-numba-numba-dpex" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference external" href="https://numba.pydata.org/">Numba*</a> is a powerful Just-In-Time (JIT) compiler that works best on <a class="reference external" href="https://numpy.org/">Numpy*</a> arrays, <a class="reference external" href="https://numpy.org/">Numpy*</a> functions, and loops.
+Data parallel loops is where the data parallelism resides. It allows leveraging all available CPU cores,
+SIMD instructions, and schedules those in a way that exploits maximum instruction-level parallelism.
+The <code class="docutils literal notranslate"><span class="pre">numba-dpex</span></code> extension allows to compile and offload data parallel regions to any data parallel device.
+It takes just a few lines to modify your CPU <a class="reference external" href="https://numba.pydata.org/">Numba*</a> script to run on GPU.</p>
+</section>
 </section>
 
 
