@@ -11,4 +11,12 @@ gains on data parallel devices such as GPUs. It consists of three related projec
               selection, allocation of data on devices, tensor data structure along with Python Array API standard 
               implementation, and support for creation of user-defined data-parallel extensions.
 
-Read more about Data Parallel Extensions for Python https://intelpython.github.io/DPEP/main/
+## Learn more
+Read more about [Data Parallel Extensions for Python[(https://intelpython.github.io/DPEP/main/)
+
+## Examples
+Examples are located in `./examples`. Their names start with the 2-digit number followed by a descriptive name. You can run examples in any order, however, if  
+you are new to **Data Parallel Extensions for Python**, it is recommended to go in the order examples enumerated.
+```
+> python ./examples/01_hello-dpnp.py
+```
