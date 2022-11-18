@@ -24,23 +24,10 @@
 # EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # *****************************************************************************
 
-import dpnp as np
-from numba_dpex import njit
+import dpctl
 
-@njit(parallel=True, fastmath=True)
-def sum_it(x):  # Device queue is inferred from x. The kernel is submitted to that queue
-    return np.sum(x)
-
-x = np.empty(3)
-try:
-    x = np.asarray([1, 2, 3], device="gpu")
-except:
-    print("GPU device is not available")
-
-print("Array x allocated on the device:", x.device)
-
-y = np.sum(x)
-
-print("Result y is located on the device:", y.device)  # The same device as x
-print("Shape of y is:", y.shape)  # 0-dimensional array
-print("y=", y)  # Expect 6
+print("Platform:", dpctl.lsplatform())  # Print platform information
+print("GPU devices:", dpctl.get_devices(device_type="gpu"))  # Get the list of all GPU devices
+print("Number of GPU devices", dpctl.get_num_devices(device_type="gpu"))  # Get the number of GPU devices
+print("Has CPU devices?", dpctl.has_cpu_devices())  # Check if there are CPU devices
+print("Has host device?", dpctl.has_host_device())  # Check if there is the host device
