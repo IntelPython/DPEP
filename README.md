@@ -20,5 +20,5 @@ you are new to **Data Parallel Extensions for Python**, it is recommended to go 
 
 The following command will run the very first example of using **Data Parallel Extensions for Python**
 ```
-> python ./examples/01_hello-dpnp.py
+python ./examples/01-hello_dpnp.py
 ```
