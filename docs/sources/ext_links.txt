@@ -12,3 +12,5 @@
 .. _SYCL*: https://www.khronos.org/sycl/
 .. _Data Parallel Control: https://intelpython.github.io/dpctl/latest/index.html
 .. _Data Parallel Extension for Numpy*: https://intelpython.github.io/dpnp/
+.. _IEEE 754-2019 Standard for Floating-Point Arithmetic: https://standards.ieee.org/ieee/754/6210/
+.. _David Goldberg, What every computer scientist should know about floating-point arithmetic: https://www.itu.dk/~sestoft/bachelor/IEEE754_article.pdf>

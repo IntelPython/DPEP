@@ -25,17 +25,20 @@
 # *****************************************************************************
 
 import dpnp as np
-from numba_dpex import njit
-
+from numba_dpex import jit
 
 @njit(parallel=True, fastmath=True)
-def sum(x):
+def sum_it(x):
     return np.sum(x)
 
 
-x = np.empty(3)
+x = None
 try:
     x = np.asarray([1, 2, 3], device="gpu")
 except:
     print("GPU device is not available")
 
+y = sum_it(x)
+
+print(y.shape)  # Must be 0-dimensional array
+print(y)  # Expect 6
