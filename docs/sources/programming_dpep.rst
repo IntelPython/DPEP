@@ -39,12 +39,12 @@ to execute your `Numpy*`_ script on GPU usually requires changing just a few lin
 .. literalinclude:: ../../examples/01-hello_dpnp.py
    :language: python
    :lines: 27-
-   :caption: Your first NumPy code running on GPU
+   :caption: **EXAMPLE 01:** Your first NumPy code running on GPU
    :name: ex_01_hello_dpnp
 
 
 In this example ``np.asarray()`` creates an array on the default `SYCL*`_ device, which is ``"gpu"`` on systems
-with integrated or discrete GPU (it is ``"cpu"`` on systems that do not have GPU).
+with integrated or discrete GPU (it is ``"host"`` on systems that do not have GPU).
 The queue associated with this array is now carried with ``x``, and ``np.sum(x)`` will derive it from ``x``,
 and respective pre-compiled kernel implementing ``np.sum()`` will be submitted to that queue.
 The result ``y`` will be allocated on the device 0-dimensional array associated with that queue too.
@@ -57,7 +57,7 @@ In the following example we create the array ``x`` on the GPU device, and perfor
 .. literalinclude:: ../../examples/02-dpnp_device.py
    :language: python
    :lines: 27-
-   :caption: Select device type while creating array
+   :caption: **EXAMPLE 02:** Select device type while creating array
    :name: ex_02_dpnp_device
 
 
@@ -73,7 +73,7 @@ It takes just a few lines to modify your CPU `Numba*`_ script to run on GPU.
 .. literalinclude:: ../../examples/03-dpnp2numba-dpex.py
    :language: python
    :lines: 27-
-   :caption: Compile dpnp code with numba-dpex
+   :caption: **EXAMPLE 03:** Compile dpnp code with numba-dpex
    :name: ex_03_dpnp2numba_dpex
 
 In this example we implement a custom function ``sum_it()`` that takes an array input. We compile it with
@@ -103,6 +103,12 @@ there are some situations when you will need to use dpctl advanced capabilities:
 
    Another frequent usage is the creation additional queues for the purpose of profiling or choosing an out-of-order
    execution of offload kernels.
+
+.. literalinclude:: ../../examples/04-dpctl_device_query.py
+   :language: python
+   :lines: 27-
+   :caption: **EXAMPLE 04:** Get information about devices
+   :name: ex_04_dpctl_device_query
 
 2. **Cross-platform development using Python Array API standard.** If you’re a Python developer
    programming Numpy-like codes and targeting different hardware vendors and different tensor implementations,

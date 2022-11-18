@@ -32,5 +32,10 @@ try:
 except:
     print("GPU device is not available")
 
+print("Array x allocated on the device:", x.device)
+
 y = np.sum(x)
-print(y)  # Expect 6
+
+print("Result y is located on the device:", y.device)  # The same device as x
+print("Shape of y is:", y.shape)  # 0-dimensional array
+print("y=", y)  # Expect 6

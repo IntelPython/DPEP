@@ -1,6 +1,10 @@
 .. _prerequisites_and_installation:
 .. include:: ./ext_links.txt
 
+.. |copy| unicode:: U+000A9
+
+.. |trade| unicode:: U+2122
+
 Prerequisites and installation
 ==============================
 
@@ -31,7 +35,8 @@ Extensions for Python manually.
 3. Data Parallel Extensions for Python
 ***************************************
 
-You can skip this step if you already installed Intel® Distribution for Python or Intel® AI Analytics Toolkit.
+You can skip this step if you already installed Intel |copy| Distribution for Python or Intel |copy| AI Analytics Toolkit.
+
 The easiest way to install Data Parallel Extensions for Python is to install numba-dpex:
 
 Conda: ``conda install numba-dpex``
@@ -40,3 +45,6 @@ Pip: ``pip install numba-dpex``
 
 The above commands will install ``numba-dpex`` along with its dependencies, including ``dpnp``, ``dpctl``,
 and required compiler runtimes and drivers.
+
+.. WARNING::
+   Before installing with conda or pip it is strongly advised to update ``conda`` and ``pip`` to latest versions
