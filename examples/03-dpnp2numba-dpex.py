@@ -25,6 +25,13 @@
 # *****************************************************************************
 
 import dpnp as np
+from numba_dpex import njit
+
+
+@njit(parallel=True, fastmath=True)
+def sum(x):
+    return np.sum(x)
+
 
 x = np.empty(3)
 try:
@@ -32,5 +39,3 @@ try:
 except:
     print("GPU device is not available")
 
-y = np.sum(x)
-print(y)  # Expect 6

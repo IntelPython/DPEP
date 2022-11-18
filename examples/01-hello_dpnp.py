@@ -28,3 +28,6 @@ import dpnp as np
 
 x = np.asarray([1, 2, 3])
 y = np.sum(x)
+
+print(y.shape)  # Must be 0-dimensional array
+print(y)  # Expect 6
