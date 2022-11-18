@@ -17,6 +17,11 @@ Useful links
    * - `Data Parallel Control`_
      - Documentation how to manage data and devices, how to interchange data between different tensor implementations,
        and how to write data parallel extensions
+   * - `Intel VTune Profiler`_
+     - Performance profiler supporting  analysis of bottlenecks from function leve down to low level instructions.
+       Supports Python and Numba
+   * - `Intel Advisor`_
+     - Analyzes native and Python codes and provides an advice for better composition of heterogeneous algorithms
    * - `Python* Array API Standard`_
      - Standard for writing portable Numpy-like codes targeting different hardware vendors and frameworks
        operating with tensor data
@@ -26,8 +31,6 @@ Useful links
      - Free e-book how to program data parallel devices using Data Parallel C++
    * - `OpenCl*`_
      - OpenCl* Standard for heterogeneous programming
-   * - `Data Parallel Extension for Numpy*`_
-     - Documentation for programming NumPy-like codes on data parallel devices
    * - `IEEE 754-2019 Standard for Floating-Point Arithmetic`_
      - Standard for floating-point arithmetic, essential for writing robust numerical codes
    * - `David Goldberg, What every computer scientist should know about floating-point arithmetic`_

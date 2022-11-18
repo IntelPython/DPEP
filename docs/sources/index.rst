@@ -31,4 +31,3 @@ Table of Contents
     programming_dpep
     examples
     useful_links
-

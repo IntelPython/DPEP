@@ -126,9 +126,105 @@ there are some situations when you will need to use dpctl advanced capabilities:
 
 Debugging and profiling Data Parallel Extensions for Python
 ***********************************************************
+`Intel oneAPI Base Toolkit`_ provides two tools to assist programmers to analyze performance issues in programs
+that use **Data Parallel Extensions for Python**. They are `Intel VTune Profiler`_ and
+`Intel Advisor`_.
+
+Intel VTune Profiler examines various performance aspects of a program like, the most time-consuming parts,
+efficiency of offloaded code, impact of memory sub-systems, etc.
+
+Intel Advisor provides insights on the performance of offloaded code relative to the peak performance and
+memory bandwidth.
+
+Next, we will detail the steps involved in using Intel VTune Profiler and Intel Advisor with
+heterogenous programs that use **Data Parallel Extensions for Python**.
+
+Profiling with Intel VTune Profiler
+-----------------------------------
+
+.. |copy| unicode:: U+000A9
+
+.. |trade| unicode:: U+2122
+
+Intel |copy| VTune |trade| Profiler provides two mechanisms, called *GPU offload* and *GPU hotspots*, to profile heterogeneous programs
+targeted to GPUs.
+
+The *GPU offload* analysis profiles the entire application (both GPU and host code) and helps to identify
+if the application is CPU or GPU bound. It provides information on the proportion of the execution time spent
+in GPU execution. It also provides information about various hotspots in the program. The key goal of the *GPU offload*
+analysis is to identify the parts of the program that can benefit from offloading to GPUs.
+
+The *GPU hotspots* analysis focuses on providing insights into the performance of GPU-offloaded code.
+It provides insights about the parallelism in the GPU kernel, the efficiency of the kernel, SIMD utilization
+and memory latency. It also provides performance data regarding synchronization operations like GPU barriers and
+atomic operations.
+
+The following instructions are used execute the two Intel VTune Profiler analyses on programs written
+using **Data Parallel Extensions for Python**.
+
+.. code-block:: console
+    :caption: **GPU Offload**
+
+    > vtune -collect gpu-offload -r <output_dir> -- python <script>.py <args>
+
+.. code-block:: console
+    :caption: **GPU Hotspots**
+
+    > vtune -collect gpu-hotspots -r <output_dir> -- python <script>.py <args>
+
+Intel VTune Profiler performs dynamic binary analysis on a given program to obtain insights on various
+performance characteristics. It can run on unmodified binaries with no extra requirements for program compilation.
+After collecting the data using the above commands, the Intel VTune Profiler GUI can be used to view various
+performance characteristics. In addition to the GUI, it provides mechanisms to generate reports through
+the command line and setup a web server for post processing the data.
+
+Further details on viewing Intel VTune Profiler output along with other use-cases can be found in the
+`Intel VTune Profiler User Guide <https://www.intel.com/content/www/us/en/develop/documentation/vtune-help/top.html>`_.
+
+Profiling with Intel Advisor
+----------------------------
+
+The primary goal of Intel |copy| Advisor is to help programmers make targeted optimizations by identifying
+appropriate kernels and characterizing the performance limiting factors. Intel Advisor provides mechanisms
+to analyze the performance of GPU kernels against the hardware roof-line performance. It provides information
+about the maximum achievable performance with the given hardware conditions and helps identify the best
+kernels for optimization. Further, it helps the programmer characterize if a GPU kernel is bound by
+compute capacity or by memory bandwidth.
+
+The following instructions are used to generate GPU roof-line performance graphs using Intel Advisor.
+
+.. code-block:: console
+    :caption: **Collect Roofline**
+
+    > advisor --collect=roofline --profile-gpu --project-dir=<output_dir> --search-dir src:r=<search_dir> -- <executable> <args>
+
+This command collects the GPU roof-line data from executing the application written using
+**Data Parallel Extensions for Python**.
+
+The next command generates the roof-line graph as a html file in the output directory.
+
+.. code-block:: console
+    :caption: **Generate Roofline HTML-File**
+
+    > advisor --report=roofline --gpu --project-dir=<output_dir> --report-output=<output_dir>/roofline_gpu.html
 
 .. todo::
-   Document debugging and profiling section
+   Insert high-resolution image illustrating Advisor html report
+
+The above figure shows an example roof-line graph generated using Intel Advisor.
+The X-axis in the graph represents arithmetic intensity and the Y-axis represents performance in GFLOPS.
+The horizontal lines parallel to the X-axis represent the roof-line compute capacity for the given hardware.
+The cross-diagonal lines represent the peak memory bandwidth of different layers of the memory hierarchy.
+The red colored dot corresponds to the executed GPU kernel. The graph shows the performance of the kernel relative
+to the peak compute capacity and memory bandwidth. It also shows whether the GPU kernel is memory or compute
+bound depending on the roof-line that is limiting the GPU kernel.
+
+For further details on Intel Advisor and its extended capabilities refer to the
+`Intel |copy| Advisor User Guide <https://www.intel.com/content/www/us/en/develop/documentation/advisor-user-guide/top.html>`_.
+
+
+.. todo::
+   Document debugging section
 
 Writing robust numerical codes for heterogeneous computing
 **********************************************************
@@ -185,8 +281,8 @@ arithmetic please refer to `IEEE 754-2019 Standard for Floating-Point Arithmetic
 `David Goldberg, What every computer scientist should know about floating-point arithmetic`_.
 
 
-Switch between single and double precision
-******************************************
+Switching between single and double precision
+---------------------------------------------
 
 1. Implement your code to switch easily between single and double precision in a controlled fashion.
    For example, implement a utility function or introduce a constant that selects ``dtype`` for
