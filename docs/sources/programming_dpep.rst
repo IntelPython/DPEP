@@ -4,6 +4,11 @@
 Programming with Data Parallel Extensions for Python
 ====================================================
 
+.. image:: ./_images/dpep-all.png
+   :width: 600px
+   :align: center
+   :alt: Data Parallel Extensions for Python
+
 As we briefly outlined, **Data Parallel Extensions for Python** consist of three foundational packages:
 
 * the `Numpy*`_-like library, ``dpnp``;
