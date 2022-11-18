@@ -261,14 +261,14 @@ and memory latency. It also provides performance data regarding synchronization 
 atomic operations.</p>
 <p>The following instructions are used execute the two Intel VTune Profiler analyses on programs written
 using <strong>Data Parallel Extensions for Python</strong>.</p>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text"><strong>GPU Offload</strong></span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text"><strong>GPU Offload</strong></span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; vtune -collect gpu-offload -r &lt;output_dir&gt; -- python &lt;script&gt;.py &lt;args&gt;</span>
 </pre></div>
 </div>
 </div>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text"><strong>GPU Hotspots</strong></span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text"><strong>GPU Hotspots</strong></span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; vtune -collect gpu-hotspots -r &lt;output_dir&gt; -- python &lt;script&gt;.py &lt;args&gt;</span>
 </pre></div>
 </div>
@@ -290,8 +290,8 @@ about the maximum achievable performance with the given hardware conditions and 
 kernels for optimization. Further, it helps the programmer characterize if a GPU kernel is bound by
 compute capacity or by memory bandwidth.</p>
 <p>The following instructions are used to generate GPU roof-line performance graphs using Intel Advisor.</p>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text"><strong>Collect Roofline</strong></span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text"><strong>Collect Roofline</strong></span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; advisor --collect=roofline --profile-gpu --project-dir=&lt;output_dir&gt; --search-dir src:r=&lt;search_dir&gt; -- &lt;executable&gt; &lt;args&gt;</span>
 </pre></div>
 </div>
@@ -299,16 +299,13 @@ compute capacity or by memory bandwidth.</p>
 <p>This command collects the GPU roof-line data from executing the application written using
 <strong>Data Parallel Extensions for Python</strong>.</p>
 <p>The next command generates the roof-line graph as a html file in the output directory.</p>
-<div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text"><strong>Generate Roofline HTML-File</strong></span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text"><strong>Generate Roofline HTML-File</strong></span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; advisor --report=roofline --gpu --project-dir=&lt;output_dir&gt; --report-output=&lt;output_dir&gt;/roofline_gpu.html</span>
 </pre></div>
 </div>
 </div>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>Insert high-resolution image illustrating Advisor html report</p>
-</div>
+<a class="reference internal image-reference" href="_images/advisor_roofline_gen9.png"><img alt="Advisor roofline analysis example on Gen9 integrated GPU" class="align-center" src="_images/advisor_roofline_gen9.png" style="width: 800px;" /></a>
 <p>The above figure shows an example roof-line graph generated using Intel Advisor.
 The X-axis in the graph represents arithmetic intensity and the Y-axis represents performance in GFLOPS.
 The horizontal lines parallel to the X-axis represent the roof-line compute capacity for the given hardware.
@@ -318,7 +315,7 @@ to the peak compute capacity and memory bandwidth. It also shows whether the GPU
 bound depending on the roof-line that is limiting the GPU kernel.</p>
 <p>For further details on Intel Advisor and its extended capabilities refer to the
 <a class="reference external" href="https://www.intel.com/content/www/us/en/develop/documentation/advisor-user-guide/top.html">Intel |copy| Advisor User Guide</a>.</p>
-<div class="admonition-todo admonition" id="id2">
+<div class="admonition-todo admonition" id="id1">
 <p class="admonition-title">Todo</p>
 <p>Document debugging section</p>
 </div>
