@@ -37,8 +37,6 @@ to execute your `Numpy*`_ script on GPU usually requires changing just a few lin
    :caption: Your first NumPy code running on GPU
    :name: ex_01_hello_dpnp
 
-.. command-output:: python ./01-hello_dpnp.py
-   :cwd: ../../examples
 
 In this example ``np.asarray()`` creates an array on the default `SYCL*`_ device, which is ``"gpu"`` on systems
 with integrated or discrete GPU (it is ``"cpu"`` on systems that do not have GPU).
@@ -57,8 +55,6 @@ In the following example we create the array ``x`` on the GPU device, and perfor
    :caption: Select device type while creating array
    :name: ex_02_dpnp_device
 
-.. command-output:: python ./02-dpnp_device.py
-   :cwd: ../../examples
 
 Data Parallel Extension for Numba - numba-dpex
 **********************************************
@@ -68,4 +64,10 @@ Data parallel loops is where the data parallelism resides. It allows leveraging 
 SIMD instructions, and schedules those in a way that exploits maximum instruction-level parallelism.
 The ``numba-dpex`` extension allows to compile and offload data parallel regions to any data parallel device.
 It takes just a few lines to modify your CPU `Numba*`_ script to run on GPU.
+
+.. literalinclude:: ../../examples/03-dpnp2numba-dpex.py
+   :language: python
+   :lines: 27-
+   :caption: Compile dpnp code with numba-dpex
+   :name: ex_03_dpnp2numba_dpex
 
