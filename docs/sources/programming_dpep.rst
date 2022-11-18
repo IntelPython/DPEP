@@ -214,8 +214,10 @@ The next command generates the roof-line graph as a html file in the output dire
 
     > advisor --report=roofline --gpu --project-dir=<output_dir> --report-output=<output_dir>/roofline_gpu.html
 
-.. todo::
-   Insert high-resolution image illustrating Advisor html report
+.. image:: ./_images/advisor_roofline_gen9.png
+    :width: 800px
+    :align: center
+    :alt: Advisor roofline analysis example on Gen9 integrated GPU
 
 The above figure shows an example roof-line graph generated using Intel Advisor.
 The X-axis in the graph represents arithmetic intensity and the Y-axis represents performance in GFLOPS.
