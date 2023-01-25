@@ -39,7 +39,7 @@ except:
 
 print("Array x allocated on the device:", x.device)
 
-y = np.sum(x)
+y = sum_it(x)
 
 print("Result y is located on the device:", y.device)  # The same device as x
 print("Shape of y is:", y.shape)  # 0-dimensional array
