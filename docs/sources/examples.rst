@@ -28,17 +28,17 @@ List of examples
    :caption: **EXAMPLE 04:** Get information about devices
    :name: examples_04_dpctl_device_query
    
-.. literalinclude:: https://github.com/IntelPython/numba-dpex/blob/main/numba_dpex/examples/kernel/vector_sum.py
+.. literalinclude:: ../../examples/05-dpctl_dpnp_test.py
    :language: python
-   :lines: 47-
-   :caption: **EXAMPLE:** Test installation of ``numba-dpex`` on the example of vector sum 
-   :name: ex_05_vector_sum_numba_dpex
-
-.. literalinclude:: ../../examples/06-dpctl_dpnp_test.py
+   :lines: 46-
+   :caption: **EXAMPLE 05:**  Test installation of ``dpctl_dpnp``
+   :name: ex_05_dpnp_test
+   
+.. literalinclude:: ../../examples/06-numba-dpex_test.py
    :language: python
-   :lines: 41-
-   :caption: **EXAMPLE:** Test installation of ``dpnp``
-   :name: ex_06_dpnp_test
+   :lines: 45-
+   :caption: **EXAMPLE 06:** Test installation of ``numba-dpex``
+   :name: 06-numba-dpex_test
 
 Benchmarks
 **********
@@ -51,4 +51,5 @@ Jupyter* Notebooks
 
 Instructions for Jupyter Notebook samples illustrating Data Parallel Extensions for Python
 
-.. literalinclude:: ../../examples/jupyter_examples.ipynb
+.. literalinclude:: ../../examples/01-get_started.ipynb
+.. literalinclude:: ../../examples/02-dpnp_numpy_fallback.ipynb
