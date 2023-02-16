@@ -49,6 +49,8 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.autosectionlabel',
     'sphinxcontrib.programoutput',
+    'nbsphinx',
+    'sphinx_gallery.load_style',
 ]
 
 
@@ -116,3 +118,4 @@ intersphinx_mapping = {
 
 # -- Prepend module name to an object name or not -----------------------------------
 add_module_names = False
+
