@@ -30,13 +30,13 @@ List of examples
    
 .. literalinclude:: ../../examples/05-dpctl_dpnp_test.py
    :language: python
-   :lines: 46-
-   :caption: **EXAMPLE 05:**  Test installation of ``dpctl_dpnp``
+   :lines: 27-
+   :caption: **EXAMPLE 05:**  Test installation of ``dpctl`` and ``dpnp``
    :name: ex_05_dpnp_test
    
 .. literalinclude:: ../../examples/06-numba-dpex_test.py
    :language: python
-   :lines: 45-
+   :lines: 27-
    :caption: **EXAMPLE 06:** Test installation of ``numba-dpex``
    :name: 06-numba-dpex_test
 
@@ -45,11 +45,3 @@ Benchmarks
 
 .. todo::
    Provide instructions for dpbench
-
-Jupyter* Notebooks
-******************
-
-Instructions for Jupyter Notebook samples illustrating Data Parallel Extensions for Python
-
-.. literalinclude:: ../../examples/01-get_started.ipynb
-.. literalinclude:: ../../examples/02-dpnp_numpy_fallback.ipynb
