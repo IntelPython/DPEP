@@ -13,11 +13,12 @@
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="text/javascript" src="_static/sidebar.js"></script>
     <script type="text/javascript" src="_static/copybutton.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Useful links" href="useful_links.html" />
+    <link rel="next" title="Jupyter* Notebooks" href="jupiter_notebook.html" />
     <link rel="prev" title="Programming with Data Parallel Extensions for Python" href="programming_dpep.html" />
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600' rel='stylesheet' type='text/css'/>
 
@@ -48,7 +49,7 @@
     <h3>Navigation</h3>
     <ul>
       <li class="right">
-	<a href="useful_links.html" title="Useful links">
+	<a href="jupiter_notebook.html" title="Jupyter* Notebooks">
 	  next &raquo;
 	</a>
       </li>
@@ -148,14 +149,51 @@
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="ex-05-dpnp-test">
-<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 05:</strong>  Test installation of <code class="docutils literal notranslate"><span class="pre">dpctl_dpnp</span></code></span><a class="headerlink" href="#ex-05-dpnp-test" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Test failed&quot;</span><span class="p">)</span>
+<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 05:</strong>  Test installation of <code class="docutils literal notranslate"><span class="pre">dpctl</span></code> and <code class="docutils literal notranslate"><span class="pre">dpnp</span></code></span><a class="headerlink" href="#ex-05-dpnp-test" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test installation of dpctl and dpnp</span>
+<span class="kn">import</span> <span class="nn">dpctl</span>
+<span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">gpu</span> <span class="o">=</span> <span class="n">dpctl</span><span class="o">.</span><span class="n">select_gpu_device</span><span class="p">()</span>   <span class="c1"># Select gpu device</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="n">gpu</span><span class="o">.</span><span class="n">print_device_info</span><span class="p">())</span> <span class="c1"># Print gpu information</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">device</span> <span class="o">=</span> <span class="n">gpu</span><span class="p">)</span> <span class="c1"># Create an array on gpu device</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array x is located on the device:&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array x is:&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># Calculate sum of array elements </span>
+
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Result y is located on the device:&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;y = &quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="c1"># Expect 6 </span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Test passed&quot;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;GPU device is not available&quot;</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Test failed&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="numba-dpex-test">
 <div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 06:</strong> Test installation of <code class="docutils literal notranslate"><span class="pre">numba-dpex</span></code></span><a class="headerlink" href="#numba-dpex-test" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Rasult is&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test installation of numba_dpex</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span>
+<span class="kn">import</span> <span class="nn">numba_dpex</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="nd">@njit</span>
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="o">+</span><span class="n">c</span>
+
+ 
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array a is&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array b is&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array c is&quot;</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">test</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Rasult is&quot;</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -164,735 +202,6 @@
 <div class="admonition-todo admonition" id="id1">
 <p class="admonition-title">Todo</p>
 <p>Provide instructions for dpbench</p>
-</div>
-</section>
-<section id="jupyter-notebooks">
-<h2>Jupyter* Notebooks<a class="headerlink" href="#jupyter-notebooks" title="Permalink to this heading">¶</a></h2>
-<p>Instructions for Jupyter Notebook samples illustrating Data Parallel Extensions for Python</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
- <span class="s2">&quot;cells&quot;</span><span class="p">:</span> <span class="p">[</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;a002ea61&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;# Getting Started&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;905c742a&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;# Few Line Changes to Run on GPU&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;41bf2099&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;Let&#39;s see the example how you can easily in a few lines of code switch computations from CPU to GPU device.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Please look on the original example.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;We allocate 2 matrices on the Host (CPU) device usnig NumPy array function, all future calculations will be performed as well on the allocated Host(CPU) device.&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;d9e8711d&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;res =  [[2 2]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot; [2 2]]</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;# Original CPU script</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Call numpy library</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;import numpy as np</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Data alocated on the CPU device</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;x = np.array([[1, 1], [1, 1]])</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;y = np.array([[1, 1], [1, 1]])</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Compute performed on the CPU device, where data is allocated</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;res = np.matmul(x, y)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">res = </span><span class="se">\&quot;</span><span class="s2">, res)&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;402c3d61&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;Now let&#39;s try to modify our code in a way when all calculations occur on the GPU device.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;To do it, you need just to switch to the dpnp library and see on the result.&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;c10b7d83&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;Array x is located on the device: Device(level_zero:gpu:0)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Array y is located on the device: Device(level_zero:gpu:0)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;res is located on the device: Device(level_zero:gpu:0)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;res =  [[2 2]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot; [2 2]]</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;# Modified XPU script</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Drop-in replacement via single line change</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;import dpnp as np</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Data alocated on default SYCL device</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;x = np.array([[1, 1], [1, 1]])</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;y = np.array([[1, 1], [1, 1]])</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Compute performed on the device, where data is allocated</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;res = np.matmul(x, y)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">Array x is located on the device:</span><span class="se">\&quot;</span><span class="s2">, x.device)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">Array y is located on the device:</span><span class="se">\&quot;</span><span class="s2">, y.device)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">res is located on the device:</span><span class="se">\&quot;</span><span class="s2">, res.device)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">res = </span><span class="se">\&quot;</span><span class="s2">, res)&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;d6a58f17&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;As you may see changing only one line of code help us to perform all calculations on the GPU device.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;In this example np.array() creates an array on the default SYCL* device, which is </span><span class="se">\&quot;</span><span class="s2">gpu</span><span class="se">\&quot;</span><span class="s2"> on systems with integrated or discrete GPU (it is </span><span class="se">\&quot;</span><span class="s2">host</span><span class="se">\&quot;</span><span class="s2"> on systems that do not have GPU). The queue associated with this array is now carried with x and y, and np.matmul(x, y) will do matrix product of two arrays x and y, and respective pre-compiled kernel implementing np.matmul() will be submitted to that queue. The result res will be allocated on the device array associated with that queue too.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Now let&#39;s make a few improvements in our code and see how we can control and specify exact device on which we want to perform our calculations and which USM memory type to use.&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;be340585&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;# dpnp simple examples with popular functions&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;26d8c3c6&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;1. Example to return an array with evenly spaced values within a given interval.&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;0435d7f0&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;282 µs ± 27.6 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Result a is located on the device: Device(level_zero:gpu:0)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;a =  [ 3  9 15 21 27]</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;import dpnp as np</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Create an array of values from 3 till 30 with step 6</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;a = np.arange(3, 30, step = 6)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">Result a is located on the device:</span><span class="se">\&quot;</span><span class="s2">, a.device)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">a = </span><span class="se">\&quot;</span><span class="s2">, a)&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;a6765095&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;In this example np.arange() creates an array on the default SYCL* device, which is </span><span class="se">\&quot;</span><span class="s2">gpu</span><span class="se">\&quot;</span><span class="s2"> on systems with integrated or discrete GPU (it is </span><span class="se">\&quot;</span><span class="s2">host</span><span class="se">\&quot;</span><span class="s2"> on systems that do not have GPU).&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;35081461&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;2. Example which calculates on the GPU the sum of the array elements&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;e613398f&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;scrolled&quot;</span><span class="p">:</span> <span class="n">true</span>
-   <span class="p">},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;Result x is located on the device: Device(level_zero:gpu:0)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Result y is located on the device: Device(level_zero:gpu:0)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;The sum of the array elements is:  6</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;import dpnp as np</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;x = np.empty(3)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;try:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    # Using filter selector strings to specify root devices for a new array</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    x = np.asarray ([1, 2, 3], device=</span><span class="se">\&quot;</span><span class="s2">gpu</span><span class="se">\&quot;</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print (</span><span class="se">\&quot;</span><span class="s2">Result x is located on the device:</span><span class="se">\&quot;</span><span class="s2">, x.device)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;except:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print (</span><span class="se">\&quot;</span><span class="s2">GPU device is not available</span><span class="se">\&quot;</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Return the sum of the array elements</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;y = np.sum (x) # Expect 6</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">Result y is located on the device:</span><span class="se">\&quot;</span><span class="s2">, y.device)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">The sum of the array elements is: </span><span class="se">\&quot;</span><span class="s2">, y )&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;88b4915e&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;In this example np.asarray() creates an array on the default GPU device. The queue associated with this array is now carried with x, and np.sum(x) will derive it from x, and respective pre-compiled kernel implementing np.sum() will be submitted to that queue. The result y will be allocated on the device 0-dimensional array associated with that queue too.&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;b49f4c62&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;3. Example of inversion of an array&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;4b53afed&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;Array a is located on the device: Device(level_zero:gpu:0)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Result x is located on the device: Device(level_zero:gpu:0)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Array x is: [[-2 -2]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot; [-3 -2]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot; [-2 -1]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot; [ 0 -1]]</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;import dpnp as np</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;try:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    # Using filter selector strings to specify root devices for an array</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    a = np.array([[1, 1], [2, 1], [1, 0], [-1, 0]], device = </span><span class="se">\&quot;</span><span class="s2">gpu</span><span class="se">\&quot;</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print (</span><span class="se">\&quot;</span><span class="s2">Array a is located on the device:</span><span class="se">\&quot;</span><span class="s2">, a.device)  </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    # Do inversion of an array </span><span class="se">\&quot;</span><span class="s2">a</span><span class="se">\&quot;\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    x = np.invert(a)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print (</span><span class="se">\&quot;</span><span class="s2">Result x is located on the device:</span><span class="se">\&quot;</span><span class="s2">, x.device)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print (</span><span class="se">\&quot;</span><span class="s2">Array x is:</span><span class="se">\&quot;</span><span class="s2">, x) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;except:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print (</span><span class="se">\&quot;</span><span class="s2">GPU device is not available</span><span class="se">\&quot;</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;e10f226a&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;In this example np.array() creates an array on the default GPU device. The queue associated with this array is now carried with a, and np.invert(a) will derive it from a, and respective pre-compiled kernel implementing np.invert() will be submitted to that queue. The result x will be allocated on the device array associated with that queue too.&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;94cb3b9b&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;# dpctl simple examples&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;9fb4b1b5&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;Here you may find a list of simple examples which explain how to understand how many devices you have in the systen and how to operate with them</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Let&#39;s print the list of all available SYCL devices.&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;b890ae71&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;Intel(R) OpenCL HD Graphics OpenCL 3.0 </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Intel(R) FPGA Emulation Platform for OpenCL(TM) OpenCL 1.2 Intel(R) FPGA SDK for OpenCL(TM), Version 20.3</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Intel(R) OpenCL OpenCL 3.0 WINDOWS</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Intel(R) Level-Zero 1.3</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;# See the list of available SYCL platforms and extra metadata about each platform.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;import dpctl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;dpctl.lsplatform()  # Print platform information&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;db5e8db4&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;Let&#39;s look on the output.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;On my platform is available OpenCL GPU driver, Intel(R) FPGA Emulation Device, OpenCL CPU driver and Level Zero GPU driver.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;If i play with verbocity parameter, i can get more information about the devices i have.&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;ffcf0cfb&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;Platform  0 ::</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Name        Intel(R) OpenCL HD Graphics</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Version     OpenCL 3.0 </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Vendor      Intel(R) Corporation</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Backend     opencl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Num Devices 1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;      # 0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Name                Intel(R) Iris(R) Xe Graphics</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Version             31.0.101.3430</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Filter string       opencl:gpu:0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Platform  1 ::</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Name        Intel(R) FPGA Emulation Platform for OpenCL(TM)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Version     OpenCL 1.2 Intel(R) FPGA SDK for OpenCL(TM), Version 20.3</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Vendor      Intel(R) Corporation</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Backend     opencl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Num Devices 1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;      # 0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Name                Intel(R) FPGA Emulation Device</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Version             2022.15.11.0.18_160000</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Filter string       opencl:accelerator:0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Platform  2 ::</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Name        Intel(R) OpenCL</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Version     OpenCL 3.0 WINDOWS</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Vendor      Intel(R) Corporation</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Backend     opencl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Num Devices 1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;      # 0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Name                11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Version             2022.15.11.0.18_160000</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Filter string       opencl:cpu:0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Platform  3 ::</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Name        Intel(R) Level-Zero</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Version     1.3</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Vendor      Intel(R) Corporation</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Backend     ext_oneapi_level_zero</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Num Devices 1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;      # 0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Name                Intel(R) Iris(R) Xe Graphics</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Version             1.3.23904</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;        Filter string       level_zero:gpu:0</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;# See the list of available SYCL platforms and extra metadata about each platform.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;import dpctl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;dpctl.lsplatform(2)  # Print platform information with verbocitz level 2 (highest level)&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;f63525d3&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;Having information about available SYCL platforms you can specify which type of devices you want to work with&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;84ff47e9&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;[&lt;dpctl.SyclDevice [backend_type.opencl, device_type.gpu,  Intel(R) Iris(R) Xe Graphics] at 0x1a1eddd72f0&gt;, &lt;dpctl.SyclDevice [backend_type.level_zero, device_type.gpu,  Intel(R) Iris(R) Xe Graphics] at 0x1a1eddd70f0&gt;]</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;# See the list of available gpu devices and their extra metadata.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;import dpctl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;if dpctl.has_gpu_devices():</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print (dpctl.get_devices(device_type=&#39;gpu&#39;))</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;else:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print(</span><span class="se">\&quot;</span><span class="s2">GPU device is not available</span><span class="se">\&quot;</span><span class="s2">)&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;a93e7cf8&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;[&lt;dpctl.SyclDevice [backend_type.opencl, device_type.cpu,  11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz] at 0x1779083bcf0&gt;]</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;# See the list of available gpu devices and their extra metadata.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;import dpctl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;if dpctl.has_cpu_devices():</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print (dpctl.get_devices(device_type=&#39;cpu&#39;))</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;else:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print(</span><span class="se">\&quot;</span><span class="s2">CPU device is not available</span><span class="se">\&quot;</span><span class="s2">)&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;efcc3f45&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;And you can make selection of the specific device in your system using the default selctor&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;1c068447&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;    Name            Intel(R) Iris(R) Xe Graphics</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Driver version  1.3.23904</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Vendor          Intel(R) Corporation</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Filter string   level_zero:gpu:0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;import dpctl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;try:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    # Create a SyclDevice of type GPU based on whatever is returned</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    # by the SYCL `gpu_selector` device selector class.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    gpu = dpctl.select_gpu_device()</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    gpu.print_device_info() # print GPU device information</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;except:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print (</span><span class="se">\&quot;</span><span class="s2">GPU device is not available</span><span class="se">\&quot;</span><span class="s2">)&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;c378b79d&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;Or by using the infromation in filter string of the device create abd explicit SyclDevice &quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;ad83abb5&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;    Name            Intel(R) Iris(R) Xe Graphics</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Driver version  1.3.23904</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Vendor          Intel(R) Corporation</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Profile         FULL_PROFILE</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Filter string   level_zero:gpu:0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;import dpctl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Create a SyclDevice with an explicit filter string,</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# in this case the first level_zero gpu device.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;try:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    level_zero_gpu = dpctl.SyclDevice(</span><span class="se">\&quot;</span><span class="s2">level_zero:gpu:0</span><span class="se">\&quot;</span><span class="s2">)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    level_zero_gpu.print_device_info()</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;except:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print(</span><span class="se">\&quot;</span><span class="s2">The first level_zero GPU device is not available</span><span class="se">\&quot;</span><span class="s2">)    &quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;eadefe0b&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;Let&#39;s check if your gpu device support double precision. To do this we need to selcet gpu device and check the parameter has_aspect_fp64:&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;a94756d7&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;    Name            Intel(R) Iris(R) Xe Graphics</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Driver version  1.3.23904</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Vendor          Intel(R) Corporation</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;    Filter string   level_zero:gpu:0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Double precision support is False</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;import dpctl</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Select GPU device and check double precision support</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;try:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    gpu = dpctl.select_gpu_device()</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    gpu.print_device_info()</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print(</span><span class="se">\&quot;</span><span class="s2">Double precision support is</span><span class="se">\&quot;</span><span class="s2">, gpu.has_aspect_fp64)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;except:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;    print(</span><span class="se">\&quot;</span><span class="s2">The GPU device is not available</span><span class="se">\&quot;</span><span class="s2">)   &quot;</span>
-   <span class="p">]</span>
-  <span class="p">}</span>
- <span class="p">],</span>
- <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-  <span class="s2">&quot;kernelspec&quot;</span><span class="p">:</span> <span class="p">{</span>
-   <span class="s2">&quot;display_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Python 3 (ipykernel)&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;language&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;python3&quot;</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;language_info&quot;</span><span class="p">:</span> <span class="p">{</span>
-   <span class="s2">&quot;codemirror_mode&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;ipython&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">3</span>
-   <span class="p">},</span>
-   <span class="s2">&quot;file_extension&quot;</span><span class="p">:</span> <span class="s2">&quot;.py&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;mimetype&quot;</span><span class="p">:</span> <span class="s2">&quot;text/x-python&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;nbconvert_exporter&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;pygments_lexer&quot;</span><span class="p">:</span> <span class="s2">&quot;ipython3&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;3.8.15&quot;</span>
-  <span class="p">}</span>
- <span class="p">},</span>
- <span class="s2">&quot;nbformat&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
- <span class="s2">&quot;nbformat_minor&quot;</span><span class="p">:</span> <span class="mi">5</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
- <span class="s2">&quot;cells&quot;</span><span class="p">:</span> <span class="p">[</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;be340585&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;# Usage of numpy functions in dpnp library&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;9008dbe5&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;1. Example of the usage of the `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` environment variable and finding specific values in array based on condition using dpnp library&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;5d4300fe&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;Not all functions were yet implemented in the dpnp library, some of the functions require enabling of the direct fallback to the NumPy library. </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;One of the example can be the function </span><span class="se">\&quot;</span><span class="s2">dpnp.full ()</span><span class="se">\&quot;</span><span class="s2"> and parameter like in non default state. </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;Let&#39;s look on the example where we want to create an two dimencial array with singular element and array like option. &quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;c78511cd&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;ename&quot;</span><span class="p">:</span> <span class="s2">&quot;NotImplementedError&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;evalue&quot;</span><span class="p">:</span> <span class="s2">&quot;Requested funtion=full with args=((2, 2), 3, None, &#39;C&#39;) and kwargs={&#39;like&#39;: &lt;dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0&gt;} isn&#39;t currently supported and would fall back on NumPy implementation. Define enviroment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without rasing an exception.&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;traceback&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;</span><span class="se">\u001b</span><span class="s2">[1;31m---------------------------------------------------------------------------</span><span class="se">\u001b</span><span class="s2">[0m&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;</span><span class="se">\u001b</span><span class="s2">[1;31mNotImplementedError</span><span class="se">\u001b</span><span class="s2">[0m                       Traceback (most recent call last)&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Cell </span><span class="se">\u001b</span><span class="s2">[1;32mIn[1], line 4</span><span class="se">\u001b</span><span class="s2">[0m</span><span class="se">\n\u001b</span><span class="s2">[0;32m      1</span><span class="se">\u001b</span><span class="s2">[0m </span><span class="se">\u001b</span><span class="s2">[38;5;28;01mimport</span><span class="se">\u001b</span><span class="s2">[39;00m </span><span class="se">\u001b</span><span class="s2">[38;5;21;01mdpnp</span><span class="se">\u001b</span><span class="s2">[39;00m </span><span class="se">\u001b</span><span class="s2">[38;5;28;01mas</span><span class="se">\u001b</span><span class="s2">[39;00m </span><span class="se">\u001b</span><span class="s2">[38;5;21;01mnp</span><span class="se">\u001b</span><span class="s2">[39;00m</span><span class="se">\n\u001b</span><span class="s2">[0;32m      3</span><span class="se">\u001b</span><span class="s2">[0m </span><span class="se">\u001b</span><span class="s2">[38;5;66;03m# Create an two dimencial array with singular element and array like option</span><span class="se">\u001b</span><span class="s2">[39;00m</span><span class="se">\n\u001b</span><span class="s2">[1;32m----&gt; 4</span><span class="se">\u001b</span><span class="s2">[0m a </span><span class="se">\u001b</span><span class="s2">[38;5;241m=</span><span class="se">\u001b</span><span class="s2">[39m </span><span class="se">\u001b</span><span class="s2">[43mnp</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[38;5;241;43m.</span><span class="se">\u001b</span><span class="s2">[39;49m</span><span class="se">\u001b</span><span class="s2">[43mfull</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m(</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m(</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[38;5;241;43m2</span><span class="se">\u001b</span><span class="s2">[39;49m</span><span class="se">\u001b</span><span class="s2">[43m,</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[38;5;241;43m2</span><span class="se">\u001b</span><span class="s2">[39;49m</span><span class="se">\u001b</span><span class="s2">[43m)</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m,</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[38;5;241;43m3</span><span class="se">\u001b</span><span class="s2">[39;49m</span><span class="se">\u001b</span><span class="s2">[43m,</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m </span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43mlike</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m </span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[38;5;241;43m=</span><span class="se">\u001b</span><span class="s2">[39;49m</span><span class="se">\u001b</span><span class="s2">[43m </span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43mnp</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[38;5;241;43m.</span><span class="se">\u001b</span><span class="s2">[39;49m</span><span class="se">\u001b</span><span class="s2">[43mzeros</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m(</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m(</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[38;5;241;43m2</span><span class="se">\u001b</span><span class="s2">[39;49m</span><span class="se">\u001b</span><span class="s2">[43m,</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m </span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[38;5;241;43m0</span><span class="se">\u001b</span><span class="s2">[39;49m</span><span class="se">\u001b</span><span class="s2">[43m)</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m)</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m)</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\n\u001b</span><span class="s2">[0;32m      5</span><span class="se">\u001b</span><span class="s2">[0m </span><span class="se">\u001b</span><span class="s2">[38;5;28mprint</span><span class="se">\u001b</span><span class="s2">[39m (</span><span class="se">\u001b</span><span class="s2">[38;5;124m</span><span class="se">\&quot;\u001b</span><span class="s2">[39m</span><span class="se">\u001b</span><span class="s2">[38;5;124mArray a is located on the device:</span><span class="se">\u001b</span><span class="s2">[39m</span><span class="se">\u001b</span><span class="s2">[38;5;124m</span><span class="se">\&quot;\u001b</span><span class="s2">[39m, a</span><span class="se">\u001b</span><span class="s2">[38;5;241m.</span><span class="se">\u001b</span><span class="s2">[39mdevice)</span><span class="se">\n\u001b</span><span class="s2">[0;32m      6</span><span class="se">\u001b</span><span class="s2">[0m </span><span class="se">\u001b</span><span class="s2">[38;5;28mprint</span><span class="se">\u001b</span><span class="s2">[39m (</span><span class="se">\u001b</span><span class="s2">[38;5;124m</span><span class="se">\&quot;\u001b</span><span class="s2">[39m</span><span class="se">\u001b</span><span class="s2">[38;5;124mArray a is</span><span class="se">\u001b</span><span class="s2">[39m</span><span class="se">\u001b</span><span class="s2">[38;5;124m</span><span class="se">\&quot;\u001b</span><span class="s2">[39m, a)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;File </span><span class="se">\u001b</span><span class="s2">[1;32m~</span><span class="se">\\</span><span class="s2">Anaconda3</span><span class="se">\\</span><span class="s2">envs</span><span class="se">\\</span><span class="s2">my_env</span><span class="se">\\</span><span class="s2">lib</span><span class="se">\\</span><span class="s2">site-packages</span><span class="se">\\</span><span class="s2">dpnp</span><span class="se">\\</span><span class="s2">dpnp_iface_arraycreation.py:732</span><span class="se">\u001b</span><span class="s2">[0m, in </span><span class="se">\u001b</span><span class="s2">[0;36mfull</span><span class="se">\u001b</span><span class="s2">[1;34m(shape, fill_value, dtype, order, like, device, usm_type, sycl_queue)</span><span class="se">\u001b</span><span class="s2">[0m</span><span class="se">\n\u001b</span><span class="s2">[0;32m    723</span><span class="se">\u001b</span><span class="s2">[0m </span><span class="se">\u001b</span><span class="s2">[38;5;28;01melse</span><span class="se">\u001b</span><span class="s2">[39;00m:</span><span class="se">\n\u001b</span><span class="s2">[0;32m    724</span><span class="se">\u001b</span><span class="s2">[0m     </span><span class="se">\u001b</span><span class="s2">[38;5;28;01mreturn</span><span class="se">\u001b</span><span class="s2">[39;00m dpnp_container</span><span class="se">\u001b</span><span class="s2">[38;5;241m.</span><span class="se">\u001b</span><span class="s2">[39mfull(shape,</span><span class="se">\n\u001b</span><span class="s2">[0;32m    725</span><span class="se">\u001b</span><span class="s2">[0m                                fill_value,</span><span class="se">\n\u001b</span><span class="s2">[0;32m    726</span><span class="se">\u001b</span><span class="s2">[0m                                dtype</span><span class="se">\u001b</span><span class="s2">[38;5;241m=</span><span class="se">\u001b</span><span class="s2">[39mdtype,</span><span class="se">\n\u001b</span><span class="s2">[1;32m   (...)</span><span class="se">\u001b</span><span class="s2">[0m</span><span class="se">\n\u001b</span><span class="s2">[0;32m    729</span><span class="se">\u001b</span><span class="s2">[0m                                usm_type</span><span class="se">\u001b</span><span class="s2">[38;5;241m=</span><span class="se">\u001b</span><span class="s2">[39musm_type,</span><span class="se">\n\u001b</span><span class="s2">[0;32m    730</span><span class="se">\u001b</span><span class="s2">[0m                                sycl_queue</span><span class="se">\u001b</span><span class="s2">[38;5;241m=</span><span class="se">\u001b</span><span class="s2">[39msycl_queue)</span><span class="se">\n\u001b</span><span class="s2">[1;32m--&gt; 732</span><span class="se">\u001b</span><span class="s2">[0m </span><span class="se">\u001b</span><span class="s2">[38;5;28;01mreturn</span><span class="se">\u001b</span><span class="s2">[39;00m </span><span class="se">\u001b</span><span class="s2">[43mcall_origin</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m(</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43mnumpy</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[38;5;241;43m.</span><span class="se">\u001b</span><span class="s2">[39;49m</span><span class="se">\u001b</span><span class="s2">[43mfull</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m,</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m </span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43mshape</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m,</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m </span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43mfill_value</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m,</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m </span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43mdtype</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m,</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m </span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43morder</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m,</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m </span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43mlike</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[38;5;241;43m=</span><span class="se">\u001b</span><span class="s2">[39;49m</span><span class="se">\u001b</span><span class="s2">[43mlike</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\u001b</span><span class="s2">[43m)</span><span class="se">\u001b</span><span class="s2">[49m</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;File </span><span class="se">\u001b</span><span class="s2">[1;32mdpnp</span><span class="se">\\</span><span class="s2">dpnp_utils</span><span class="se">\\</span><span class="s2">dpnp_algo_utils.pyx:132</span><span class="se">\u001b</span><span class="s2">[0m, in </span><span class="se">\u001b</span><span class="s2">[0;36mdpnp.dpnp_utils.dpnp_algo_utils.call_origin</span><span class="se">\u001b</span><span class="s2">[1;34m()</span><span class="se">\u001b</span><span class="s2">[0m</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;</span><span class="se">\u001b</span><span class="s2">[1;31mNotImplementedError</span><span class="se">\u001b</span><span class="s2">[0m: Requested funtion=full with args=((2, 2), 3, None, &#39;C&#39;) and kwargs={&#39;like&#39;: &lt;dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0&gt;} isn&#39;t currently supported and would fall back on NumPy implementation. Define enviroment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without rasing an exception.&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;import dpnp as np</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Create an two dimencial array with singular element and array like option</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;a = np.full((2,2),3, like = np.zeros((2, 0)))</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">Array a is located on the device:</span><span class="se">\&quot;</span><span class="s2">, a.device)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">Array a is</span><span class="se">\&quot;</span><span class="s2">, a)&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;ae026021&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;As you can see the function </span><span class="se">\&quot;</span><span class="s2">dpnp.full ()</span><span class="se">\&quot;</span><span class="s2"> and parameter like in non default state is not implemented in the dpnp library.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;We got the following error message: </span><span class="se">\&quot;</span><span class="s2">Requested funtion=full with args=((2, 2), 3, None, &#39;C&#39;) and kwargs={&#39;like&#39;: &lt;dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0&gt;} isn&#39;t currently supported and would fall back on NumPy implementation. Define environment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without raising an exception.</span><span class="se">\&quot;</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;By default the `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` environment variable is not null and it allows to use only dpnp library. </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;If we want to call NumPy library for functions not supported under dpnp, we need to change this environment variable to `0`.&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;210440c3&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;Let&#39;s overwrite the same example using the `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK = 0` environment variable.&quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;markdown&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;bca7490d&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;`Note:` Please pay attention that if you are working in the Jupyter Notebook, before running the example with setting the  `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK = 0` you need to restart the kernel in the Jupyter Notebook. &quot;</span>
-   <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-   <span class="s2">&quot;cell_type&quot;</span><span class="p">:</span> <span class="s2">&quot;code&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;execution_count&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-   <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;05ad1565&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{},</span>
-   <span class="s2">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;stdout&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;output_type&quot;</span><span class="p">:</span> <span class="s2">&quot;stream&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK = 0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Array a is located on the device: Device(level_zero:gpu:0)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;Array a is [[3 3]</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-      <span class="s2">&quot; [3 3]]</span><span class="se">\n</span><span class="s2">&quot;</span>
-     <span class="p">]</span>
-    <span class="p">}</span>
-   <span class="p">],</span>
-   <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;import os</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# call numpy if not null than we will use dpnp, by default not null</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;os.environ[</span><span class="se">\&quot;</span><span class="s2">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span><span class="se">\&quot;</span><span class="s2">] = </span><span class="se">\&quot;</span><span class="s2">0</span><span class="se">\&quot;</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;import dpnp as np</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Expect result 0</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK =</span><span class="se">\&quot;</span><span class="s2">, np.config.__DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK__) </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;# Create an two dimencial array with singular element and array like option</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;a = np.full((2,2),3, like = np.zeros((2, 0)))</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">Array a is located on the device:</span><span class="se">\&quot;</span><span class="s2">, a.device)</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;print (</span><span class="se">\&quot;</span><span class="s2">Array a is</span><span class="se">\&quot;</span><span class="s2">, a)&quot;</span>
-   <span class="p">]</span>
-  <span class="p">}</span>
- <span class="p">],</span>
- <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-  <span class="s2">&quot;kernelspec&quot;</span><span class="p">:</span> <span class="p">{</span>
-   <span class="s2">&quot;display_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Python 3 (ipykernel)&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;language&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;python3&quot;</span>
-  <span class="p">},</span>
-  <span class="s2">&quot;language_info&quot;</span><span class="p">:</span> <span class="p">{</span>
-   <span class="s2">&quot;codemirror_mode&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;ipython&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="mi">3</span>
-   <span class="p">},</span>
-   <span class="s2">&quot;file_extension&quot;</span><span class="p">:</span> <span class="s2">&quot;.py&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;mimetype&quot;</span><span class="p">:</span> <span class="s2">&quot;text/x-python&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;nbconvert_exporter&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;pygments_lexer&quot;</span><span class="p">:</span> <span class="s2">&quot;ipython3&quot;</span><span class="p">,</span>
-   <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;3.8.15&quot;</span>
-  <span class="p">}</span>
- <span class="p">},</span>
- <span class="s2">&quot;nbformat&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
- <span class="s2">&quot;nbformat_minor&quot;</span><span class="p">:</span> <span class="mi">5</span>
-<span class="p">}</span>
-</pre></div>
 </div>
 </section>
 </section>
@@ -910,6 +219,7 @@
 <li class="toctree-l1"><a class="reference internal" href="heterogeneous_computing.html">Heterogeneous computing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="programming_dpep.html">Programming with Data Parallel Extensions for Python</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">List of examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jupiter_notebook.html">Jupyter* Notebooks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="useful_links.html">Useful links</a></li>
 <li class="toctree-l1"><a class="reference internal" href="useful_links.html#to-do">To-Do</a></li>
 </ul>
@@ -927,8 +237,8 @@
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="useful_links.html"
-                          title="next chapter">Useful links</a></p>
+    <p class="topless"><a href="jupiter_notebook.html"
+                          title="next chapter">Jupyter* Notebooks</a></p>
   </div>
         </div>
       </div>

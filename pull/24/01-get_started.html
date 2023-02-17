@@ -1,0 +1,796 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Getting Started &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sdc.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage of numpy functions in dpnp library" href="02-dpnp_numpy_fallback.html" />
+    <link rel="prev" title="Jupyter* Notebooks" href="jupiter_notebook.html" />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600' rel='stylesheet' type='text/css'/>
+
+  </head><body>
+<div class="topbar">
+  <a class="brand" title="Intel Python projects" href="other_intel_python_projects.html"></a>
+  <a class="brand_sdc" title="Documentation Home" href="index.html"></a>
+
+  <ul>
+    <li><a class="exampleslink" title="Examples" href="examples.html"></a></li>
+    <li><a class="issueslink" title="Issues" href="https://community.intel.com/t5/Intel-Distribution-for-Python/bd-p/distribution-python"></a></li>
+    <li><a class="emaillink" title="Email" href="mailto:scripting@intel.com"></a></li>
+    <li><a class="homelink" title="GitHub" href="https://github.com/IntelPython/DPPY"></a></li>
+    <li>
+      
+      
+<form action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+      
+    </li>
+  </ul>
+</div>
+
+<div class="related">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right">
+	<a href="02-dpnp_numpy_fallback.html" title="Usage of numpy functions in dpnp library">
+	  next &raquo;
+	</a>
+      </li>
+      <li class="right">
+	<a href="jupiter_notebook.html" title="Jupyter* Notebooks">
+	  &laquo; previous
+	</a>
+	 |
+      </li>
+      <li>
+	<a href="index.html">Data Parallel Extensions for Python* 0.1 documentation</a>
+	 &#187;
+      </li>
+      <li><a href="jupiter_notebook.html" accesskey="U">Jupyter* Notebooks</a> &#187;</li>
+      
+      <li>Getting Started</li> 
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars and line breaks on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+    white-space: pre;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<section id="Getting-Started">
+<h1>Getting Started<a class="headerlink" href="#Getting-Started" title="Permalink to this heading">¶</a></h1>
+</section>
+<section id="Few-Line-Changes-to-Run-on-GPU">
+<h1>Few Line Changes to Run on GPU<a class="headerlink" href="#Few-Line-Changes-to-Run-on-GPU" title="Permalink to this heading">¶</a></h1>
+<p>Let’s see the example how you can easily in a few lines of code switch computations from CPU to GPU device.</p>
+<p>Please look on the original example. We allocate 2 matrices on the Host (CPU) device usnig NumPy array function, all future calculations will be performed as well on the allocated Host(CPU) device.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Original CPU script
+
+# Call numpy library
+import numpy as np
+
+# Data alocated on the CPU device
+x = np.array([[1, 1], [1, 1]])
+y = np.array([[1, 1], [1, 1]])
+
+# Compute performed on the CPU device, where data is allocated
+res = np.matmul(x, y)
+
+print (&quot;res = &quot;, res)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+res =  [[2 2]
+ [2 2]]
+</pre></div></div>
+</div>
+<p>Now let’s try to modify our code in a way when all calculations occur on the GPU device. To do it, you need just to switch to the dpnp library and see on the result.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Modified XPU script
+
+# Drop-in replacement via single line change
+import dpnp as np
+
+# Data alocated on default SYCL device
+x = np.array([[1, 1], [1, 1]])
+y = np.array([[1, 1], [1, 1]])
+
+# Compute performed on the device, where data is allocated
+res = np.matmul(x, y)
+
+
+print (&quot;Array x is located on the device:&quot;, x.device)
+print (&quot;Array y is located on the device:&quot;, y.device)
+print (&quot;res is located on the device:&quot;, res.device)
+print (&quot;res = &quot;, res)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Array x is located on the device: Device(level_zero:gpu:0)
+Array y is located on the device: Device(level_zero:gpu:0)
+res is located on the device: Device(level_zero:gpu:0)
+res =  [[2 2]
+ [2 2]]
+</pre></div></div>
+</div>
+<p>As you may see changing only one line of code help us to perform all calculations on the GPU device. In this example np.array() creates an array on the default SYCL* device, which is “gpu” on systems with integrated or discrete GPU (it is “host” on systems that do not have GPU). The queue associated with this array is now carried with x and y, and np.matmul(x, y) will do matrix product of two arrays x and y, and respective pre-compiled kernel implementing np.matmul() will be submitted to that
+queue. The result res will be allocated on the device array associated with that queue too.</p>
+<p>Now let’s make a few improvements in our code and see how we can control and specify exact device on which we want to perform our calculations and which USM memory type to use.</p>
+</section>
+<section id="dpnp-simple-examples-with-popular-functions">
+<h1>dpnp simple examples with popular functions<a class="headerlink" href="#dpnp-simple-examples-with-popular-functions" title="Permalink to this heading">¶</a></h1>
+<ol class="arabic simple">
+<li><p>Example to return an array with evenly spaced values within a given interval.</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpnp as np
+
+# Create an array of values from 3 till 30 with step 6
+a = np.arange(3, 30, step = 6)
+
+print (&quot;Result a is located on the device:&quot;, a.device)
+print (&quot;a = &quot;, a)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+282 µs ± 27.6 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+Result a is located on the device: Device(level_zero:gpu:0)
+a =  [ 3  9 15 21 27]
+</pre></div></div>
+</div>
+<p>In this example np.arange() creates an array on the default SYCL* device, which is “gpu” on systems with integrated or discrete GPU (it is “host” on systems that do not have GPU).</p>
+<ol class="arabic simple" start="2">
+<li><p>Example which calculates on the GPU the sum of the array elements</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpnp as np
+
+x = np.empty(3)
+
+try:
+    # Using filter selector strings to specify root devices for a new array
+    x = np.asarray ([1, 2, 3], device=&quot;gpu&quot;)
+    print (&quot;Result x is located on the device:&quot;, x.device)
+except:
+    print (&quot;GPU device is not available&quot;)
+
+# Return the sum of the array elements
+y = np.sum (x) # Expect 6
+
+print (&quot;Result y is located on the device:&quot;, y.device)
+print (&quot;The sum of the array elements is: &quot;, y )
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Result x is located on the device: Device(level_zero:gpu:0)
+Result y is located on the device: Device(level_zero:gpu:0)
+The sum of the array elements is:  6
+</pre></div></div>
+</div>
+<p>In this example np.asarray() creates an array on the default GPU device. The queue associated with this array is now carried with x, and np.sum(x) will derive it from x, and respective pre-compiled kernel implementing np.sum() will be submitted to that queue. The result y will be allocated on the device 0-dimensional array associated with that queue too.</p>
+<ol class="arabic simple" start="3">
+<li><p>Example of inversion of an array</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpnp as np
+
+try:
+
+    # Using filter selector strings to specify root devices for an array
+    a = np.array([[1, 1], [2, 1], [1, 0], [-1, 0]], device = &quot;gpu&quot;)
+    print (&quot;Array a is located on the device:&quot;, a.device)
+
+    # Do inversion of an array &quot;a&quot;
+    x = np.invert(a)
+
+    print (&quot;Result x is located on the device:&quot;, x.device)
+    print (&quot;Array x is:&quot;, x)
+
+except:
+    print (&quot;GPU device is not available&quot;)
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Array a is located on the device: Device(level_zero:gpu:0)
+Result x is located on the device: Device(level_zero:gpu:0)
+Array x is: [[-2 -2]
+ [-3 -2]
+ [-2 -1]
+ [ 0 -1]]
+</pre></div></div>
+</div>
+<p>In this example np.array() creates an array on the default GPU device. The queue associated with this array is now carried with a, and np.invert(a) will derive it from a, and respective pre-compiled kernel implementing np.invert() will be submitted to that queue. The result x will be allocated on the device array associated with that queue too.</p>
+</section>
+<section id="dpctl-simple-examples">
+<h1>dpctl simple examples<a class="headerlink" href="#dpctl-simple-examples" title="Permalink to this heading">¶</a></h1>
+<p>Here you may find a list of simple examples which explain how to understand how many devices you have in the systen and how to operate with them Let’s print the list of all available SYCL devices.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># See the list of available SYCL platforms and extra metadata about each platform.
+import dpctl
+
+dpctl.lsplatform()  # Print platform information
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Intel(R) OpenCL HD Graphics OpenCL 3.0
+Intel(R) FPGA Emulation Platform for OpenCL(TM) OpenCL 1.2 Intel(R) FPGA SDK for OpenCL(TM), Version 20.3
+Intel(R) OpenCL OpenCL 3.0 WINDOWS
+Intel(R) Level-Zero 1.3
+</pre></div></div>
+</div>
+<p>Let’s look on the output. On my platform is available OpenCL GPU driver, Intel(R) FPGA Emulation Device, OpenCL CPU driver and Level Zero GPU driver. If i play with verbocity parameter, i can get more information about the devices i have.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># See the list of available SYCL platforms and extra metadata about each platform.
+import dpctl
+
+dpctl.lsplatform(2)  # Print platform information with verbocitz level 2 (highest level)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Platform  0 ::
+    Name        Intel(R) OpenCL HD Graphics
+    Version     OpenCL 3.0
+    Vendor      Intel(R) Corporation
+    Backend     opencl
+    Num Devices 1
+      # 0
+        Name                Intel(R) Iris(R) Xe Graphics
+        Version             31.0.101.3430
+        Filter string       opencl:gpu:0
+Platform  1 ::
+    Name        Intel(R) FPGA Emulation Platform for OpenCL(TM)
+    Version     OpenCL 1.2 Intel(R) FPGA SDK for OpenCL(TM), Version 20.3
+    Vendor      Intel(R) Corporation
+    Backend     opencl
+    Num Devices 1
+      # 0
+        Name                Intel(R) FPGA Emulation Device
+        Version             2022.15.11.0.18_160000
+        Filter string       opencl:accelerator:0
+Platform  2 ::
+    Name        Intel(R) OpenCL
+    Version     OpenCL 3.0 WINDOWS
+    Vendor      Intel(R) Corporation
+    Backend     opencl
+    Num Devices 1
+      # 0
+        Name                11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz
+        Version             2022.15.11.0.18_160000
+        Filter string       opencl:cpu:0
+Platform  3 ::
+    Name        Intel(R) Level-Zero
+    Version     1.3
+    Vendor      Intel(R) Corporation
+    Backend     ext_oneapi_level_zero
+    Num Devices 1
+      # 0
+        Name                Intel(R) Iris(R) Xe Graphics
+        Version             1.3.23904
+        Filter string       level_zero:gpu:0
+</pre></div></div>
+</div>
+<p>Having information about available SYCL platforms you can specify which type of devices you want to work with</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># See the list of available gpu devices and their extra metadata.
+import dpctl
+
+if dpctl.has_gpu_devices():
+    print (dpctl.get_devices(device_type=&#39;gpu&#39;))
+else:
+    print(&quot;GPU device is not available&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;dpctl.SyclDevice [backend_type.opencl, device_type.gpu,  Intel(R) Iris(R) Xe Graphics] at 0x1a1eddd72f0&gt;, &lt;dpctl.SyclDevice [backend_type.level_zero, device_type.gpu,  Intel(R) Iris(R) Xe Graphics] at 0x1a1eddd70f0&gt;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># See the list of available gpu devices and their extra metadata.
+import dpctl
+
+if dpctl.has_cpu_devices():
+    print (dpctl.get_devices(device_type=&#39;cpu&#39;))
+else:
+    print(&quot;CPU device is not available&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;dpctl.SyclDevice [backend_type.opencl, device_type.cpu,  11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz] at 0x1779083bcf0&gt;]
+</pre></div></div>
+</div>
+<p>And you can make selection of the specific device in your system using the default selctor</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpctl
+
+try:
+    # Create a SyclDevice of type GPU based on whatever is returned
+    # by the SYCL `gpu_selector` device selector class.
+    gpu = dpctl.select_gpu_device()
+    gpu.print_device_info() # print GPU device information
+
+except:
+    print (&quot;GPU device is not available&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+    Name            Intel(R) Iris(R) Xe Graphics
+    Driver version  1.3.23904
+    Vendor          Intel(R) Corporation
+    Filter string   level_zero:gpu:0
+
+</pre></div></div>
+</div>
+<p>Or by using the infromation in filter string of the device create abd explicit SyclDevice</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpctl
+
+# Create a SyclDevice with an explicit filter string,
+# in this case the first level_zero gpu device.
+try:
+    level_zero_gpu = dpctl.SyclDevice(&quot;level_zero:gpu:0&quot;)
+    level_zero_gpu.print_device_info()
+except:
+    print(&quot;The first level_zero GPU device is not available&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+    Name            Intel(R) Iris(R) Xe Graphics
+    Driver version  1.3.23904
+    Vendor          Intel(R) Corporation
+    Profile         FULL_PROFILE
+    Filter string   level_zero:gpu:0
+
+</pre></div></div>
+</div>
+<p>Let’s check if your gpu device support double precision. To do this we need to selcet gpu device and check the parameter has_aspect_fp64:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpctl
+# Select GPU device and check double precision support
+try:
+    gpu = dpctl.select_gpu_device()
+    gpu.print_device_info()
+    print(&quot;Double precision support is&quot;, gpu.has_aspect_fp64)
+except:
+    print(&quot;The GPU device is not available&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+    Name            Intel(R) Iris(R) Xe Graphics
+    Driver version  1.3.23904
+    Vendor          Intel(R) Corporation
+    Filter string   level_zero:gpu:0
+
+Double precision support is False
+</pre></div></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Table of Contents</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="prerequisites_and_installation.html">Prerequisites and installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallelism.html">Parallelism in modern data parallel architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heterogeneous_computing.html">Heterogeneous computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="programming_dpep.html">Programming with Data Parallel Extensions for Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">List of examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="jupiter_notebook.html">Jupyter* Notebooks</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Few-Line-Changes-to-Run-on-GPU">Few Line Changes to Run on GPU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dpnp-simple-examples-with-popular-functions">dpnp simple examples with popular functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dpctl-simple-examples">dpctl simple examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-dpnp_numpy_fallback.html">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="useful_links.html">Useful links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="useful_links.html#to-do">To-Do</a></li>
+</ul>
+
+
+<form action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="jupiter_notebook.html"
+                          title="previous chapter">Jupyter* Notebooks</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="02-dpnp_numpy_fallback.html"
+                          title="next chapter">Usage of numpy functions in dpnp library</a></p>
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<footer class="footer">
+  <p class="pull-right"> &nbsp;
+    <a href="#">Back to Top</a></p>
+  <p>
+    &copy; Copyright 2022, Intel Corporation.<br/>
+    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 6.1.3. &nbsp;
+  </p>
+</footer>
+  </body>
+</html>
