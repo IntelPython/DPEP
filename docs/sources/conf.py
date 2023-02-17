@@ -50,7 +50,6 @@ extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinxcontrib.programoutput',
     'nbsphinx',
-    'sphinx_gallery.load_style',
 ]
 
 
