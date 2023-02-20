@@ -339,7 +339,7 @@ div.rendered_html tbody tr:hover {
 <ol class="arabic simple">
 <li><p>Example of the usage of the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> environment variable and finding specific values in array based on condition using dpnp library</p></li>
 </ol>
-<p>Not all functions were yet implemented in the dpnp library, some of the functions require enabling of the direct fallback to the NumPy library. One of the example can be the function “dpnp.full ()” and parameter like in non default state. Let’s look on the example where we want to create an two dimencial array with singular element and array like option.</p>
+<p>Not all functions were yet implemented in the dpnp library, some of the functions require enabling of the direct fallback to the NumPy* library. One of the example can be the function “dpnp.full ()” and parameter like in non default state. Let’s look on the example where we want to create an two dimencial array with singular element and array like option.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -382,8 +382,8 @@ File <span class="ansi-green-intense-fg ansi-bold">dpnp\dpnp_utils\dpnp_algo_uti
 <span class="ansi-red-intense-fg ansi-bold">NotImplementedError</span>: Requested funtion=full with args=((2, 2), 3, None, &#39;C&#39;) and kwargs={&#39;like&#39;: &lt;dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0&gt;} isn&#39;t currently supported and would fall back on NumPy implementation. Define enviroment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without rasing an exception.
 </pre></div></div>
 </div>
-<p>As you can see the function “dpnp.full ()” and parameter like in non default state is not implemented in the dpnp library. We got the following error message: “Requested funtion=full with args=((2, 2), 3, None, ‘C’) and kwargs={‘like’: &lt;dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0&gt;} isn’t currently supported and would fall back on NumPy implementation. Define environment variable <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span></code> if the fall back is required to be supported without
-raising an exception.” By default the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> environment variable is not null and it allows to use only dpnp library. If we want to call NumPy library for functions not supported under dpnp, we need to change this environment variable to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>As you can see the function “dpnp.full ()” and parameter like in non default state is not implemented in the dpnp library. We got the following error message: “Requested funtion=full with args=((2, 2), 3, None, ‘C’) and kwargs={‘like’: &lt;dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0&gt;} isn’t currently supported and would fall back on NumPy* implementation. Define environment variable <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span></code> if the fall back is required to be supported without
+raising an exception.” By default the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> environment variable is not null and it allows to use only dpnp library. If we want to call NumPy* library for functions not supported under dpnp, we need to change this environment variable to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
 <p>Let’s overwrite the same example using the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span> <span class="pre">=</span> <span class="pre">0</span></code> environment variable.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Note:</span></code> Please pay attention that if you are working in the Jupyter Notebook, before running the example with setting the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span> <span class="pre">=</span> <span class="pre">0</span></code> you need to restart the kernel in the Jupyter Notebook.</p>
 <div class="nbinput docutils container">
@@ -434,9 +434,6 @@ Array a is [[3 3]
 <li class="toctree-l1"><a class="reference internal" href="examples.html">List of examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="jupiter_notebook.html">Jupyter* Notebooks</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01-get_started.html">Getting Started</a></li>
-<li class="toctree-l2"><a class="reference internal" href="01-get_started.html#Few-Line-Changes-to-Run-on-GPU">Few Line Changes to Run on GPU</a></li>
-<li class="toctree-l2"><a class="reference internal" href="01-get_started.html#dpnp-simple-examples-with-popular-functions">dpnp simple examples with popular functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="01-get_started.html#dpctl-simple-examples">dpctl simple examples</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</a></li>
 </ul>
 </li>

@@ -336,11 +336,10 @@ div.rendered_html tbody tr:hover {
 </style>
 <section id="Getting-Started">
 <h1>Getting Started<a class="headerlink" href="#Getting-Started" title="Permalink to this heading">¶</a></h1>
-</section>
-<section id="Few-Line-Changes-to-Run-on-GPU">
-<h1>Few Line Changes to Run on GPU<a class="headerlink" href="#Few-Line-Changes-to-Run-on-GPU" title="Permalink to this heading">¶</a></h1>
+<section id="How-to-modify-CPU-script-to-run-on-GPU-with-a-few-lines-of-code">
+<h2>How to modify CPU script to run on GPU with a few lines of code<a class="headerlink" href="#How-to-modify-CPU-script-to-run-on-GPU-with-a-few-lines-of-code" title="Permalink to this heading">¶</a></h2>
 <p>Let’s see the example how you can easily in a few lines of code switch computations from CPU to GPU device.</p>
-<p>Please look on the original example. We allocate 2 matrices on the Host (CPU) device usnig NumPy array function, all future calculations will be performed as well on the allocated Host(CPU) device.</p>
+<p>Please look on the original example. We allocate 2 matrices on the CPU device using NumPy array function, all future calculations will be performed as well on the allocated CPU device.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -411,8 +410,8 @@ res =  [[2 2]
 queue. The result res will be allocated on the device array associated with that queue too.</p>
 <p>Now let’s make a few improvements in our code and see how we can control and specify exact device on which we want to perform our calculations and which USM memory type to use.</p>
 </section>
-<section id="dpnp-simple-examples-with-popular-functions">
-<h1>dpnp simple examples with popular functions<a class="headerlink" href="#dpnp-simple-examples-with-popular-functions" title="Permalink to this heading">¶</a></h1>
+<section id="Short-examples-using-dpnp-functions">
+<h2>Short examples using dpnp functions<a class="headerlink" href="#Short-examples-using-dpnp-functions" title="Permalink to this heading">¶</a></h2>
 <ol class="arabic simple">
 <li><p>Example to return an array with evenly spaced values within a given interval.</p></li>
 </ol>
@@ -478,50 +477,10 @@ The sum of the array elements is:  6
 </pre></div></div>
 </div>
 <p>In this example np.asarray() creates an array on the default GPU device. The queue associated with this array is now carried with x, and np.sum(x) will derive it from x, and respective pre-compiled kernel implementing np.sum() will be submitted to that queue. The result y will be allocated on the device 0-dimensional array associated with that queue too.</p>
-<ol class="arabic simple" start="3">
-<li><p>Example of inversion of an array</p></li>
-</ol>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpnp as np
-
-try:
-
-    # Using filter selector strings to specify root devices for an array
-    a = np.array([[1, 1], [2, 1], [1, 0], [-1, 0]], device = &quot;gpu&quot;)
-    print (&quot;Array a is located on the device:&quot;, a.device)
-
-    # Do inversion of an array &quot;a&quot;
-    x = np.invert(a)
-
-    print (&quot;Result x is located on the device:&quot;, x.device)
-    print (&quot;Array x is:&quot;, x)
-
-except:
-    print (&quot;GPU device is not available&quot;)
-<br/></pre></div>
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Array a is located on the device: Device(level_zero:gpu:0)
-Result x is located on the device: Device(level_zero:gpu:0)
-Array x is: [[-2 -2]
- [-3 -2]
- [-2 -1]
- [ 0 -1]]
-</pre></div></div>
-</div>
-<p>In this example np.array() creates an array on the default GPU device. The queue associated with this array is now carried with a, and np.invert(a) will derive it from a, and respective pre-compiled kernel implementing np.invert() will be submitted to that queue. The result x will be allocated on the device array associated with that queue too.</p>
 </section>
-<section id="dpctl-simple-examples">
-<h1>dpctl simple examples<a class="headerlink" href="#dpctl-simple-examples" title="Permalink to this heading">¶</a></h1>
-<p>Here you may find a list of simple examples which explain how to understand how many devices you have in the systen and how to operate with them Let’s print the list of all available SYCL devices.</p>
+<section id="Short-examples-using-dpctl">
+<h2>Short examples using dpctl<a class="headerlink" href="#Short-examples-using-dpctl" title="Permalink to this heading">¶</a></h2>
+<p>Here you may find a list of simple examples which explain how to understand how many devices you have in the systen and how to operate with them. Let’s print the list of all available SYCL devices.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -737,6 +696,8 @@ except:
 Double precision support is False
 </pre></div></div>
 </div>
+<p>As you can see, the test gpu device has no support for double precision.</p>
+</section>
 </section>
 
 
@@ -754,9 +715,6 @@ Double precision support is False
 <li class="toctree-l1"><a class="reference internal" href="examples.html">List of examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="jupiter_notebook.html">Jupyter* Notebooks</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Getting Started</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Few-Line-Changes-to-Run-on-GPU">Few Line Changes to Run on GPU</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dpnp-simple-examples-with-popular-functions">dpnp simple examples with popular functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dpctl-simple-examples">dpctl simple examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="02-dpnp_numpy_fallback.html">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</a></li>
 </ul>
 </li>
