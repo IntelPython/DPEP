@@ -27,9 +27,11 @@
 import dpnp as np
 from numba_dpex import njit
 
-@njit(parallel=True, fastmath=True)
+
+@njit(fastmath=True)
 def sum_it(x):  # Device queue is inferred from x. The kernel is submitted to that queue
     return np.sum(x)
+
 
 x = np.empty(3)
 try:
