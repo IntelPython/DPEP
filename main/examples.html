@@ -115,9 +115,11 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numba_dpex</span> <span class="kn">import</span> <span class="n">njit</span>
 
-<span class="nd">@njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nd">@njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">sum_it</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>  <span class="c1"># Device queue is inferred from x. The kernel is submitted to that queue</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="k">try</span><span class="p">:</span>
@@ -143,7 +145,6 @@
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GPU devices:&quot;</span><span class="p">,</span> <span class="n">dpctl</span><span class="o">.</span><span class="n">get_devices</span><span class="p">(</span><span class="n">device_type</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">))</span>  <span class="c1"># Get the list of all GPU devices</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of GPU devices&quot;</span><span class="p">,</span> <span class="n">dpctl</span><span class="o">.</span><span class="n">get_num_devices</span><span class="p">(</span><span class="n">device_type</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">))</span>  <span class="c1"># Get the number of GPU devices</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Has CPU devices?&quot;</span><span class="p">,</span> <span class="n">dpctl</span><span class="o">.</span><span class="n">has_cpu_devices</span><span class="p">())</span>  <span class="c1"># Check if there are CPU devices</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Has host device?&quot;</span><span class="p">,</span> <span class="n">dpctl</span><span class="o">.</span><span class="n">has_host_device</span><span class="p">())</span>  <span class="c1"># Check if there is the host device</span>
 </pre></div>
 </div>
 </div>
