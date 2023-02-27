@@ -6,5 +6,5 @@ dependencies:
   - pip
   - pip:
     - sphinx
-    - sphinxcontrib-programoutput
+    - sphinxcontrib-programoutput 
     - sphinxcontrib-googleanalytics
