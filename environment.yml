@@ -4,9 +4,7 @@ channels:
 dependencies:
   - python=3.9
   - pip
-  - pandoc
-  - jinja2=3.0.3
   - pip:
     - sphinx
-    - sphinxcontrib-programoutput
-    - nbsphinx
+    - sphinxcontrib-programoutput 
+    - sphinxcontrib-googleanalytics

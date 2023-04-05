@@ -49,9 +49,11 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.autosectionlabel',
     'sphinxcontrib.programoutput',
-    'nbsphinx',
+    'sphinxcontrib.googleanalytics',
 ]
 
+googleanalytics_id = 'G-KVSVYMBQ0W'
+googleanalytics_enabled = True
 
 # Add any paths that contain templates here, relative to this directory.
 #templates_path = ['_templates']
@@ -117,4 +119,3 @@ intersphinx_mapping = {
 
 # -- Prepend module name to an object name or not -----------------------------------
 add_module_names = False
-
