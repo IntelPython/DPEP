@@ -50,6 +50,7 @@ extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinxcontrib.programoutput',
     'sphinxcontrib.googleanalytics',
+    'nbsphinx',
 ]
 
 googleanalytics_id = 'G-KVSVYMBQ0W'
