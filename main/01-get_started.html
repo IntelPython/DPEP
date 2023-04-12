@@ -1,0 +1,523 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KVSVYMBQ0W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KVSVYMBQ0W');
+    </script>
+    
+    <title>Getting Started &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sdc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+    
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage of NumPy* functions in the Data Parallel Extension for NumPy* library" href="02-dpnp_numpy_fallback.html" />
+    <link rel="prev" title="Jupyter* Notebooks" href="jupiter_notebook.html" />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600' rel='stylesheet' type='text/css'/>
+
+  </head><body>
+<div class="topbar">
+  <a class="brand" title="Intel Python projects" href="other_intel_python_projects.html"></a>
+  <a class="brand_sdc" title="Documentation Home" href="index.html"></a>
+
+  <ul>
+    <li><a class="exampleslink" title="Examples" href="examples.html"></a></li>
+    <li><a class="issueslink" title="Issues" href="https://community.intel.com/t5/Intel-Distribution-for-Python/bd-p/distribution-python"></a></li>
+    <li><a class="emaillink" title="Email" href="mailto:scripting@intel.com"></a></li>
+    <li><a class="homelink" title="GitHub" href="https://github.com/IntelPython/DPEP"></a></li>
+    <li>
+      
+      
+<form action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+      
+    </li>
+  </ul>
+</div>
+
+<div class="related">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right">
+	<a href="02-dpnp_numpy_fallback.html" title="Usage of NumPy* functions in the Data Parallel Extension for NumPy* library">
+	  next &raquo;
+	</a>
+      </li>
+      <li class="right">
+	<a href="jupiter_notebook.html" title="Jupyter* Notebooks">
+	  &laquo; previous
+	</a>
+	 |
+      </li>
+      <li>
+	<a href="index.html">Data Parallel Extensions for Python* 0.1 documentation</a>
+	 &#187;
+      </li>
+      <li><a href="jupiter_notebook.html" accesskey="U">Jupyter* Notebooks</a> &#187;</li>
+      
+      <li>Getting Started</li> 
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="Getting-Started">
+<h1>Getting Started<a class="headerlink" href="#Getting-Started" title="Permalink to this heading">¶</a></h1>
+<section id="How-to-change-the-CPU-script-to-run-on-the-GPU-with-a-few-lines-of-code">
+<h2>How to change the CPU script to run on the GPU with a few lines of code<a class="headerlink" href="#How-to-change-the-CPU-script-to-run-on-the-GPU-with-a-few-lines-of-code" title="Permalink to this heading">¶</a></h2>
+<p>Let’s look at an example how you can easily switch calculations from CPU to GPU device in a few lines of code.</p>
+<p>Please take a look at the original example. We allocate 2 matrices on a CPU device using the NumPy* array function, all further calculations will be done on the allocated CPU device as well.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Original CPU script
+
+# Call numpy library
+import numpy as np
+
+# Data alocated on the CPU device
+x = np.array([[1, 1], [1, 1]])
+y = np.array([[1, 1], [1, 1]])
+
+# Compute performed on the CPU device, where data is allocated
+res = np.matmul(x, y)
+
+print (&quot;res = &quot;, res)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+res =  [[2 2]
+ [2 2]]
+</pre></div></div>
+</div>
+<p>Now let’s try to modify our code so that all the calculations take place on the GPU device. To do this, just go to the dpnp library and look at the result.</p>
+<p>We change the line:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Call numpy library
+import numpy as np
+</pre></div>
+</div>
+</div>
+<p>to the line:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Call dpnp library
+import dpnp as np
+</pre></div>
+</div>
+</div>
+<p>The result is:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Modified XPU script
+
+# Drop-in replacement via single line change
+import dpnp as np
+
+# Data alocated on default SYCL device
+x = np.array([[1, 1], [1, 1]])
+y = np.array([[1, 1], [1, 1]])
+
+# Compute performed on the device, where data is allocated
+res = np.matmul(x, y)
+
+
+print (&quot;Array x is located on the device:&quot;, x.device)
+print (&quot;Array y is located on the device:&quot;, y.device)
+print (&quot;res is located on the device:&quot;, res.device)
+print (&quot;res = &quot;, res)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Array x is located on the device: Device(level_zero:gpu:0)
+Array y is located on the device: Device(level_zero:gpu:0)
+res is located on the device: Device(level_zero:gpu:0)
+res =  [[2 2]
+ [2 2]]
+</pre></div></div>
+</div>
+<p>As you may see changing only one line of code help us to perform all calculations on the GPU device. In this example np.array() creates an array on the default SYCL* device, which is “gpu” on systems with integrated or discrete GPU (it is “host” on systems that do not have GPU). The queue associated with this array is now carried with x and y, and np.matmul(x, y) will do matrix product of two arrays x and y, and respective pre-compiled kernel implementing np.matmul() will be submitted to that
+queue. The result res will be allocated on the device array associated with that queue too.</p>
+</section>
+<section id="Managing-device-and-host-data-using-the-Data-Parallel-Extension-for-NumPy*-library">
+<h2>Managing device and host data using the Data Parallel Extension for NumPy* library<a class="headerlink" href="#Managing-device-and-host-data-using-the-Data-Parallel-Extension-for-NumPy*-library" title="Permalink to this heading">¶</a></h2>
+<p>Let’s draw the function f(x) = sin(x).</p>
+<p>Prerequisites: Please install the ‘matplotlib’ library to run the following example.</p>
+<p>Let’s see how we can control and specify exact device on which we want to perform our calculations and which USM memory type to use. By default the Data Parallel Extension for NumPy* library creates the default SYCL* device on “gpu” on systems with integrated or discrete GPU (it is “host” on systems that do not have GPU). In my case the device will be “Device(level_zero:gpu:0)”. The Unified Shared Memory (USM) will be allocated by default at the device you created the data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x = np.linspace(-10.0, np.pi, 100, dtype=np.float32)
+</pre></div>
+</div>
+</div>
+<p>But there are some cases when you need to stream a read-only data from the host to the device once or locate the data in both places host and device (copies are synchronized by underlying software).</p>
+<p>In my case i will share the copy of data between host and device to draw the data using matplotlib library more efficiently. To do this, i will use the ‘usm_type’ parameter.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>x = np.linspace(-10.0, np.pi, 100, dtype=np.float32, usm_type=&#39;shared&#39;)
+</pre></div>
+</div>
+</div>
+<p>In this case the data will be synchronized between host and device.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib
+import matplotlib.pyplot as plt
+import dpnp as np
+
+# create an area for a graphic
+x = np.linspace(-10.0, np.pi, 100, dtype=np.float32, usm_type=&#39;shared&#39;)
+y = np.sin(x)
+# print the information which SYCL* device is using
+print(&quot;&#39;x&#39; allocated on the device:&quot;, x.device)
+print(&quot;&#39;y&#39; allocated on the device:&quot;, y.device)
+
+
+# draw the graphic
+plt.title(&#39;sin(x)&#39;)
+plt.plot(x, y)
+plt.grid(True)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;x&#39; allocated on the device: Device(level_zero:gpu:0)
+&#39;y&#39; allocated on the device: Device(level_zero:gpu:0)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/01-get_started_19_1.png" src="_images/01-get_started_19_1.png" />
+</div>
+</div>
+</section>
+<section id="Managing-devices-with-the-Data-Parallel-Control-library">
+<h2>Managing devices with the Data Parallel Control library<a class="headerlink" href="#Managing-devices-with-the-Data-Parallel-Control-library" title="Permalink to this heading">¶</a></h2>
+<p>Here you can find a list of simple examples that explain how to figure out how many devices you have on your system and how to work with them. Let’s display a list of all available SYCL devices.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># See the list of available SYCL platforms and extra metadata about each platform.
+import dpctl
+
+dpctl.lsplatform()  # Print platform information
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Intel(R) OpenCL HD Graphics OpenCL 3.0
+Intel(R) FPGA Emulation Platform for OpenCL(TM) OpenCL 1.2 Intel(R) FPGA SDK for OpenCL(TM), Version 20.3
+Intel(R) OpenCL OpenCL 3.0 WINDOWS
+Intel(R) Level-Zero 1.3
+</pre></div></div>
+</div>
+<p>Let’s take a look at the output. On my platform the OpenCL GPU driver, the Intel(R) FPGA Emulation Device, the Intel(R) OpenCL CPU driver and the Intel(R) Level Zero GPU driver are available. If I play with the verbocity parameter I can get more information about the devices I have available.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># See the list of available SYCL platforms and extra metadata about each platform.
+import dpctl
+
+dpctl.lsplatform(2)  # Print platform information with verbocity level 2 (highest level)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Platform  0 ::
+    Name        Intel(R) OpenCL HD Graphics
+    Version     OpenCL 3.0
+    Vendor      Intel(R) Corporation
+    Backend     opencl
+    Num Devices 1
+      # 0
+        Name                Intel(R) Iris(R) Xe Graphics
+        Version             31.0.101.3430
+        Filter string       opencl:gpu:0
+Platform  1 ::
+    Name        Intel(R) FPGA Emulation Platform for OpenCL(TM)
+    Version     OpenCL 1.2 Intel(R) FPGA SDK for OpenCL(TM), Version 20.3
+    Vendor      Intel(R) Corporation
+    Backend     opencl
+    Num Devices 1
+      # 0
+        Name                Intel(R) FPGA Emulation Device
+        Version             2022.15.11.0.18_160000
+        Filter string       opencl:accelerator:0
+Platform  2 ::
+    Name        Intel(R) OpenCL
+    Version     OpenCL 3.0 WINDOWS
+    Vendor      Intel(R) Corporation
+    Backend     opencl
+    Num Devices 1
+      # 0
+        Name                11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz
+        Version             2022.15.11.0.18_160000
+        Filter string       opencl:cpu:0
+Platform  3 ::
+    Name        Intel(R) Level-Zero
+    Version     1.3
+    Vendor      Intel(R) Corporation
+    Backend     ext_oneapi_level_zero
+    Num Devices 1
+      # 0
+        Name                Intel(R) Iris(R) Xe Graphics
+        Version             1.3.23904
+        Filter string       level_zero:gpu:0
+</pre></div></div>
+</div>
+<p>With information about the available SYCL platforms, you can specify what type of device you want to work with</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># See the list of available gpu devices and their extra metadata.
+import dpctl
+
+if dpctl.has_gpu_devices():
+    print (dpctl.get_devices(device_type=&#39;gpu&#39;))
+else:
+    print(&quot;GPU device is not available&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;dpctl.SyclDevice [backend_type.opencl, device_type.gpu,  Intel(R) Iris(R) Xe Graphics] at 0x1a1eddd72f0&gt;, &lt;dpctl.SyclDevice [backend_type.level_zero, device_type.gpu,  Intel(R) Iris(R) Xe Graphics] at 0x1a1eddd70f0&gt;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># See the list of available gpu devices and their extra metadata.
+import dpctl
+
+if dpctl.has_cpu_devices():
+    print (dpctl.get_devices(device_type=&#39;cpu&#39;))
+else:
+    print(&quot;CPU device is not available&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;dpctl.SyclDevice [backend_type.opencl, device_type.cpu,  11th Gen Intel(R) Core(TM) i7-1185G7 @ 3.00GHz] at 0x1779083bcf0&gt;]
+</pre></div></div>
+</div>
+<p>And you can make a specific device selection on your system using the default selector</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpctl
+
+try:
+    # Create a SyclDevice of type GPU based on whatever is returned
+    # by the SYCL `gpu_selector` device selector class.
+    gpu = dpctl.select_gpu_device()
+    gpu.print_device_info() # print GPU device information
+
+except:
+    print (&quot;GPU device is not available&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+    Name            Intel(R) Iris(R) Xe Graphics
+    Driver version  1.3.23904
+    Vendor          Intel(R) Corporation
+    Filter string   level_zero:gpu:0
+
+</pre></div></div>
+</div>
+<p>Or, using the infromation in the filter string of the device, create an explicit SyclDevice</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpctl
+
+# Create a SyclDevice with an explicit filter string,
+# in this case the first level_zero gpu device.
+try:
+    level_zero_gpu = dpctl.SyclDevice(&quot;level_zero:gpu:0&quot;)
+    level_zero_gpu.print_device_info()
+except:
+    print(&quot;The first level_zero GPU device is not available&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+    Name            Intel(R) Iris(R) Xe Graphics
+    Driver version  1.3.23904
+    Vendor          Intel(R) Corporation
+    Profile         FULL_PROFILE
+    Filter string   level_zero:gpu:0
+
+</pre></div></div>
+</div>
+<p>Let’s check if your gpu device supports double precision. To do this, we need to identify the gpu device and check the has_aspect_fp64 parameter:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpctl
+# Select GPU device and check double precision support
+try:
+    gpu = dpctl.select_gpu_device()
+    gpu.print_device_info()
+    print(&quot;Double precision support is&quot;, gpu.has_aspect_fp64)
+except:
+    print(&quot;The GPU device is not available&quot;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+    Name            Intel(R) Iris(R) Xe Graphics
+    Driver version  1.3.23904
+    Vendor          Intel(R) Corporation
+    Filter string   level_zero:gpu:0
+
+Double precision support is False
+</pre></div></div>
+</div>
+<p>As you can see, the tested gpu device has no support for double precision.</p>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Table of Contents</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="prerequisites_and_installation.html">Prerequisites and installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parallelism.html">Parallelism in modern data parallel architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="heterogeneous_computing.html">Heterogeneous computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="programming_dpep.html">Programming with Data Parallel Extensions for Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">List of examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="jupiter_notebook.html">Jupyter* Notebooks</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-dpnp_numpy_fallback.html">Usage of numpy functions in dpnp library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="useful_links.html">Useful links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="useful_links.html#to-do">To-Do</a></li>
+</ul>
+
+
+<form action="search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="jupiter_notebook.html"
+                          title="previous chapter">Jupyter* Notebooks</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="02-dpnp_numpy_fallback.html"
+                          title="next chapter">Usage of NumPy* functions in the Data Parallel Extension for NumPy* library</a></p>
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<footer class="footer">
+  <p class="pull-right"> &nbsp;
+    <a href="#">Back to Top</a></p>
+  <p>
+    &copy; Copyright 2022, Intel Corporation.<br/>
+    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 6.1.3. &nbsp;
+  </p>
+</footer>
+  </body>
+</html>
