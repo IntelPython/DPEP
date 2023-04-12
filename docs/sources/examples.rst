@@ -33,9 +33,3 @@ Benchmarks
 
 .. todo::
    Provide instructions for dpbench
-
-Jupyter* Notebooks
-******************
-
-.. todo::
-   Provide instructions for Jupyter Notebook samples illustrating Data Parallel Extensions for Python

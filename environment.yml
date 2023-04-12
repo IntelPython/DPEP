@@ -8,8 +8,5 @@ dependencies:
     - sphinx
     - sphinxcontrib-programoutput 
     - sphinxcontrib-googleanalytics
-<<<<<<< Updated upstream
-=======
     - nbsphinx
     - nbconvert
->>>>>>> Stashed changes
