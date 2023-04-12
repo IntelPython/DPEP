@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KVSVYMBQ0W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KVSVYMBQ0W');
+    </script>
+    
+    <title>Usage of numpy functions in dpnp library &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sdc.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Useful links" href="../useful_links.html" />
+    <link rel="prev" title="Getting started with Data Parallel Extensions for Python" href="01-get_started.html" />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600' rel='stylesheet' type='text/css'/>
+
+  </head><body>
+<div class="topbar">
+  <a class="brand" title="Intel Python projects" href="../other_intel_python_projects.html"></a>
+  <a class="brand_sdc" title="Documentation Home" href="../index.html"></a>
+
+  <ul>
+    <li><a class="exampleslink" title="Examples" href="../examples.html"></a></li>
+    <li><a class="issueslink" title="Issues" href="https://community.intel.com/t5/Intel-Distribution-for-Python/bd-p/distribution-python"></a></li>
+    <li><a class="emaillink" title="Email" href="mailto:scripting@intel.com"></a></li>
+    <li><a class="homelink" title="GitHub" href="https://github.com/IntelPython/DPEP"></a></li>
+    <li>
+      
+      
+<form action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+      
+    </li>
+  </ul>
+</div>
+
+<div class="related">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right">
+	<a href="../useful_links.html" title="Useful links">
+	  next &raquo;
+	</a>
+      </li>
+      <li class="right">
+	<a href="01-get_started.html" title="Getting started with Data Parallel Extensions for Python">
+	  &laquo; previous
+	</a>
+	 |
+      </li>
+      <li>
+	<a href="../index.html">Data Parallel Extensions for Python* 0.1 documentation</a>
+	 &#187;
+      </li>
+      <li><a href="../jupyter_notebook.html" accesskey="U">Jupyter* Notebooks</a> &#187;</li>
+      
+      <li>Usage of numpy functions in dpnp library</li> 
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="Usage-of-numpy-functions-in-dpnp-library">
+<h1>Usage of numpy functions in dpnp library<a class="headerlink" href="#Usage-of-numpy-functions-in-dpnp-library" title="Permalink to this heading">¶</a></h1>
+<ol class="arabic simple">
+<li><p>Example of the usage of the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> environment variable and finding specific values in array based on condition using dpnp library</p></li>
+</ol>
+<p>Not all functions were yet implemented in the dpnp library, some of the functions require enabling of the direct fallback to the NumPy library. One of the example can be the function “dpnp.full ()” and parameter like in non default state. Let’s look on the example where we want to create an two dimencial array with singular element and array like option.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpnp as np
+
+# Create an two dimencial array with singular element and array like option
+a = np.full((2,2),3, like = np.zeros((2, 0)))
+print (&quot;Array a is located on the device:&quot;, a.device)
+print (&quot;Array a is&quot;, a)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">NotImplementedError</span>                       Traceback (most recent call last)
+Cell <span class="ansi-green-intense-fg ansi-bold">In[1], line 4</span>
+<span class="ansi-green-fg">      1</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> <span class="ansi-bold" style="color: rgb(0,0,255)">dpnp</span> <span class="ansi-bold" style="color: rgb(0,135,0)">as</span> <span class="ansi-bold" style="color: rgb(0,0,255)">np</span>
+<span class="ansi-green-fg">      3</span> <span style="color: rgb(95,135,135)"># Create an two dimencial array with singular element and array like option</span>
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 4</span> a <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">np</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">full</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">2</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">2</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">3</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">np</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">zeros</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">2</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">0</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">      5</span> <span style="color: rgb(0,135,0)">print</span> (<span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Array a is located on the device:</span><span style="color: rgb(175,0,0)">&#34;</span>, a<span style="color: rgb(98,98,98)">.</span>device)
+<span class="ansi-green-fg">      6</span> <span style="color: rgb(0,135,0)">print</span> (<span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Array a is</span><span style="color: rgb(175,0,0)">&#34;</span>, a)
+
+File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\envs\my_env\lib\site-packages\dpnp\dpnp_iface_arraycreation.py:732</span>, in <span class="ansi-cyan-fg">full</span><span class="ansi-blue-intense-fg ansi-bold">(shape, fill_value, dtype, order, like, device, usm_type, sycl_queue)</span>
+<span class="ansi-green-fg">    723</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">    724</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> dpnp_container<span style="color: rgb(98,98,98)">.</span>full(shape,
+<span class="ansi-green-fg">    725</span>                                fill_value,
+<span class="ansi-green-fg">    726</span>                                dtype<span style="color: rgb(98,98,98)">=</span>dtype,
+<span class="ansi-green-intense-fg ansi-bold">   (...)</span>
+<span class="ansi-green-fg">    729</span>                                usm_type<span style="color: rgb(98,98,98)">=</span>usm_type,
+<span class="ansi-green-fg">    730</span>                                sycl_queue<span style="color: rgb(98,98,98)">=</span>sycl_queue)
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 732</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">call_origin</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">numpy</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">full</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">shape</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">fill_value</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">dtype</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">order</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg">)</span>
+
+File <span class="ansi-green-intense-fg ansi-bold">dpnp\dpnp_utils\dpnp_algo_utils.pyx:132</span>, in <span class="ansi-cyan-fg">dpnp.dpnp_utils.dpnp_algo_utils.call_origin</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+
+<span class="ansi-red-intense-fg ansi-bold">NotImplementedError</span>: Requested funtion=full with args=((2, 2), 3, None, &#39;C&#39;) and kwargs={&#39;like&#39;: &lt;dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0&gt;} isn&#39;t currently supported and would fall back on NumPy implementation. Define enviroment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without rasing an exception.
+</pre></div></div>
+</div>
+<p>As you can see the function “dpnp.full ()” and parameter like in non default state is not implemented in the dpnp library. We got the following error message: “Requested funtion=full with args=((2, 2), 3, None, ‘C’) and kwargs={‘like’: &lt;dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0&gt;} isn’t currently supported and would fall back on NumPy implementation. Define environment variable <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span></code> if the fall back is required to be supported without
+raising an exception.” By default the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> environment variable is not null and it allows to use only dpnp library. If we want to call NumPy library for functions not supported under dpnp, we need to change this environment variable to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>Let’s overwrite the same example using the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span> <span class="pre">=</span> <span class="pre">0</span></code> environment variable.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Note:</span></code> Please pay attention that if you are working in the Jupyter Notebook, before running the example with setting the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span> <span class="pre">=</span> <span class="pre">0</span></code> you need to restart the kernel in the Jupyter Notebook.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import os
+# call numpy if not null than we will use dpnp, by default not null
+os.environ[&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK&quot;] = &quot;0&quot;
+
+import dpnp as np
+
+# Expect result 0
+print (&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK =&quot;, np.config.__DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK__)
+
+# Create an two dimencial array with singular element and array like option
+a = np.full((2,2),3, like = np.zeros((2, 0)))
+print (&quot;Array a is located on the device:&quot;, a.device)
+print (&quot;Array a is&quot;, a)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK = 0
+Array a is located on the device: Device(level_zero:gpu:0)
+Array a is [[3 3]
+ [3 3]]
+</pre></div></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Table of Contents</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../prerequisites_and_installation.html">Prerequisites and installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parallelism.html">Parallelism in modern data parallel architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../heterogeneous_computing.html">Heterogeneous computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../programming_dpep.html">Programming with Data Parallel Extensions for Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">List of examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../jupyter_notebook.html">Jupyter* Notebooks</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-get_started.html">Getting Started</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Controlling `dpnp` fallback to `numpy`</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../useful_links.html">Useful links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful_links.html#to-do">To-Do</a></li>
+</ul>
+
+
+<form action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="01-get_started.html"
+                          title="previous chapter">Getting started with Data Parallel Extensions for Python</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../useful_links.html"
+                          title="next chapter">Useful links</a></p>
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<footer class="footer">
+  <p class="pull-right"> &nbsp;
+    <a href="#">Back to Top</a></p>
+  <p>
+    &copy; Copyright 2020-2023, Intel Corporation.<br/>
+    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 6.1.3. &nbsp;
+  </p>
+</footer>
+  </body>
+</html>
