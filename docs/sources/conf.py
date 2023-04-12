@@ -51,6 +51,7 @@ extensions = [
     'sphinxcontrib.programoutput',
     'sphinxcontrib.googleanalytics',
     'nbsphinx',
+    'IPython.sphinxext.ipython_console_highlighting',
 ]
 
 googleanalytics_id = 'G-KVSVYMBQ0W'
