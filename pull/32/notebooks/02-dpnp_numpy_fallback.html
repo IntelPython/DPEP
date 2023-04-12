@@ -97,12 +97,12 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpnp as np
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 
-# Create an two dimencial array with singular element and array like option
-a = np.full((2,2),3, like = np.zeros((2, 0)))
-print (&quot;Array a is located on the device:&quot;, a.device)
-print (&quot;Array a is&quot;, a)
+<span class="c1"># Create an two dimencial array with singular element and array like option</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="mi">3</span><span class="p">,</span> <span class="n">like</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array a is located on the device:&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array a is&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -143,19 +143,19 @@ raising an exception.” By default the <code class="docutils literal notranslat
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import os
-# call numpy if not null than we will use dpnp, by default not null
-os.environ[&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK&quot;] = &quot;0&quot;
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="c1"># call numpy if not null than we will use dpnp, by default not null</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
 
-import dpnp as np
+<span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 
-# Expect result 0
-print (&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK =&quot;, np.config.__DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK__)
+<span class="c1"># Expect result 0</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK =&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">__DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK__</span><span class="p">)</span>
 
-# Create an two dimencial array with singular element and array like option
-a = np.full((2,2),3, like = np.zeros((2, 0)))
-print (&quot;Array a is located on the device:&quot;, a.device)
-print (&quot;Array a is&quot;, a)
+<span class="c1"># Create an two dimencial array with singular element and array like option</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="mi">3</span><span class="p">,</span> <span class="n">like</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array a is located on the device:&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array a is&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

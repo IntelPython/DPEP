@@ -89,7 +89,7 @@
             
   <section id="Getting-started-with-Data-Parallel-Extensions-for-Python">
 <h1>Getting started with Data Parallel Extensions for Python<a class="headerlink" href="#Getting-started-with-Data-Parallel-Extensions-for-Python" title="Permalink to this heading">¶</a></h1>
-<p><img alt="996d1c408a8d4152a717f7372190ab4c" class="no-scaled-link" src="https://intelpython.github.io/DPEP/main/_images/DPEP-large.png" style="width: 300px;" /></p>
+<p><img alt="14d770034f8a4fa4a7a3e51f2276d309" class="no-scaled-link" src="https://intelpython.github.io/DPEP/main/_images/DPEP-large.png" style="width: 300px;" /></p>
 <p><a class="reference external" href="https://intelpython.github.io/DPEP/main/">Data Parallel Extensions for Python</a> allow you to run NumPy-like code beyond CPU using <strong>Data Parallel Extension for NumPy</strong>. It will also allow you to compile the code using <strong>Data Parallel Extension for Numba</strong>.</p>
 <section id="Modifying-CPU-script-to-run-on-GPU">
 <h2>Modifying CPU script to run on GPU<a class="headerlink" href="#Modifying-CPU-script-to-run-on-GPU" title="Permalink to this heading">¶</a></h2>
@@ -99,20 +99,20 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># CPU script for matrix-matrix multiplication using NumPy
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># CPU script for matrix-matrix multiplication using NumPy</span>
 
-# 1. Import numpy
-import numpy as np
+<span class="c1"># 1. Import numpy</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-# 2. Create two matrices
-x = np.array([[1, 1], [1, 1]])
-y = np.array([[1, 1], [1, 1]])
+<span class="c1"># 2. Create two matrices</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 
-# 3. Perform matrix-matrix multiplication
-res = np.matmul(x, y)
+<span class="c1"># 3. Perform matrix-matrix multiplication</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-# 4. Print resulting matrix
-print(res)
+<span class="c1"># 4. Print resulting matrix</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -130,23 +130,23 @@ print(res)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Modified script to run the same code on GPU using dpnp
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Modified script to run the same code on GPU using dpnp</span>
 
-# 1. Import dpnp
-import dpnp as np  # Note, we changed the import statement. Since dpnp is a drop-in replacement of numpy the rest of the code will run lik regular numpy
+<span class="c1"># 1. Import dpnp</span>
+<span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>  <span class="c1"># Note, we changed the import statement. Since dpnp is a drop-in replacement of numpy the rest of the code will run lik regular numpy</span>
 
-# 2. Create two matrices
-x = np.array([[1, 1], [1, 1]])
-y = np.array([[1, 1], [1, 1]])
+<span class="c1"># 2. Create two matrices</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 
-# 3. Perform matrix-matrix multiplication
-res = np.matmul(x, y)
+<span class="c1"># 3. Perform matrix-matrix multiplication</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-# 4. Print what&#39;s going on under the hood
-print(res)
-print(&quot;Array x is allocated on the device:&quot;, x.device)
-print(&quot;Array y is allocated on the device:&quot;, y.device)
-print(&quot;res is allocated on the device:&quot;, res.device)
+<span class="c1"># 4. Print what&#39;s going on under the hood</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array x is allocated on the device:&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array y is allocated on the device:&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;res is allocated on the device:&quot;</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -177,9 +177,9 @@ res is allocated on the device: Device(level_zero:gpu:0)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpnp as np
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 
-a = np.arange(3, 30, step = 6, device=&quot;gpu&quot;)
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -188,21 +188,21 @@ a = np.arange(3, 30, step = 6, device=&quot;gpu&quot;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpnp as np
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 
-try:
-    a = np.arange(3, 30, step = 6, device=&quot;gpu&quot;)
-    print(&quot;The a is allocated on the device:&quot;, a.device)
-except:
-    print(&quot;GPU device is not available&quot;)
-    # Do some fallback code
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;gpu&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The a is allocated on the device:&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GPU device is not available&quot;</span><span class="p">)</span>
+    <span class="c1"># Do some fallback code</span>
 
-# Do reduction on the selected device
-y = np.sum(a)
+<span class="c1"># Do reduction on the selected device</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 
-print(&quot;Reduction sum y: &quot;, y)  # Expect 75
-print(&quot;Result y is located on the device:&quot;, y.device)
-print(&quot;y.shape=&quot;, y.shape)
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reduction sum y: &quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># Expect 75</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Result y is located on the device:&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;y.shape=&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -225,9 +225,9 @@ y.shape= ()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpctl
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpctl</span>
 
-dpctl.lsplatform()  # Print platform information
+<span class="n">dpctl</span><span class="o">.</span><span class="n">lsplatform</span><span class="p">()</span>  <span class="c1"># Print platform information</span>
 </pre></div>
 </div>
 </div>
@@ -245,9 +245,9 @@ Intel(R) Level-Zero 1.3
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpctl
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpctl</span>
 
-dpctl.lsplatform(2)  # Print platform information with verbocitz level 2 (highest level)
+<span class="n">dpctl</span><span class="o">.</span><span class="n">lsplatform</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Print platform information with verbocitz level 2 (highest level)</span>
 </pre></div>
 </div>
 </div>
@@ -283,19 +283,19 @@ Platform  1 ::
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpctl
-import dpnp as np
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpctl</span>
+<span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 
-if dpctl.has_gpu_devices():
-    devices = dpctl.get_devices(device_type=&#39;gpu&#39;)
-    print(f&quot;This system has {len(devices)} GPUs&quot;)
-    for device in devices:
-        device.print_device_info()
+<span class="k">if</span> <span class="n">dpctl</span><span class="o">.</span><span class="n">has_gpu_devices</span><span class="p">():</span>
+    <span class="n">devices</span> <span class="o">=</span> <span class="n">dpctl</span><span class="o">.</span><span class="n">get_devices</span><span class="p">(</span><span class="n">device_type</span><span class="o">=</span><span class="s1">&#39;gpu&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;This system has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span><span class="si">}</span><span class="s2"> GPUs&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
+        <span class="n">device</span><span class="o">.</span><span class="n">print_device_info</span><span class="p">()</span>
 
-    x = np.array([1, 2, 3], device=devices[0])  # Another way of selecting on which device to allocate the data
-    print(&quot;Array x is on the device:&quot;, x.device)
-else:
-    print(&quot;GPU devices are not available on this system&quot;)
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># Another way of selecting on which device to allocate the data</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array x is on the device:&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;GPU devices are not available on this system&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -323,14 +323,14 @@ Array x is on the device: Device(opencl:gpu:0)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>try:
-    gpu = dpctl.select_gpu_device()
-    gpu.print_device_info() # print GPU device information
-    x = np.random.random(5, device=gpu)  # Create array of random numbers on the default GPU device
-    print(&quot;Array x:&quot;, x)
-    print(&quot;Array x.device:&quot;, x.device)
-except:
-    print (&quot;No GPU devices available&quot;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="n">gpu</span> <span class="o">=</span> <span class="n">dpctl</span><span class="o">.</span><span class="n">select_gpu_device</span><span class="p">()</span>
+    <span class="n">gpu</span><span class="o">.</span><span class="n">print_device_info</span><span class="p">()</span> <span class="c1"># print GPU device information</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">gpu</span><span class="p">)</span>  <span class="c1"># Create array of random numbers on the default GPU device</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array x:&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array x.device:&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;No GPU devices available&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -353,13 +353,13 @@ Array x.device: Device(level_zero:gpu:0)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpctl
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpctl</span>
 
-try:
-    l0_gpu_0 = dpctl.SyclDevice(&quot;level_zero:gpu:0&quot;)
-    l0_gpu_0.print_device_info()
-except:
-    print(&quot;Cannot create the device object from a given filter selector string&quot;)
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">l0_gpu_0</span> <span class="o">=</span> <span class="n">dpctl</span><span class="o">.</span><span class="n">SyclDevice</span><span class="p">(</span><span class="s2">&quot;level_zero:gpu:0&quot;</span><span class="p">)</span>
+    <span class="n">l0_gpu_0</span><span class="o">.</span><span class="n">print_device_info</span><span class="p">()</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot create the device object from a given filter selector string&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -380,18 +380,18 @@ except:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import dpctl
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpctl</span>
 
-try:
-    gpu = dpctl.select_gpu_device()
-    gpu.print_device_info()
-    print(&quot;Has double precision:&quot;, gpu.has_aspect_fp64)
-    print(&quot;Has atomic operations support:&quot;, gpu.has_aspect_atomic64)
-    print(f&quot;Global memory size: {gpu.global_mem_size/1024/1024} MB&quot;)
-    print(f&quot;Global memory cache size: {gpu.global_mem_cache_size/1024} KB&quot;)
-    print(f&quot;Maximum compute units: {gpu.max_compute_units}&quot;)
-except:
-    print(&quot;The GPU device is not available&quot;)
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">gpu</span> <span class="o">=</span> <span class="n">dpctl</span><span class="o">.</span><span class="n">select_gpu_device</span><span class="p">()</span>
+    <span class="n">gpu</span><span class="o">.</span><span class="n">print_device_info</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Has double precision:&quot;</span><span class="p">,</span> <span class="n">gpu</span><span class="o">.</span><span class="n">has_aspect_fp64</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Has atomic operations support:&quot;</span><span class="p">,</span> <span class="n">gpu</span><span class="o">.</span><span class="n">has_aspect_atomic64</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Global memory size: </span><span class="si">{</span><span class="n">gpu</span><span class="o">.</span><span class="n">global_mem_size</span><span class="o">/</span><span class="mi">1024</span><span class="o">/</span><span class="mi">1024</span><span class="si">}</span><span class="s2"> MB&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Global memory cache size: </span><span class="si">{</span><span class="n">gpu</span><span class="o">.</span><span class="n">global_mem_cache_size</span><span class="o">/</span><span class="mi">1024</span><span class="si">}</span><span class="s2"> KB&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum compute units: </span><span class="si">{</span><span class="n">gpu</span><span class="o">.</span><span class="n">max_compute_units</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The GPU device is not available&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
