@@ -4,12 +4,18 @@ channels:
 dependencies:
   - python=3.9
   - pip
+  - pandoc
+  - jinja2=3.0.3
   - pip:
     - sphinx
     - sphinxcontrib-programoutput 
     - sphinxcontrib-googleanalytics
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
     - nbsphinx
     - nbconvert
 >>>>>>> Stashed changes
+=======
+    - nbsphinx
+>>>>>>> 7f802f7c2faab0f9cbd958393ab8a8269c2146cc
