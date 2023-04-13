@@ -5,7 +5,7 @@
    "id": "be340585",
    "metadata": {},
    "source": [
-    "# Usage of numpy functions in dpnp library"
+    "# Jupyter Notebook 2: Falling back to NumPy"
    ]
   },
   {
@@ -13,46 +13,65 @@
    "id": "9008dbe5",
    "metadata": {},
    "source": [
-    "1. Example of the usage of the `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` environment variable and finding specific values in array based on condition using dpnp library"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "id": "5d4300fe",
-   "metadata": {},
-   "source": [
-    "Not all functions were yet implemented in the dpnp library, some of the functions require enabling of the direct fallback to the NumPy library. \n",
-    "One of the example can be the function \"dpnp.full ()\" and parameter like in non default state. \n",
-    "Let's look on the example where we want to create an two dimencial array with singular element and array like option. "
+    "**Data Parallel Extensions for Python** are still in active development and have not yet reached production quality. This in particular means that some functional and performance gaps may exist in certain `dpnp` functions that require workarounds. The functional gaps include:\n",
+    "\n",
+    "* Certain NumPy APIs are not supported. For complete reference please see the [comparison table](https://intelpython.github.io/dpnp/reference/comparison.html) for **Data Parallel Extension for NumPy**.\n",
+    "* Limited support of `dtypes`. At present the **Data Parallel Extension for NumPy** supports `float32`, `float64`, `int32`, and `int64` types.\n",
+    "* Certain keyword arguments are supported for default settings only. Please refer to the [Data Parallel Extension for NumPy API Reference](https://intelpython.github.io/dpnp/reference/index.html) for details.\n",
+    "\n",
+    "Since NumPy API is versatily there are typically some workaround options exist. Please refer to [Data Parallel Extension for NumPy API Reference](https://intelpython.github.io/dpnp/reference/index.html) and [NumPy documentation](https://numpy.org/doc/stable/) for hints for possible alternatives.\n",
+    "\n",
+    "Another possible workaround is to fall back to the host and execute the script via NumPy. This is a discouraged use because it typically results in significant performance penalties associated with copying data from the device to the host and back. However, for debugging purposes you may still want to enable this behavior.\n",
+    "\n",
+    "To do so you must set the `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` environment variable to `0`.\n",
+    "\n",
+    "Let's take the following example:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 1,
+   "execution_count": 3,
    "id": "c78511cd",
    "metadata": {},
    "outputs": [
     {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " ...\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]]\n"
+     ]
+    },
+    {
      "ename": "NotImplementedError",
-     "evalue": "Requested funtion=full with args=((2, 2), 3, None, 'C') and kwargs={'like': <dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0>} isn't currently supported and would fall back on NumPy implementation. Define enviroment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without rasing an exception.",
+     "evalue": "Requested funtion=full with args=((20000, 20000), 3.0, None, 'C') and kwargs={'like': array([])} isn't currently supported and would fall back on NumPy implementation. Define enviroment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without rasing an exception.",
      "output_type": "error",
      "traceback": [
       "\u001b[1;31m---------------------------------------------------------------------------\u001b[0m",
       "\u001b[1;31mNotImplementedError\u001b[0m                       Traceback (most recent call last)",
-      "Cell \u001b[1;32mIn[1], line 4\u001b[0m\n\u001b[0;32m      1\u001b[0m \u001b[38;5;28;01mimport\u001b[39;00m \u001b[38;5;21;01mdpnp\u001b[39;00m \u001b[38;5;28;01mas\u001b[39;00m \u001b[38;5;21;01mnp\u001b[39;00m\n\u001b[0;32m      3\u001b[0m \u001b[38;5;66;03m# Create an two dimencial array with singular element and array like option\u001b[39;00m\n\u001b[1;32m----> 4\u001b[0m a \u001b[38;5;241m=\u001b[39m \u001b[43mnp\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mfull\u001b[49m\u001b[43m(\u001b[49m\u001b[43m(\u001b[49m\u001b[38;5;241;43m2\u001b[39;49m\u001b[43m,\u001b[49m\u001b[38;5;241;43m2\u001b[39;49m\u001b[43m)\u001b[49m\u001b[43m,\u001b[49m\u001b[38;5;241;43m3\u001b[39;49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mlike\u001b[49m\u001b[43m \u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[43m \u001b[49m\u001b[43mnp\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mzeros\u001b[49m\u001b[43m(\u001b[49m\u001b[43m(\u001b[49m\u001b[38;5;241;43m2\u001b[39;49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[38;5;241;43m0\u001b[39;49m\u001b[43m)\u001b[49m\u001b[43m)\u001b[49m\u001b[43m)\u001b[49m\n\u001b[0;32m      5\u001b[0m \u001b[38;5;28mprint\u001b[39m (\u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mArray a is located on the device:\u001b[39m\u001b[38;5;124m\"\u001b[39m, a\u001b[38;5;241m.\u001b[39mdevice)\n\u001b[0;32m      6\u001b[0m \u001b[38;5;28mprint\u001b[39m (\u001b[38;5;124m\"\u001b[39m\u001b[38;5;124mArray a is\u001b[39m\u001b[38;5;124m\"\u001b[39m, a)\n",
-      "File \u001b[1;32m~\\Anaconda3\\envs\\my_env\\lib\\site-packages\\dpnp\\dpnp_iface_arraycreation.py:732\u001b[0m, in \u001b[0;36mfull\u001b[1;34m(shape, fill_value, dtype, order, like, device, usm_type, sycl_queue)\u001b[0m\n\u001b[0;32m    723\u001b[0m \u001b[38;5;28;01melse\u001b[39;00m:\n\u001b[0;32m    724\u001b[0m     \u001b[38;5;28;01mreturn\u001b[39;00m dpnp_container\u001b[38;5;241m.\u001b[39mfull(shape,\n\u001b[0;32m    725\u001b[0m                                fill_value,\n\u001b[0;32m    726\u001b[0m                                dtype\u001b[38;5;241m=\u001b[39mdtype,\n\u001b[1;32m   (...)\u001b[0m\n\u001b[0;32m    729\u001b[0m                                usm_type\u001b[38;5;241m=\u001b[39musm_type,\n\u001b[0;32m    730\u001b[0m                                sycl_queue\u001b[38;5;241m=\u001b[39msycl_queue)\n\u001b[1;32m--> 732\u001b[0m \u001b[38;5;28;01mreturn\u001b[39;00m \u001b[43mcall_origin\u001b[49m\u001b[43m(\u001b[49m\u001b[43mnumpy\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mfull\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mshape\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mfill_value\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mdtype\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43morder\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mlike\u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[43mlike\u001b[49m\u001b[43m)\u001b[49m\n",
+      "Cell \u001b[1;32mIn[3], line 9\u001b[0m\n\u001b[0;32m      7\u001b[0m a_np \u001b[38;5;241m=\u001b[39m numpy\u001b[38;5;241m.\u001b[39mfull((N, N), \u001b[38;5;241m3.\u001b[39m, like \u001b[38;5;241m=\u001b[39m numpy\u001b[38;5;241m.\u001b[39mzeros((N, \u001b[38;5;241m0\u001b[39m)))\n\u001b[0;32m      8\u001b[0m \u001b[38;5;28mprint\u001b[39m(a_np)\n\u001b[1;32m----> 9\u001b[0m a_dp \u001b[38;5;241m=\u001b[39m \u001b[43mdpnp\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mfull\u001b[49m\u001b[43m(\u001b[49m\u001b[43m(\u001b[49m\u001b[43mN\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mN\u001b[49m\u001b[43m)\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[38;5;241;43m3.\u001b[39;49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mlike\u001b[49m\u001b[43m \u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[43m \u001b[49m\u001b[43mdpnp\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mzeros\u001b[49m\u001b[43m(\u001b[49m\u001b[43m(\u001b[49m\u001b[43mN\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[38;5;241;43m0\u001b[39;49m\u001b[43m)\u001b[49m\u001b[43m)\u001b[49m\u001b[43m)\u001b[49m\n\u001b[0;32m     10\u001b[0m \u001b[38;5;28mprint\u001b[39m(a_dp)\n",
+      "File \u001b[1;32m~\\AppData\\Local\\Continuum\\miniconda3\\envs\\ndpex-examples\\lib\\site-packages\\dpnp\\dpnp_iface_arraycreation.py:747\u001b[0m, in \u001b[0;36mfull\u001b[1;34m(shape, fill_value, dtype, order, like, device, usm_type, sycl_queue)\u001b[0m\n\u001b[0;32m    738\u001b[0m \u001b[38;5;28;01melse\u001b[39;00m:\n\u001b[0;32m    739\u001b[0m     \u001b[38;5;28;01mreturn\u001b[39;00m dpnp_container\u001b[38;5;241m.\u001b[39mfull(shape,\n\u001b[0;32m    740\u001b[0m                                fill_value,\n\u001b[0;32m    741\u001b[0m                                dtype\u001b[38;5;241m=\u001b[39mdtype,\n\u001b[1;32m   (...)\u001b[0m\n\u001b[0;32m    744\u001b[0m                                usm_type\u001b[38;5;241m=\u001b[39musm_type,\n\u001b[0;32m    745\u001b[0m                                sycl_queue\u001b[38;5;241m=\u001b[39msycl_queue)\n\u001b[1;32m--> 747\u001b[0m \u001b[38;5;28;01mreturn\u001b[39;00m \u001b[43mcall_origin\u001b[49m\u001b[43m(\u001b[49m\u001b[43mnumpy\u001b[49m\u001b[38;5;241;43m.\u001b[39;49m\u001b[43mfull\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mshape\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mfill_value\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mdtype\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43morder\u001b[49m\u001b[43m,\u001b[49m\u001b[43m \u001b[49m\u001b[43mlike\u001b[49m\u001b[38;5;241;43m=\u001b[39;49m\u001b[43mlike\u001b[49m\u001b[43m)\u001b[49m\n",
       "File \u001b[1;32mdpnp\\dpnp_utils\\dpnp_algo_utils.pyx:132\u001b[0m, in \u001b[0;36mdpnp.dpnp_utils.dpnp_algo_utils.call_origin\u001b[1;34m()\u001b[0m\n",
-      "\u001b[1;31mNotImplementedError\u001b[0m: Requested funtion=full with args=((2, 2), 3, None, 'C') and kwargs={'like': <dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0>} isn't currently supported and would fall back on NumPy implementation. Define enviroment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without rasing an exception."
+      "\u001b[1;31mNotImplementedError\u001b[0m: Requested funtion=full with args=((20000, 20000), 3.0, None, 'C') and kwargs={'like': array([])} isn't currently supported and would fall back on NumPy implementation. Define enviroment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without rasing an exception."
      ]
     }
    ],
    "source": [
-    "import dpnp as np\n",
+    "import dpnp\n",
+    "import numpy\n",
+    "\n",
+    "N = 200*100\n",
     "\n",
     "# Create an two dimencial array with singular element and array like option\n",
-    "a = np.full((2,2),3, like = np.zeros((2, 0)))\n",
-    "print (\"Array a is located on the device:\", a.device)\n",
-    "print (\"Array a is\", a)"
+    "a_np = numpy.full((N, N), 3., like = numpy.zeros((N, 0)))\n",
+    "print(a_np)\n",
+    "a_dp = dpnp.full((N, N), 3., like = dpnp.zeros((N, 0)))\n",
+    "print(a_dp)"
    ]
   },
   {
@@ -60,10 +79,39 @@
    "id": "ae026021",
    "metadata": {},
    "source": [
-    "As you can see the function \"dpnp.full ()\" and parameter like in non default state is not implemented in the dpnp library.\n",
-    "We got the following error message: \"Requested funtion=full with args=((2, 2), 3, None, 'C') and kwargs={'like': <dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0>} isn't currently supported and would fall back on NumPy implementation. Define environment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without raising an exception.\" \n",
-    "By default the `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` environment variable is not null and it allows to use only dpnp library. \n",
-    "If we want to call NumPy library for functions not supported under dpnp, we need to change this environment variable to `0`."
+    "We are attempting to call `dpnp.full()` function with the keyword argument `like` set to another `dpnp` array, which is currently unsupported. A possible alternative would be to use `dpnp.full_like` function:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "5e588080-484a-44f4-a168-7d07f760c7a0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Elapsed 1494.33 ms\n",
+      "[[3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " ...\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]]\n",
+      "Array a is located on the device: Device(level_zero:gpu:0)\n"
+     ]
+    }
+   ],
+   "source": [
+    "from time import time\n",
+    "\n",
+    "t = time()\n",
+    "a = dpnp.full_like(dpnp.zeros((N, 0)), 3., shape=(N, N))\n",
+    "print(f\"Elapsed {(time()-t)*1000:.2f} ms\")\n",
+    "print(a)\n",
+    "print(\"Array a is located on the device:\", a.device)"
    ]
   },
   {
@@ -71,7 +119,7 @@
    "id": "210440c3",
    "metadata": {},
    "source": [
-    "Let's overwrite the same example using the `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK = 0` environment variable."
+    "Now we enable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to fall back to NumPy in case of `NotImplementedError`."
    ]
   },
   {
@@ -79,7 +127,7 @@
    "id": "bca7490d",
    "metadata": {},
    "source": [
-    "`Note:` Please pay attention that if you are working in the Jupyter Notebook, before running the example with setting the  `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK = 0` you need to restart the kernel in the Jupyter Notebook. "
+    "**Note: Restart Jupyter Notebook kernel before running the following code** "
    ]
   },
   {
@@ -93,26 +141,34 @@
      "output_type": "stream",
      "text": [
       "DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK = 0\n",
-      "Array a is located on the device: Device(level_zero:gpu:0)\n",
-      "Array a is [[3 3]\n",
-      " [3 3]]\n"
+      "Elapsed 2231.62 ms\n",
+      "[[3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " ...\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]\n",
+      " [3. 3. 3. ... 3. 3. 3.]]\n",
+      "Array a is located on the device: Device(level_zero:gpu:0)\n"
      ]
     }
    ],
    "source": [
     "import os\n",
-    "# call numpy if not null than we will use dpnp, by default not null\n",
     "os.environ[\"DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK\"] = \"0\" \n",
     "\n",
     "import dpnp as np\n",
+    "print (\"DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK =\", np.config.__DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK__)  # Expect 0\n",
     "\n",
-    "# Expect result 0\n",
-    "print (\"DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK =\", np.config.__DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK__) \n",
+    "from time import time\n",
     "\n",
-    "# Create an two dimencial array with singular element and array like option\n",
-    "a = np.full((2,2),3, like = np.zeros((2, 0)))\n",
-    "print (\"Array a is located on the device:\", a.device)\n",
-    "print (\"Array a is\", a)"
+    "N = 200*100\n",
+    "\n",
+    "t = time()\n",
+    "a = np.full((N, N), 3., like = np.zeros((N, 0)))\n",
+    "print(f\"Elapsed {(time()-t)*1000:.2f} ms\")\n",
+    "print(a)\n",
+    "print(\"Array a is located on the device:\", a.device)"
    ]
   }
  ],
@@ -132,7 +188,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.8.15"
+   "version": "3.9.10"
   }
  },
  "nbformat": 4,

@@ -15,7 +15,7 @@
         gtag('config', 'G-KVSVYMBQ0W');
     </script>
     
-    <title>Usage of numpy functions in dpnp library &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
+    <title>Jupyter Notebook 2: Falling back to NumPy &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sdc.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
@@ -31,7 +31,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Useful links" href="../useful_links.html" />
-    <link rel="prev" title="Getting started with Data Parallel Extensions for Python" href="01-get_started.html" />
+    <link rel="prev" title="Jupyter Notebook 1: Getting started with Data Parallel Extensions for Python" href="01-get_started.html" />
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600' rel='stylesheet' type='text/css'/>
 
   </head><body>
@@ -66,7 +66,7 @@
 	</a>
       </li>
       <li class="right">
-	<a href="01-get_started.html" title="Getting started with Data Parallel Extensions for Python">
+	<a href="01-get_started.html" title="Jupyter Notebook 1: Getting started with Data Parallel Extensions for Python">
 	  &laquo; previous
 	</a>
 	 |
@@ -77,7 +77,7 @@
       </li>
       <li><a href="../jupyter_notebook.html" accesskey="U">Jupyter* Notebooks</a> &#187;</li>
       
-      <li>Usage of numpy functions in dpnp library</li> 
+      <li>Jupyter Notebook 2: Falling back to NumPy</li> 
     </ul>
 </div>
   
@@ -87,24 +87,48 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="Usage-of-numpy-functions-in-dpnp-library">
-<h1>Usage of numpy functions in dpnp library<a class="headerlink" href="#Usage-of-numpy-functions-in-dpnp-library" title="Permalink to this heading">¶</a></h1>
-<ol class="arabic simple">
-<li><p>Example of the usage of the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> environment variable and finding specific values in array based on condition using dpnp library</p></li>
-</ol>
-<p>Not all functions were yet implemented in the dpnp library, some of the functions require enabling of the direct fallback to the NumPy library. One of the example can be the function “dpnp.full ()” and parameter like in non default state. Let’s look on the example where we want to create an two dimencial array with singular element and array like option.</p>
+  <section id="Jupyter-Notebook-2:-Falling-back-to-NumPy">
+<h1>Jupyter Notebook 2: Falling back to NumPy<a class="headerlink" href="#Jupyter-Notebook-2:-Falling-back-to-NumPy" title="Permalink to this heading">¶</a></h1>
+<p><strong>Data Parallel Extensions for Python</strong> are still in active development and have not yet reached production quality. This in particular means that some functional and performance gaps may exist in certain <code class="docutils literal notranslate"><span class="pre">dpnp</span></code> functions that require workarounds. The functional gaps include:</p>
+<ul class="simple">
+<li><p>Certain NumPy APIs are not supported. For complete reference please see the <a class="reference external" href="https://intelpython.github.io/dpnp/reference/comparison.html">comparison table</a> for <strong>Data Parallel Extension for NumPy</strong>.</p></li>
+<li><p>Limited support of <code class="docutils literal notranslate"><span class="pre">dtypes</span></code>. At present the <strong>Data Parallel Extension for NumPy</strong> supports <code class="docutils literal notranslate"><span class="pre">float32</span></code>, <code class="docutils literal notranslate"><span class="pre">float64</span></code>, <code class="docutils literal notranslate"><span class="pre">int32</span></code>, and <code class="docutils literal notranslate"><span class="pre">int64</span></code> types.</p></li>
+<li><p>Certain keyword arguments are supported for default settings only. Please refer to the <a class="reference external" href="https://intelpython.github.io/dpnp/reference/index.html">Data Parallel Extension for NumPy API Reference</a> for details.</p></li>
+</ul>
+<p>Since NumPy API is versatily there are typically some workaround options exist. Please refer to <a class="reference external" href="https://intelpython.github.io/dpnp/reference/index.html">Data Parallel Extension for NumPy API Reference</a> and <a class="reference external" href="https://numpy.org/doc/stable/">NumPy documentation</a> for hints for possible alternatives.</p>
+<p>Another possible workaround is to fall back to the host and execute the script via NumPy. This is a discouraged use because it typically results in significant performance penalties associated with copying data from the device to the host and back. However, for debugging purposes you may still want to enable this behavior.</p>
+<p>To do so you must set the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>Let’s take the following example:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="mi">200</span><span class="o">*</span><span class="mi">100</span>
 
 <span class="c1"># Create an two dimencial array with singular element and array like option</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="mi">3</span><span class="p">,</span> <span class="n">like</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array a is located on the device:&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array a is&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="n">a_np</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mf">3.</span><span class="p">,</span> <span class="n">like</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_np</span><span class="p">)</span>
+<span class="n">a_dp</span> <span class="o">=</span> <span class="n">dpnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mf">3.</span><span class="p">,</span> <span class="n">like</span> <span class="o">=</span> <span class="n">dpnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_dp</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ ...
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]]
+</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -113,49 +137,79 @@
 <div class="highlight"><pre>
 <span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
 <span class="ansi-red-intense-fg ansi-bold">NotImplementedError</span>                       Traceback (most recent call last)
-Cell <span class="ansi-green-intense-fg ansi-bold">In[1], line 4</span>
-<span class="ansi-green-fg">      1</span> <span class="ansi-bold" style="color: rgb(0,135,0)">import</span> <span class="ansi-bold" style="color: rgb(0,0,255)">dpnp</span> <span class="ansi-bold" style="color: rgb(0,135,0)">as</span> <span class="ansi-bold" style="color: rgb(0,0,255)">np</span>
-<span class="ansi-green-fg">      3</span> <span style="color: rgb(95,135,135)"># Create an two dimencial array with singular element and array like option</span>
-<span class="ansi-green-intense-fg ansi-bold">----&gt; 4</span> a <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">np</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">full</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">2</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">2</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">3</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">np</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">zeros</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">2</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">0</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span>
-<span class="ansi-green-fg">      5</span> <span style="color: rgb(0,135,0)">print</span> (<span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Array a is located on the device:</span><span style="color: rgb(175,0,0)">&#34;</span>, a<span style="color: rgb(98,98,98)">.</span>device)
-<span class="ansi-green-fg">      6</span> <span style="color: rgb(0,135,0)">print</span> (<span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">Array a is</span><span style="color: rgb(175,0,0)">&#34;</span>, a)
+Cell <span class="ansi-green-intense-fg ansi-bold">In[3], line 9</span>
+<span class="ansi-green-fg">      7</span> a_np <span style="color: rgb(98,98,98)">=</span> numpy<span style="color: rgb(98,98,98)">.</span>full((N, N), <span style="color: rgb(98,98,98)">3.</span>, like <span style="color: rgb(98,98,98)">=</span> numpy<span style="color: rgb(98,98,98)">.</span>zeros((N, <span style="color: rgb(98,98,98)">0</span>)))
+<span class="ansi-green-fg">      8</span> <span style="color: rgb(0,135,0)">print</span>(a_np)
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 9</span> a_dp <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">dpnp</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">full</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">N</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">N</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">3.</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">dpnp</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">zeros</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">N</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">0</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">     10</span> <span style="color: rgb(0,135,0)">print</span>(a_dp)
 
-File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\envs\my_env\lib\site-packages\dpnp\dpnp_iface_arraycreation.py:732</span>, in <span class="ansi-cyan-fg">full</span><span class="ansi-blue-intense-fg ansi-bold">(shape, fill_value, dtype, order, like, device, usm_type, sycl_queue)</span>
-<span class="ansi-green-fg">    723</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
-<span class="ansi-green-fg">    724</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> dpnp_container<span style="color: rgb(98,98,98)">.</span>full(shape,
-<span class="ansi-green-fg">    725</span>                                fill_value,
-<span class="ansi-green-fg">    726</span>                                dtype<span style="color: rgb(98,98,98)">=</span>dtype,
+File <span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Continuum\miniconda3\envs\ndpex-examples\lib\site-packages\dpnp\dpnp_iface_arraycreation.py:747</span>, in <span class="ansi-cyan-fg">full</span><span class="ansi-blue-intense-fg ansi-bold">(shape, fill_value, dtype, order, like, device, usm_type, sycl_queue)</span>
+<span class="ansi-green-fg">    738</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">    739</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> dpnp_container<span style="color: rgb(98,98,98)">.</span>full(shape,
+<span class="ansi-green-fg">    740</span>                                fill_value,
+<span class="ansi-green-fg">    741</span>                                dtype<span style="color: rgb(98,98,98)">=</span>dtype,
 <span class="ansi-green-intense-fg ansi-bold">   (...)</span>
-<span class="ansi-green-fg">    729</span>                                usm_type<span style="color: rgb(98,98,98)">=</span>usm_type,
-<span class="ansi-green-fg">    730</span>                                sycl_queue<span style="color: rgb(98,98,98)">=</span>sycl_queue)
-<span class="ansi-green-intense-fg ansi-bold">--&gt; 732</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">call_origin</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">numpy</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">full</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">shape</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">fill_value</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">dtype</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">order</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    744</span>                                usm_type<span style="color: rgb(98,98,98)">=</span>usm_type,
+<span class="ansi-green-fg">    745</span>                                sycl_queue<span style="color: rgb(98,98,98)">=</span>sycl_queue)
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 747</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">call_origin</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">numpy</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">full</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">shape</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">fill_value</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">dtype</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">order</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg">)</span>
 
 File <span class="ansi-green-intense-fg ansi-bold">dpnp\dpnp_utils\dpnp_algo_utils.pyx:132</span>, in <span class="ansi-cyan-fg">dpnp.dpnp_utils.dpnp_algo_utils.call_origin</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
 
-<span class="ansi-red-intense-fg ansi-bold">NotImplementedError</span>: Requested funtion=full with args=((2, 2), 3, None, &#39;C&#39;) and kwargs={&#39;like&#39;: &lt;dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0&gt;} isn&#39;t currently supported and would fall back on NumPy implementation. Define enviroment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without rasing an exception.
+<span class="ansi-red-intense-fg ansi-bold">NotImplementedError</span>: Requested funtion=full with args=((20000, 20000), 3.0, None, &#39;C&#39;) and kwargs={&#39;like&#39;: array([])} isn&#39;t currently supported and would fall back on NumPy implementation. Define enviroment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without rasing an exception.
 </pre></div></div>
 </div>
-<p>As you can see the function “dpnp.full ()” and parameter like in non default state is not implemented in the dpnp library. We got the following error message: “Requested funtion=full with args=((2, 2), 3, None, ‘C’) and kwargs={‘like’: &lt;dpnp.dpnp_array.dpnp_array object at 0x0000021C7FAAF8B0&gt;} isn’t currently supported and would fall back on NumPy implementation. Define environment variable <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span></code> if the fall back is required to be supported without
-raising an exception.” By default the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> environment variable is not null and it allows to use only dpnp library. If we want to call NumPy library for functions not supported under dpnp, we need to change this environment variable to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
-<p>Let’s overwrite the same example using the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span> <span class="pre">=</span> <span class="pre">0</span></code> environment variable.</p>
-<p><code class="docutils literal notranslate"><span class="pre">Note:</span></code> Please pay attention that if you are working in the Jupyter Notebook, before running the example with setting the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span> <span class="pre">=</span> <span class="pre">0</span></code> you need to restart the kernel in the Jupyter Notebook.</p>
+<p>We are attempting to call <code class="docutils literal notranslate"><span class="pre">dpnp.full()</span></code> function with the keyword argument <code class="docutils literal notranslate"><span class="pre">like</span></code> set to another <code class="docutils literal notranslate"><span class="pre">dpnp</span></code> array, which is currently unsupported. A possible alternative would be to use <code class="docutils literal notranslate"><span class="pre">dpnp.full_like</span></code> function:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">dpnp</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">dpnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span> <span class="mf">3.</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elapsed </span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array a is located on the device:&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed 1494.33 ms
+[[3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ ...
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]]
+Array a is located on the device: Device(level_zero:gpu:0)
+</pre></div></div>
+</div>
+<p>Now we enable <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> to fall back to NumPy in case of <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code>.</p>
+<p><strong>Note: Restart Jupyter Notebook kernel before running the following code</strong></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="c1"># call numpy if not null than we will use dpnp, by default not null</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
 
 <span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK =&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">__DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK__</span><span class="p">)</span>  <span class="c1"># Expect 0</span>
 
-<span class="c1"># Expect result 0</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK =&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">__DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK__</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 
-<span class="c1"># Create an two dimencial array with singular element and array like option</span>
-<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span><span class="mi">3</span><span class="p">,</span> <span class="n">like</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array a is located on the device:&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Array a is&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">200</span><span class="o">*</span><span class="mi">100</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mf">3.</span><span class="p">,</span> <span class="n">like</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elapsed </span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array a is located on the device:&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -165,9 +219,15 @@ raising an exception.” By default the <code class="docutils literal notranslat
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK = 0
+Elapsed 2231.62 ms
+[[3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ ...
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]]
 Array a is located on the device: Device(level_zero:gpu:0)
-Array a is [[3 3]
- [3 3]]
 </pre></div></div>
 </div>
 </section>
@@ -203,7 +263,7 @@ Array a is [[3 3]
   <div>
     <h4>Previous topic</h4>
     <p class="topless"><a href="01-get_started.html"
-                          title="previous chapter">Getting started with Data Parallel Extensions for Python</a></p>
+                          title="previous chapter">Jupyter Notebook 1: Getting started with Data Parallel Extensions for Python</a></p>
   </div>
   <div>
     <h4>Next topic</h4>

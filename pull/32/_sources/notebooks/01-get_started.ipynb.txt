@@ -7,7 +7,7 @@
     "tags": []
    },
    "source": [
-    "# Getting started with Data Parallel Extensions for Python\n",
+    "# Jupyter Notebook 1: Getting started with Data Parallel Extensions for Python\n",
     "<img src=\"https://intelpython.github.io/DPEP/main/_images/DPEP-large.png\" width=\"300\"/>\n",
     "\n",
     "[Data Parallel Extensions for Python](https://intelpython.github.io/DPEP/main/) allow you to run NumPy-like code beyond CPU using **Data Parallel Extension for NumPy**. It will also allow you to compile the code using **Data Parallel Extension for Numba**. "
