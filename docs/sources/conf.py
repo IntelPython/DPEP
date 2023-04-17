@@ -1,5 +1,5 @@
 # *****************************************************************************
-# Copyright (c) 2022, Intel Corporation All rights reserved.
+# Copyright (c) 2020-2023, Intel Corporation All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -30,7 +30,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Data Parallel Extensions for Python*'
-copyright = '2022, Intel Corporation'
+copyright = '2020-2023, Intel Corporation'
 author = 'Intel Corporation'
 
 # The full version, including alpha/beta/rc tags
@@ -51,6 +51,7 @@ extensions = [
     'sphinxcontrib.programoutput',
     'sphinxcontrib.googleanalytics',
     'nbsphinx',
+    'IPython.sphinxext.ipython_console_highlighting',
 ]
 
 googleanalytics_id = 'G-KVSVYMBQ0W'
@@ -63,7 +64,7 @@ templates_path = []
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = ['_build', '**.ipynb_checkpoints']
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -93,30 +94,27 @@ html_show_sourcelink = False
 todo_include_todos = True
 todo_link_only = True
 
-# -- InterSphinx configuration: looks for objects in external projects -----
-# Add here external classes you want to link from Intel SDC documentation
-# Each entry of the dictionary has the following format:
-#      'class name': ('link to object.inv file for that class', None)
-#intersphinx_mapping = {
-#    'pandas': ('https://pandas.pydata.org/pandas-docs/stable/', None),
-#    'python': ('http://docs.python.org/2', None),
-#    'numpy': ('http://docs.scipy.org/doc/numpy', None)
-#}
 intersphinx_mapping = {
 }
 
-# -- Napoleon extension configuration (Numpy and Google docstring options) -------
-#napoleon_google_docstring = True
-#napoleon_numpy_docstring = True
-#napoleon_include_init_with_doc = True
-#napoleon_include_private_with_doc = True
-#napoleon_include_special_with_doc = True
-#napoleon_use_admonition_for_examples = False
-#napoleon_use_admonition_for_notes = False
-#napoleon_use_admonition_for_references = False
-#napoleon_use_ivar = False
-#napoleon_use_param = True
-#napoleon_use_rtype = True
-
 # -- Prepend module name to an object name or not -----------------------------------
 add_module_names = False
+
+# -- Copy notebooks into ./docs/sources/notebooks -----------------------------------
+notebooks_src_path = "../../notebooks"
+notebooks_dst_path = "notebooks"
+
+import shutil, errno
+from pathlib import Path
+
+dirpath = Path(notebooks_dst_path)
+if dirpath.exists() and dirpath.is_dir():
+    shutil.rmtree(dirpath)
+
+try:
+    shutil.copytree(notebooks_src_path, notebooks_dst_path)
+except OSError as exc: # python >2.5
+    if exc.errno in (errno.ENOTDIR, errno.EINVAL):
+        shutil.copy(notebooks_src_path, notebooks_dst_path)
+    else:
+        raise

@@ -30,7 +30,5 @@ Table of Contents
     heterogeneous_computing
     programming_dpep
     examples
-    jupiter_notebook
+    jupyter_notebook
     useful_links
-
-	
