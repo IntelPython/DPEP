@@ -11,7 +11,7 @@ Instructions for Jupyter Notebook samples illustrating Data Parallel Extensions 
    Usage of numpy functions in dpnp library <02-dpnp_numpy_fallback.ipynb>
 
 
-To download all examples in Jupiter notebook please use the following links: 
+To download all examples in Jupiter notebook, use the following links: 
    * `Getting Started <./01-get_started.ipynb>`_, 
    * `Usage of numpy functions in dpnp library <02-dpnp_numpy_fallback.ipynb>`_
 

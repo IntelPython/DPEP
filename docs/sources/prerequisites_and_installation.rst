@@ -5,46 +5,49 @@
 
 .. |trade| unicode:: U+2122
 
-Prerequisites and installation
+Prerequisites and Installation
 ==============================
 
-1. Device drivers
+1. Device Drivers
 ******************
 
-Since you are about to start programming data parallel devices beyond CPU, you will need an appropriate hardware.
-For example, Data Parallel Extensions for Python work fine on Intel laptops with integrated graphics.
-In majority of cases your laptop already has all necessary device drivers installed. But if you want the most
-up-to-date driver, you can always
+To start programming data parallel devices beyond CPU, you need an appropriate hardware.
+For example, Data Parallel Extensions for Python work fine on Intel(R) laptops with integrated graphics.
+In majority of cases, your laptop already has all necessary device drivers installed. But if you want the most
+up-to-date driver, you can 
 `update it to the latest one <https://www.intel.com/content/www/us/en/download-center/home.html>`_.
 Follow device driver installation instructions
 to complete this step.
 
-All other necessary components for programming data parallel devices will be installed with
+All other necessary components are be installed with
 Data Parallel Extensions for Python.
 
-2. Python interpreter
+2. Python Interpreter
 **********************
 
-You will need Python 3.8, 3.9, or 3.10 installed on your system. If you do not have one yet the easiest way to do
+Install Python 3.8, 3.9, or 3.10 to your system. 
+
+If you do not have one yet, the easiest way to do
 that is to install `Intel Distribution for Python*`_.
-It will install all essential Python numerical and machine
-learning packages optimized for Intel hardware, including Data Parallel Extensions for Python*.
-If you have Python installation from another vendor, it is fine too. All you need is to install Data Parallel
+It installs all essential Python numerical and machine
+learning packages optimized for the Intel(R) hardware, including Data Parallel Extensions for Python*.
+
+
+If you have Python installation from another vendor, you need is to install Data Parallel
 Extensions for Python manually.
 
 3. Data Parallel Extensions for Python
 ***************************************
 
-You can skip this step if you already installed Intel |copy| Distribution for Python or Intel |copy| AI Analytics Toolkit.
+Skip this step if you already have Intel |copy| Distribution for Python or Intel |copy| AI Analytics Toolkit on your system.
 
-The easiest way to install Data Parallel Extensions for Python is to install numba-dpex:
+.. WARNING:: Update ``conda`` and ``pip`` to the latest version, before installing ``numba-dpex``. 
 
-Conda: ``conda install numba-dpex``
+The easiest way to install Data Parallel Extensions for Python is to install ``numba-dpex``:
 
-Pip: ``pip install numba-dpex``
+* Conda: ``conda install numba-dpex``
+* Pip: ``pip install numba-dpex``
 
-The above commands will install ``numba-dpex`` along with its dependencies, including ``dpnp``, ``dpctl``,
+These commands install  along with its dependencies, including ``dpnp``, ``dpctl``,
 and required compiler runtimes and drivers.
 
-.. WARNING::
-   Before installing with conda or pip it is strongly advised to update ``conda`` and ``pip`` to latest versions
