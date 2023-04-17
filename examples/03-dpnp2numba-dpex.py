@@ -25,10 +25,10 @@
 # *****************************************************************************
 
 import dpnp as np
-from numba_dpex import njit
+from numba_dpex import dpjit as njit
 
 
-@njit(fastmath=True)
+@njit()
 def sum_it(x):  # Device queue is inferred from x. The kernel is submitted to that queue
     return np.sum(x)
 
