@@ -3,6 +3,8 @@
 This is a "Hello, World" application in Monte Carlo methods. It stresses random number generation 
 along with some other math required for implementation of the Acceptance-Rejection technique.
 
+![Monte Carlo Pi image](https://github.com/IntelPython/DPEP/blob/main/demos/mcpi/images/draw_points.png)
+
 For details please refer to [Wikipedia](https://en.wikipedia.org/wiki/Monte_Carlo_method)
 
 ## How to run
@@ -25,5 +27,7 @@ The following options are allowed:
 * `--n-batches`:  Number of batches
 
 ## Jupyter Notebook
-The Monte Carlo Pi demo is also supplemented with the [Juoyter Notebook](https://github.com/samaid/mcpi/blob/main/mcpi.ipynb),
+The Monte Carlo Pi demo is also supplemented with the [Jupyter Notebook](https://github.com/samaid/mcpi/blob/main/mcpi.ipynb),
 where step by step we illustrate the idea of the algorithm.
+
+![Pi animation](https://github.com/IntelPython/DPEP/blob/main/demos/mcpi/images/pi-animation.gif)
