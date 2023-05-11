@@ -47,7 +47,7 @@ When the notebook opens in your browser, you will see the **Notebook Dashboard**
 For more information please refer to [Jupyter documentation](https://docs.jupyter.org/en/latest/running.html)
 
 ## Benchmarks
-Data Parallel Extensions for Python provide a set of benchmarks illustrating different aspects of implementing the performant code with Data Parallel Extensions for Python. 
+Data Parallel Extensions for Python provide a set of [benchmarks](https://github.com/IntelPython/dpbench) illustrating different aspects of implementing the performant code with Data Parallel Extensions for Python. 
 Benchmarks represent some real life numerical problem or some important part (kernel) of real life application. Each application/kernel is implemented in several variants (not necessarily all variants):
 - Pure Python: Typically the slowest and used just as a reference implementation
 - `numpy`: Same application/kernel implemented using NumPy library
