@@ -57,6 +57,7 @@ Benchmarks represent some real life numerical problem or some important part (ke
 - `numba-dpex @dpjit` array-style: Modified `numba @njit` array-style implementation to compile and run on a specific device. You can use vanilla Numba implementation as a baseline while comparing `numba-dpex` implementation details and performance. You can also compare it against `dpnp` implementation to see how much extra performance `numba-dpex` can bring when you compile NumPy code for a given device
 - `numba-dpex @dpjit` direct loops (`prange`): Modified `numba @njit` direct loop implementation to compile and run on a specific device. You can use vanilla Numba implementation as a baseline while comparing `numba-dpex` implementation details and performance. You can also compare it against `dpnp` implementation to see how much extra performance `numba-dpex` can bring when you compile NumPy code for a given device
 - `numba-dpex @dpjit` kernel: Kernel-style programming, which is close to `@cuda.jit` programming model used in vanilla Numba 
+- `numba-mlir`: Array-style, direct loops and kernel-style implementations for experimental MLIR-based backend for Numba
 - `cupy`: NumPy-like implementation using CuPy to run on CUDA-compatible devices
 - `@cuda.jit`: Kernel-style Numba implementation to run on CUDA-compatible devices
 - Native SYCL: Most applications/kernels also have DPC++ implementation, which can be used to compare performance of above implementations to DPC++ compiled code.
