@@ -5,7 +5,7 @@ Benchmarks
 ==========
 
 **Data Parallel Extensions for Python** provide a set of
-`benchmarks<https://github.com/IntelPython/dpbench>`_ illustrating different aspects of
+`benchmarks <https://github.com/IntelPython/dpbench>`_ illustrating different aspects of
 implementing the performant code with Data Parallel Extensions for Python.
 Benchmarks represent some real life numerical problem or some important part (kernel) of real life application.
 Each application/kernel is implemented in several variants (not necessarily all variants):
@@ -55,4 +55,4 @@ These benchmarks are implemented in ``dpbench`` framework, which allows you to r
 all or select benchmarks and variants to evaluate their performance on different hardware.
 
 For more details please refer to ``dpbench``
-`documentation<https://github.com/IntelPython/dpbench/blob/main/README.md>`_.
+`documentation <https://github.com/IntelPython/dpbench/blob/main/README.md>`_.

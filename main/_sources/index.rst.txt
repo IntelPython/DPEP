@@ -32,4 +32,5 @@ Table of Contents
     examples
     jupyter_notebook
     benchmarks
+    demos
     useful_links
