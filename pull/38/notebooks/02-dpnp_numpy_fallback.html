@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KVSVYMBQ0W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KVSVYMBQ0W');
+    </script>
+    
+    <title>Jupyter Notebook 2: Falling back to NumPy &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sdc.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Benchmarks" href="../benchmarks.html" />
+    <link rel="prev" title="Jupyter Notebook 1: Getting started with Data Parallel Extensions for Python" href="01-get_started.html" />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600' rel='stylesheet' type='text/css'/>
+
+  </head><body>
+<div class="topbar">
+  <a class="brand" title="Intel Python projects" href="../other_intel_python_projects.html"></a>
+  <a class="brand_sdc" title="Documentation Home" href="../index.html"></a>
+
+  <ul>
+    <li><a class="exampleslink" title="Examples" href="../examples.html"></a></li>
+    <li><a class="issueslink" title="Issues" href="https://community.intel.com/t5/Intel-Distribution-for-Python/bd-p/distribution-python"></a></li>
+    <li><a class="emaillink" title="Email" href="mailto:scripting@intel.com"></a></li>
+    <li><a class="homelink" title="GitHub" href="https://github.com/IntelPython/DPEP"></a></li>
+    <li>
+      
+      
+<form action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+      
+    </li>
+  </ul>
+</div>
+
+<div class="related">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right">
+	<a href="../benchmarks.html" title="Benchmarks">
+	  next &raquo;
+	</a>
+      </li>
+      <li class="right">
+	<a href="01-get_started.html" title="Jupyter Notebook 1: Getting started with Data Parallel Extensions for Python">
+	  &laquo; previous
+	</a>
+	 |
+      </li>
+      <li>
+	<a href="../index.html">Data Parallel Extensions for Python* 0.1 documentation</a>
+	 &#187;
+      </li>
+      <li><a href="../jupyter_notebook.html" accesskey="U">Tutorials</a> &#187;</li>
+      
+      <li>Jupyter Notebook 2: Falling back to NumPy</li> 
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="Jupyter-Notebook-2:-Falling-back-to-NumPy">
+<h1>Jupyter Notebook 2: Falling back to NumPy<a class="headerlink" href="#Jupyter-Notebook-2:-Falling-back-to-NumPy" title="Permalink to this heading">¶</a></h1>
+<p><strong>Data Parallel Extensions for Python</strong> are still in active development and have not yet reached production quality. This in particular means that some functional and performance gaps may exist in certain <code class="docutils literal notranslate"><span class="pre">dpnp</span></code> functions that require workarounds. The functional gaps include:</p>
+<ul class="simple">
+<li><p>Certain NumPy APIs are not supported. For complete reference please see the <a class="reference external" href="https://intelpython.github.io/dpnp/reference/comparison.html">comparison table</a> for <strong>Data Parallel Extension for NumPy</strong>.</p></li>
+<li><p>Limited support of <code class="docutils literal notranslate"><span class="pre">dtypes</span></code>. At present the <strong>Data Parallel Extension for NumPy</strong> supports <code class="docutils literal notranslate"><span class="pre">float32</span></code>, <code class="docutils literal notranslate"><span class="pre">float64</span></code>, <code class="docutils literal notranslate"><span class="pre">int32</span></code>, and <code class="docutils literal notranslate"><span class="pre">int64</span></code> types.</p></li>
+<li><p>Certain keyword arguments are supported for default settings only. Please refer to the <a class="reference external" href="https://intelpython.github.io/dpnp/reference/index.html">Data Parallel Extension for NumPy API Reference</a> for details.</p></li>
+</ul>
+<p>Since NumPy API is versatily there are typically some workaround options exist. Please refer to <a class="reference external" href="https://intelpython.github.io/dpnp/reference/index.html">Data Parallel Extension for NumPy API Reference</a> and <a class="reference external" href="https://numpy.org/doc/stable/">NumPy documentation</a> for hints for possible alternatives.</p>
+<p>Another possible workaround is to fall back to the host and execute the script via NumPy. This is a discouraged use because it typically results in significant performance penalties associated with copying data from the device to the host and back. However, for debugging purposes you may still want to enable this behavior.</p>
+<p>To do so you must set the <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>Let’s take the following example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="mi">200</span><span class="o">*</span><span class="mi">100</span>
+
+<span class="c1"># Create an two dimencial array with singular element and array like option</span>
+<span class="n">a_np</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mf">3.</span><span class="p">,</span> <span class="n">like</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_np</span><span class="p">)</span>
+<span class="n">a_dp</span> <span class="o">=</span> <span class="n">dpnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mf">3.</span><span class="p">,</span> <span class="n">like</span> <span class="o">=</span> <span class="n">dpnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a_dp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ ...
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">NotImplementedError</span>                       Traceback (most recent call last)
+Cell <span class="ansi-green-intense-fg ansi-bold">In[3], line 9</span>
+<span class="ansi-green-fg">      7</span> a_np <span style="color: rgb(98,98,98)">=</span> numpy<span style="color: rgb(98,98,98)">.</span>full((N, N), <span style="color: rgb(98,98,98)">3.</span>, like <span style="color: rgb(98,98,98)">=</span> numpy<span style="color: rgb(98,98,98)">.</span>zeros((N, <span style="color: rgb(98,98,98)">0</span>)))
+<span class="ansi-green-fg">      8</span> <span style="color: rgb(0,135,0)">print</span>(a_np)
+<span class="ansi-green-intense-fg ansi-bold">----&gt; 9</span> a_dp <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">dpnp</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">full</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">N</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">N</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">3.</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">dpnp</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">zeros</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">N</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">0</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">     10</span> <span style="color: rgb(0,135,0)">print</span>(a_dp)
+
+File <span class="ansi-green-intense-fg ansi-bold">~\AppData\Local\Continuum\miniconda3\envs\ndpex-examples\lib\site-packages\dpnp\dpnp_iface_arraycreation.py:747</span>, in <span class="ansi-cyan-fg">full</span><span class="ansi-blue-intense-fg ansi-bold">(shape, fill_value, dtype, order, like, device, usm_type, sycl_queue)</span>
+<span class="ansi-green-fg">    738</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
+<span class="ansi-green-fg">    739</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> dpnp_container<span style="color: rgb(98,98,98)">.</span>full(shape,
+<span class="ansi-green-fg">    740</span>                                fill_value,
+<span class="ansi-green-fg">    741</span>                                dtype<span style="color: rgb(98,98,98)">=</span>dtype,
+<span class="ansi-green-intense-fg ansi-bold">   (...)</span>
+<span class="ansi-green-fg">    744</span>                                usm_type<span style="color: rgb(98,98,98)">=</span>usm_type,
+<span class="ansi-green-fg">    745</span>                                sycl_queue<span style="color: rgb(98,98,98)">=</span>sycl_queue)
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 747</span> <span class="ansi-bold" style="color: rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">call_origin</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">numpy</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">full</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">shape</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">fill_value</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">dtype</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">order</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">=</span><span class="ansi-yellow-bg">like</span><span class="ansi-yellow-bg">)</span>
+
+File <span class="ansi-green-intense-fg ansi-bold">dpnp\dpnp_utils\dpnp_algo_utils.pyx:132</span>, in <span class="ansi-cyan-fg">dpnp.dpnp_utils.dpnp_algo_utils.call_origin</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+
+<span class="ansi-red-intense-fg ansi-bold">NotImplementedError</span>: Requested funtion=full with args=((20000, 20000), 3.0, None, &#39;C&#39;) and kwargs={&#39;like&#39;: array([])} isn&#39;t currently supported and would fall back on NumPy implementation. Define enviroment variable `DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK` to `0` if the fall back is required to be supported without rasing an exception.
+</pre></div></div>
+</div>
+<p>We are attempting to call <code class="docutils literal notranslate"><span class="pre">dpnp.full()</span></code> function with the keyword argument <code class="docutils literal notranslate"><span class="pre">like</span></code> set to another <code class="docutils literal notranslate"><span class="pre">dpnp</span></code> array, which is currently unsupported. A possible alternative would be to use <code class="docutils literal notranslate"><span class="pre">dpnp.full_like</span></code> function:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">dpnp</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">dpnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span> <span class="mf">3.</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elapsed </span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array a is located on the device:&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Elapsed 1494.33 ms
+[[3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ ...
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]]
+Array a is located on the device: Device(level_zero:gpu:0)
+</pre></div></div>
+</div>
+<p>Now we enable <code class="docutils literal notranslate"><span class="pre">DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK</span></code> to fall back to NumPy in case of <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code>.</p>
+<p><strong>Note: Restart Jupyter Notebook kernel before running the following code</strong></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+<span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK =&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">__DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK__</span><span class="p">)</span>  <span class="c1"># Expect 0</span>
+
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="mi">200</span><span class="o">*</span><span class="mi">100</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="mf">3.</span><span class="p">,</span> <span class="n">like</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elapsed </span><span class="si">{</span><span class="p">(</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array a is located on the device:&quot;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+DPNP_RAISE_EXCEPION_ON_NUMPY_FALLBACK = 0
+Elapsed 2231.62 ms
+[[3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ ...
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]
+ [3. 3. 3. ... 3. 3. 3.]]
+Array a is located on the device: Device(level_zero:gpu:0)
+</pre></div></div>
+</div>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Table of Contents</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../prerequisites_and_installation.html">Prerequisites and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parallelism.html">Parallelism in Modern Data-Parallel Architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../heterogeneous_computing.html">Heterogeneous Computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../programming_dpep.html">Programming with Data Parallel Extensions for Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../jupyter_notebook.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-get_started.html">Getting Started</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Controlling `dpnp` fallback to `numpy`</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful_links.html">Useful links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful_links.html#to-do">To-Do</a></li>
+</ul>
+
+
+<form action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="01-get_started.html"
+                          title="previous chapter">Jupyter Notebook 1: Getting started with Data Parallel Extensions for Python</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../benchmarks.html"
+                          title="next chapter">Benchmarks</a></p>
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<footer class="footer">
+  <p class="pull-right"> &nbsp;
+    <a href="#">Back to Top</a></p>
+  <p>
+    &copy; Copyright 2020-2023, Intel Corporation.<br/>
+    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 7.0.0. &nbsp;
+  </p>
+</footer>
+  </body>
+</html>
