@@ -3,13 +3,13 @@ package:
   version: {{ GIT_DESCRIBE_TAG }}
 
 source:
-  path: ..
+  path: ../../..
 
 build:
   entry_points:
     - mcpi = mcpi_demo.pi:main
   number: {{ GIT_DESCRIBE_NUMBER }}
-  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
+  script: {{ PYTHON }} -m pip install ./demos/mcpi --no-deps --ignore-installed --no-cache-dir -vvv
 
 requirements:
   host:
