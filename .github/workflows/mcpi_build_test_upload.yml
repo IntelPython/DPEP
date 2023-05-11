@@ -45,7 +45,7 @@ jobs:
           CHANNELS="-c intel -c main --override-channels"
           VERSIONS="--python ${{ matrix.python }}"
           TEST=""
-          
+          ls
           cd ./demos/mcpi
           conda build $TEST $VERSIONS $CHANNELS conda-recipe
       - name: Upload artifact
