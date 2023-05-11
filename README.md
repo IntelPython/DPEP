@@ -63,3 +63,17 @@ Benchmarks represent some real life numerical problem or some important part (ke
 - Native SYCL: Most applications/kernels also have DPC++ implementation, which can be used to compare performance of above implementations to DPC++ compiled code.
 
 For more details please refer to `dpbench` [documentation](https://github.com/IntelPython/dpbench/blob/main/README.md).
+
+## Demos
+There are several demo applications illustrating the power of the **Data Parallel Extensions for Python**. They are:
+
+- [Monte Carlo Pi](https://github.com/IntelPython/DPEP/tree/main/demos/mcpi>) -
+The Monte Carlo method to estimate the value of $\pi$.
+
+- [Mandelbrot Set](https://github.com/IntelPython/DPEP/tree/main/demos/mandelbrot) -
+Visualization of the breathtaking process of diving in the famous Mandelbrot fractal
+
+- [Game of Life](https://github.com/IntelPython/DPEP/tree/main/demos/game-of-life>) -
+Visualization of the life evolution using famous Conway's model
+
+For more details please refer to the documentation located in the individual demo directory.
