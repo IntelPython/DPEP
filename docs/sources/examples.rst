@@ -1,9 +1,9 @@
 .. _examples:
 .. include:: ./ext_links.txt
 
-List of examples
-================
-All examples are located in the `GitHub repository<https://github.com/IntelPython/DPEP/tree/main/examples>`_.
+Examples
+========
+All examples are located in the `GitHub repository <https://github.com/IntelPython/DPEP/tree/main/examples>`_.
 Their names start with the 2-digit number followed by a descriptive name.
 You can run examples in any order, however, if
 you are new to the Data Parallel Extensions for Python, it is recommended to go in the order examples are enumerated.

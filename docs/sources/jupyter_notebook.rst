@@ -5,7 +5,7 @@ Tutorials
 *********
 
 Getting started Jupyter* Notebooks illustrating the usage of **Data Parallel Extensions for Python** are located
-in the `GitHub repository<https://github.com/IntelPython/DPEP/tree/main/notebooks>`_
+in the `GitHub repository <https://github.com/IntelPython/DPEP/tree/main/notebooks>`_
 
 To run the tutorial, in the command line prompt type:
 
@@ -31,7 +31,7 @@ which will show a list of the notebooks, files, and subdirectories
 in the directory where the notebook server was started.
 Navigate to the notebook of your interest and open it in the dashboard.
 
-For more information please refer to `Jupyter documentation<https://docs.jupyter.org/en/latest/running.html>`_
+For more information please refer to `Jupyter documentation <https://docs.jupyter.org/en/latest/running.html>`_
 
 .. toctree::
    :maxdepth: 1
