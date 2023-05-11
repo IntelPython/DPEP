@@ -31,4 +31,5 @@ Table of Contents
     programming_dpep
     examples
     jupyter_notebook
+    benchmarks
     useful_links

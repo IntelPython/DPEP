@@ -3,6 +3,18 @@
 
 List of examples
 ================
+All examples are located in the `GitHub repository<https://github.com/IntelPython/DPEP/tree/main/examples>`_.
+Their names start with the 2-digit number followed by a descriptive name.
+You can run examples in any order, however, if
+you are new to the Data Parallel Extensions for Python, it is recommended to go in the order examples are enumerated.
+
+The following command will run the very first example of using Data Parallel Extensions for Python
+
+.. code-block:: console
+
+    python ./examples/01-hello_dpnp.py
+
+These are listings of these examples:
 
 .. literalinclude:: ../../examples/01-hello_dpnp.py
    :language: python
@@ -28,8 +40,3 @@ List of examples
    :caption: **EXAMPLE 04:** Get information about devices
    :name: examples_04_dpctl_device_query
 
-Benchmarks
-**********
-
-.. todo::
-   Provide instructions for dpbench
