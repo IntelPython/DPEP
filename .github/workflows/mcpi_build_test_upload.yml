@@ -120,7 +120,7 @@ jobs:
         run: |
           . $CONDA/etc/profile.d/conda.sh
           conda activate test-env
-          pushd ./${{ env.MODULE_NAME }}
+          pushd ./demos/mcpi/${{ env.MODULE_NAME }}
           pytest
           popd
 
@@ -280,7 +280,7 @@ jobs:
         run: |
           ls
           conda activate test-env
-          pushd ./${{ env.MODULE_NAME }}
+          pushd ./demos/mcpi/${{ env.MODULE_NAME }}
           pytest
           popd
 
