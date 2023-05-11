@@ -1,0 +1,47 @@
+package:
+  name: mcpi-demo
+  version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+  path: ..
+
+build:
+  entry_points:
+    - mcpi = mcpi_demo.pi:main
+  number: {{ GIT_DESCRIBE_NUMBER }}
+  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
+
+requirements:
+  host:
+    - python
+  run:
+    - python
+    - matplotlib >=3.7.1
+    - numpy >=1.21
+    - numba >=0.55
+    - dpnp
+    - numba-dpex
+
+test:
+  requires:
+    - pytest
+  commands:
+    - mcpi --help
+    - python -m mcpi_demo --variant numba
+    - mcpi --batch-size 10 --n-batches 1
+  imports:
+    - mcpi_demo
+    - mcpi_demo.impl.impl_versioner
+    - mcpi_demo.impl.arg_parser
+
+about:
+  home: https://github.com/samaid
+  license: BSD-2-Clause
+  license_family: BSD
+  license_file:
+    - LICENSE
+  summary: Monte Carlo method to compute Pi
+
+extra:
+  recipe-maintainers:
+    - samaid
