@@ -39,4 +39,3 @@ These are listings of these examples:
    :lines: 27-
    :caption: **EXAMPLE 04:** Get information about devices
    :name: examples_04_dpctl_device_query
-

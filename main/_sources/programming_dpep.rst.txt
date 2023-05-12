@@ -303,4 +303,3 @@ Switching Between Single and Double Precision
 3. Write your code with catastrophic cancellations in mind. These blocks of code will require special
    care such as the use of extended precision or other techniques to control cancellations.
    It is likely that this part of the code requires a hardware specific implementation.
-
