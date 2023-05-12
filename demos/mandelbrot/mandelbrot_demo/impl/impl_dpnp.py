@@ -1,5 +1,4 @@
 import dpnp as np
-
 from mandelbrot_demo.impl.settings import MAX_ITER
 
 c1 = np.asarray([0.0, 0.0, 0.2])

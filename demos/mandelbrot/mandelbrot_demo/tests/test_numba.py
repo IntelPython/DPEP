@@ -1,5 +1,4 @@
 import numpy as np
-
 from mandelbrot_demo.impl.impl_numba import mandelbrot
 
 
