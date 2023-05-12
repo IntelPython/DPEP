@@ -40,11 +40,10 @@ about:
   license_family: BSD
   license_file:
     - LICENSE
-  summary: "Monte Carlo demo to compute Pi using numpy, numba, dpnp, numba-dpex"
+  summary: Monte Carlo demo to compute Pi using numpy, numba, dpnp, and numba-dpex
   description: |
-    This is a "Hello, World" application in Monte Carlo methods.
-    It stresses random number generation along with some other math
-    required for implementation of the Acceptance-Rejection technique.
+    This is a Hello, World application in Monte Carlo methods. It stresses random number generation along
+    with some other math required for implementation of the Acceptance-Rejection technique.
 
 extra:
   recipe-maintainers:
