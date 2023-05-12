@@ -1,7 +1,7 @@
 [![GitHub Pages](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml/badge.svg?branch=main)](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml)
+[![Python Code Style](https://github.com/IntelPython/DPEP/actions/workflows/python_style_checks.yml/badge.svg?branch=main)](https://github.com/IntelPython/DPEP/actions/workflows/python_style_checks.yml)
 [![Build-test-upload mcpi package](https://github.com/IntelPython/DPEP/actions/workflows/mcpi_build_test_upload.yml/badge.svg)](https://github.com/IntelPython/DPEP/actions/workflows/mcpi_build_test_upload.yml)
-[![GitHub Pages](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml/badge.svg?branch=main)](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml)
-[![GitHub Pages](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml/badge.svg?branch=main)](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml)
+[![Mandelbrot build package](https://github.com/IntelPython/DPEP/actions/workflows/mandelbrot_build_test_deploy.yml/badge.svg?branch=main)](https://github.com/IntelPython/DPEP/actions/workflows/mandelbrot_build_test_deploy.yml)
 
 # Data Parallel Extensions for Python*
 
