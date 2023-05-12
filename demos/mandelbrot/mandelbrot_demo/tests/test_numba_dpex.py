@@ -1,5 +1,4 @@
 import dpnp as np
-
 from mandelbrot_demo.impl.impl_numba_dpex import mandelbrot
 
 

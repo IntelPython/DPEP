@@ -42,8 +42,8 @@ about:
     - LICENSE
   summary: "Monte Carlo demo to compute Pi using numpy, numba, dpnp, numba-dpex"
   description: |
-    This is a "Hello, World" application in Monte Carlo methods. 
-    It stresses random number generation along with some other math 
+    This is a "Hello, World" application in Monte Carlo methods.
+    It stresses random number generation along with some other math
     required for implementation of the Acceptance-Rejection technique.
 
 extra:

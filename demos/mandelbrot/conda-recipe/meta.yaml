@@ -45,10 +45,10 @@ about:
     - LICENSE
   summary: "Mandelbort Set demo using numpy, numba, dpnp, numba-dpex"
   description: |
-    The Mandelbrot set is the set of complex numbers c for which the function f(z)=z*z + c 
-    does not diverge to infinity when iterated from z=0, i.e., for which the sequence 
-    f(0), f(f(0)), etc., remains bounded in absolute value. Images of the Mandelbrot set exhibit 
-    an elaborate and infinitely complicated boundary that reveals progressively ever-finer 
+    The Mandelbrot set is the set of complex numbers c for which the function f(z)=z*z + c
+    does not diverge to infinity when iterated from z=0, i.e., for which the sequence
+    f(0), f(f(0)), etc., remains bounded in absolute value. Images of the Mandelbrot set exhibit
+    an elaborate and infinitely complicated boundary that reveals progressively ever-finer
     recursive detail at increasing magnifications
 
 extra:
