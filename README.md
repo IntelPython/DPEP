@@ -1,4 +1,7 @@
+[![GitHub Pages](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml/badge.svg?branch=main)](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml)
 [![Build-test-upload mcpi package](https://github.com/IntelPython/DPEP/actions/workflows/mcpi_build_test_upload.yml/badge.svg)](https://github.com/IntelPython/DPEP/actions/workflows/mcpi_build_test_upload.yml)
+[![GitHub Pages](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml/badge.svg?branch=main)](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml)
+[![GitHub Pages](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml/badge.svg?branch=main)](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml)
 
 # Data Parallel Extensions for Python*
 
