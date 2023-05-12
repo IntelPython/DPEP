@@ -1,5 +1,4 @@
 import numpy as np
-
 from mcpi_demo.impl.arg_parser import parse_args
 
 RUN_VERSION = parse_args().variant

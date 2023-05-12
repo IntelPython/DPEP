@@ -1,7 +1,6 @@
 from math import fabs
 
 import dpnp as np
-
 from mcpi_demo.impl.impl_numba_dpex import monte_carlo_pi_batch
 
 

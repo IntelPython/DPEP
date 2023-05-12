@@ -27,6 +27,10 @@
 import dpctl
 
 dpctl.lsplatform()  # Print platform information
-print("GPU devices:", dpctl.get_devices(device_type="gpu"))  # Get the list of all GPU devices
-print("Number of GPU devices", dpctl.get_num_devices(device_type="gpu"))  # Get the number of GPU devices
+print(
+    "GPU devices:", dpctl.get_devices(device_type="gpu")
+)  # Get the list of all GPU devices
+print(
+    "Number of GPU devices", dpctl.get_num_devices(device_type="gpu")
+)  # Get the number of GPU devices
 print("Has CPU devices?", dpctl.has_cpu_devices())  # Check if there are CPU devices

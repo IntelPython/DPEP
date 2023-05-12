@@ -36,7 +36,7 @@ def sum_it(x):  # Device queue is inferred from x. The kernel is submitted to th
 x = np.empty(3)
 try:
     x = np.asarray([1, 2, 3], device="gpu")
-except:
+except Exception:
     print("GPU device is not available")
 
 print("Array x allocated on the device:", x.device)

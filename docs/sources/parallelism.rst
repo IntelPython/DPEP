@@ -41,4 +41,3 @@ optimizing core numerical and data science packages for leveraging parallelism a
     :width: 150px
     :align: center
     :alt: SIMD
-

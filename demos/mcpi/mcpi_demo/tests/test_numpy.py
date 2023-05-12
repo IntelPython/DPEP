@@ -1,7 +1,6 @@
 from math import fabs
 
 import numpy as np
-
 from mcpi_demo.impl.impl_numpy import monte_carlo_pi_batch
 
 
