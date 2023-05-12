@@ -38,12 +38,18 @@ test:
     - mandelbrot_demo.impl.arg_parser
 
 about:
-  home: https://github.com/samaid
+  home: https://intelpython.github.io/DPEP/main/
   license: BSD-2-Clause
   license_family: BSD
   license_file:
-    - ../../LICENSE
-  summary: Mandelbort set demo using numpy, numba, dpnp, numba-dpex
+    - LICENSE
+  summary: "Mandelbort Set demo using numpy, numba, dpnp, numba-dpex"
+  description: |
+    The Mandelbrot set is the set of complex numbers c for which the function f(z)=z*z + c 
+    does not diverge to infinity when iterated from z=0, i.e., for which the sequence 
+    f(0), f(f(0)), etc., remains bounded in absolute value. Images of the Mandelbrot set exhibit 
+    an elaborate and infinitely complicated boundary that reveals progressively ever-finer 
+    recursive detail at increasing magnifications
 
 extra:
   recipe-maintainers:
