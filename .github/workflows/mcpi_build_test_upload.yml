@@ -1,4 +1,4 @@
-name: Build-test-upload mcpi package
+name: mcpi build package
 
 on:
   push:

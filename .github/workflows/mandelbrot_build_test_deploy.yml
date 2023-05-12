@@ -1,4 +1,4 @@
-name: Build-test-upload package
+name: Mandelbrot build package
 
 on:
   push:
