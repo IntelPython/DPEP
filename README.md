@@ -1,3 +1,5 @@
+[![Build-test-upload mcpi package](https://github.com/IntelPython/DPEP/actions/workflows/mcpi_build_test_upload.yml/badge.svg)](https://github.com/IntelPython/DPEP/actions/workflows/mcpi_build_test_upload.yml)
+
 # Data Parallel Extensions for Python*
 
 Data Parallel Extensions for Python* extend numerical Python capabilities beyond CPU and allow even higher performance
