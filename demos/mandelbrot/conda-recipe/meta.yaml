@@ -3,13 +3,13 @@ package:
   version: {{ GIT_DESCRIBE_TAG }}
 
 source:
-  path: ..
+  path: ../../..
 
 build:
   entry_points:
     - mandelbrot = mandelbrot_demo.mandelbrot:main
   number: {{ GIT_DESCRIBE_NUMBER }}
-  script: {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
+  script: {{ PYTHON }} -m pip install ./demos/mandelbrot --no-deps --ignore-installed --no-cache-dir -vvv
 
 requirements:
   host:
@@ -42,7 +42,7 @@ about:
   license: BSD-2-Clause
   license_family: BSD
   license_file:
-    - LICENSE
+    - ../../LICENSE
   summary: Mandelbort set demo using numpy, numba, dpnp, numba-dpex
 
 extra:
