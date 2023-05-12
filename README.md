@@ -1,4 +1,4 @@
-[![Build-test-upload mcpi package](https://github.com/IntelPython/DPEP/actions/workflows/mcpi_build_test_upload.yml/badge.svg)](https://github.com/IntelPython/DPEP/actions/workflows/mcpi_build_test_upload.yml)
+[![Python Code Style](https://github.com/IntelPython/DPEP/actions/workflows/python_style_checks.yml/badge.svg?branch=main)](https://github.com/IntelPython/DPEP/actions/workflows/python_style_checks.yml)
 
 # Data Parallel Extensions for Python*
 
