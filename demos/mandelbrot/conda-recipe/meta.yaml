@@ -43,7 +43,7 @@ about:
   license_family: BSD
   license_file:
     - LICENSE
-  summary: "Mandelbort Set demo using numpy, numba, dpnp, numba-dpex"
+  summary: Mandelbort Set demo using numpy, numba, dpnp, numba-dpex
   description: |
     The Mandelbrot set is the set of complex numbers c for which the function f(z)=z*z + c
     does not diverge to infinity when iterated from z=0, i.e., for which the sequence

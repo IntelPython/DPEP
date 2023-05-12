@@ -146,7 +146,7 @@ jobs:
         env:
           ANACONDA_TOKEN: ${{ secrets.PYCODDIYTOKEN }}
         run: |
-          anaconda --token ${{ env.ANACONDA_TOKEN }} upload --user pycoddiy --label dpep ${PACKAGE_NAME}-*.tar.bz2
+          anaconda --token ${{ env.ANACONDA_TOKEN }} upload --user pycoddiy --label main ${PACKAGE_NAME}-*.tar.bz2
 
   build_windows:
     runs-on: windows-latest
@@ -307,4 +307,4 @@ jobs:
         env:
           ANACONDA_TOKEN: ${{ secrets.PYCODDIYTOKEN }}
         run: |
-          anaconda --token ${{ env.ANACONDA_TOKEN }} upload --user pycoddiy --label dpep ${{ env.PACKAGE_NAME }}-*.tar.bz2
+          anaconda --token ${{ env.ANACONDA_TOKEN }} upload --user pycoddiy --label main ${{ env.PACKAGE_NAME }}-*.tar.bz2
