@@ -1,4 +1,7 @@
-![Python Code Style](https://github.com/IntelPython/DPEP/actions/workflows/python_style_checks.yml/badge.svg?branch=main&event=push)
+![Coding style](https://github.com/IntelPython/DPEP/actions/workflows/python_style_checks.yml/badge.svg?branch=main&event=push)
+![Mandelbrot package](https://github.com/IntelPython/DPEP/actions/workflows/mandelbrot_build_test_deploy.yml/badge.svg?branch=main&event=push)
+![Mandelbrot package](https://github.com/IntelPython/DPEP/actions/workflows/mandelbrot_build_test_deploy.yml/badge.svg?branch=main&event=push)
+![Documentation](https://github.com/IntelPython/DPEP/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main&event=push)
 
 # Data Parallel Extensions for Python*
 
