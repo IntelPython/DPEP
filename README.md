@@ -1,4 +1,4 @@
-[![Python Code Style](https://github.com/IntelPython/DPEP/actions/workflows/python_style_checks.yml/badge.svg?branch=main&event=push)](https://github.com/IntelPython/DPEP/actions/workflows/python_style_checks.yml)
+![Python Code Style](https://github.com/IntelPython/DPEP/actions/workflows/python_style_checks.yml/badge.svg?branch=main&event=push)
 
 # Data Parallel Extensions for Python*
 
