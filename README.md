@@ -1,7 +1,7 @@
 ![Coding style](https://github.com/IntelPython/DPEP/actions/workflows/python_style_checks.yml/badge.svg?branch=main&event=push)
+![mcpi package](https://github.com/IntelPython/DPEP/actions/workflows/mcpi_build_test_upload.yml/badge.svg?branch=main&event=push)
 ![Mandelbrot package](https://github.com/IntelPython/DPEP/actions/workflows/mandelbrot_build_test_deploy.yml/badge.svg?branch=main&event=push)
-![Mandelbrot package](https://github.com/IntelPython/DPEP/actions/workflows/mandelbrot_build_test_deploy.yml/badge.svg?branch=main&event=push)
-![Documentation](https://github.com/IntelPython/DPEP/actions/workflows/pages/pages-build-deployment/badge.svg?branch=main&event=push)
+![GitHub Pages](https://github.com/IntelPython/DPEP/actions/workflows/gh-pages.yml/badge.svg?branch=main&event=push)
 
 # Data Parallel Extensions for Python*
 

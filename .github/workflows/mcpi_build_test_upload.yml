@@ -1,4 +1,4 @@
-name: mcpi build package
+name: mcpi package
 
 on:
   push:
