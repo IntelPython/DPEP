@@ -1,5 +1,4 @@
 import pytest
-
 from game_of_life_demo import int_tuple
 from game_of_life_demo.impl.arg_parser import parse_args
 

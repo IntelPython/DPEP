@@ -3,11 +3,10 @@ from game_of_life_demo.impl.arg_parser import parse_args
 RUN_VERSION = parse_args().variant
 
 if RUN_VERSION == "Numba".casefold():
-    from numba import config
-
     from game_of_life_demo.impl.impl_numba import asnumpy
     from game_of_life_demo.impl.impl_numba import grid_update
     from game_of_life_demo.impl.impl_numba import init_grid
+    from numba import config
 
     config.THREADING_LAYER = parse_args().threading_layer
 elif RUN_VERSION == "NumPy".casefold():

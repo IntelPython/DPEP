@@ -1,8 +1,7 @@
 import dpnp as np
+from game_of_life_demo.impl.arg_parser import parse_args
 from numba_dpex import dpjit as njit
 from numba_dpex import prange
-
-from game_of_life_demo.impl.arg_parser import parse_args
 
 rules = np.array(
     [

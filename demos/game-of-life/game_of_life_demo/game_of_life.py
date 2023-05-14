@@ -1,5 +1,4 @@
 import numpy as np
-
 from game_of_life_demo import MAX_FRAMES
 from game_of_life_demo import PROB_ON
 from game_of_life_demo import get_task_size_string

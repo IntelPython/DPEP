@@ -9,7 +9,6 @@ else:
     import numpy.testing as testing
 
 import pytest
-
 from game_of_life_demo.game_of_life import Grid
 
 grids = [

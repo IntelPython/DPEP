@@ -1,5 +1,4 @@
 import numpy as np
-
 from game_of_life_demo import get_task_size_string
 from game_of_life_demo.impl.arg_parser import parse_args
 from game_of_life_demo.impl.impl_versioner import asnumpy
