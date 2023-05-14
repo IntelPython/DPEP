@@ -1,0 +1,48 @@
+package:
+  name: game-of-life-demo
+  version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+  path: ../../..
+
+build:
+  entry_points:
+    - game_of_life = game_of_life_demo.game_of_life:main
+  number: {{ GIT_DESCRIBE_NUMBER }}
+  script: {{ PYTHON }} -m pip install ./demos/game-of-life --no-deps --ignore-installed --no-cache-dir -vvv
+
+test:
+  requires:
+    - pytest
+  commands:
+    - game_of_life --help
+    - python -m game_of_life_demo --variant numba --threading-layer tbb --no-parallel --no-gui
+    - game_of_life --frame-count 5 --no-gui --no-stats --task-size 10,10
+  imports:
+    - game_of_life_demo
+    - game_of_life_demo.impl.impl_versioner
+    - game_of_life_demo.impl.arg_parser
+
+requirements:
+  host:
+   - python
+  run:
+    - numpy <1.24
+    - scipy
+    - numba >=0.56.4
+    - opencv =4.6.0
+    - dpnp
+    - numba-dpex
+
+about:
+  home: https://intelpython.github.io/DPEP/main/
+  summary: Conway's Game-Of-Life demo with numpy, numba, dpnp, numba-dpex
+  description: |
+    The Game of Life is a cellular automaton devised by John Horton Conway in 1970.
+    This demo provides multiple implementations using different libraries/tools for CPU and GPU.
+  license: BSD-2
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - samaid
