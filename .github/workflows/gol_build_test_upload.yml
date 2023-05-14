@@ -161,7 +161,7 @@ jobs:
           pip install pytest-mock
           # Test installed packages
           conda list -n test-env
-          cd ./demos/game-of-life
+          cd ./demos/game-of-life/game_of_life_demo/tests
       - name: Run tests (numpy)
         run: |
           . $CONDA/etc/profile.d/conda.sh
@@ -170,13 +170,13 @@ jobs:
           #tree .
           #echo $(dirname $(find . -name "conftest.py"))
           #pytest $(dirname $(find . -name "conftest.py"))  --variant numpy
-          pytest ./game_of_life_demo/tests --variant numpy
+          pytest --variant numpy
       - name: Run tests (dpnp)
         run: |
           . $CONDA/etc/profile.d/conda.sh
           conda activate test-env
           export OCL_ICD_FILENAMES=libintelocl.so
-          pytest ./game_of_life_demo/tests --variant dpnp
+          pytest --variant dpnp
       - name: Run tests (numba parallel)
         run: |
           . $CONDA/etc/profile.d/conda.sh
@@ -188,7 +188,7 @@ jobs:
           . $CONDA/etc/profile.d/conda.sh
           conda activate test-env
           export OCL_ICD_FILENAMES=libintelocl.so
-          pytest ./game_of_life_demo/tests --variant numba --no-parallel
+          pytest --variant numba --no-parallel
 
   test_windows:
     needs: build_windows
