@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KVSVYMBQ0W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KVSVYMBQ0W');
+    </script>
+    
+    <title>Examples with performance using Mandelbrot calculation &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sdc.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Benchmarks" href="../benchmarks.html" />
+    <link rel="prev" title="Jupyter Notebook 2: Falling back to NumPy" href="02-dpnp_numpy_fallback.html" />
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,600' rel='stylesheet' type='text/css'/>
+
+  </head><body>
+<div class="topbar">
+  <a class="brand" title="Intel Python projects" href="../other_intel_python_projects.html"></a>
+  <a class="brand_sdc" title="Documentation Home" href="../index.html"></a>
+
+  <ul>
+    <li><a class="exampleslink" title="Examples" href="../examples.html"></a></li>
+    <li><a class="issueslink" title="Issues" href="https://community.intel.com/t5/Intel-Distribution-for-Python/bd-p/distribution-python"></a></li>
+    <li><a class="emaillink" title="Email" href="mailto:scripting@intel.com"></a></li>
+    <li><a class="homelink" title="GitHub" href="https://github.com/IntelPython/DPEP"></a></li>
+    <li>
+      
+      
+<form action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+      
+    </li>
+  </ul>
+</div>
+
+<div class="related">
+    <h3>Navigation</h3>
+    <ul>
+      <li class="right">
+	<a href="../benchmarks.html" title="Benchmarks">
+	  next &raquo;
+	</a>
+      </li>
+      <li class="right">
+	<a href="02-dpnp_numpy_fallback.html" title="Jupyter Notebook 2: Falling back to NumPy">
+	  &laquo; previous
+	</a>
+	 |
+      </li>
+      <li>
+	<a href="../index.html">Data Parallel Extensions for Python* 0.1 documentation</a>
+	 &#187;
+      </li>
+      <li><a href="../jupyter_notebook.html" accesskey="U">Tutorials</a> &#187;</li>
+      
+      <li>Examples with performance using Mandelbrot calculation</li> 
+    </ul>
+</div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="Examples-with-performance-using-Mandelbrot-calculation">
+<h1>Examples with performance using Mandelbrot calculation<a class="headerlink" href="#Examples-with-performance-using-Mandelbrot-calculation" title="Permalink to this heading">¶</a></h1>
+<p><a class="reference external" href="https://intelpython.github.io/DPEP/main/">Data Parallel Extensions for Python</a> makes calculations on the gpu faster than on the cpu. Let’s look at performance using the example of the Mandelbrot set computation. The Mandelbrot set is the set of points <code class="docutils literal notranslate"><span class="pre">c</span></code> on the complex plane for which the recurrence relation $ z_{n+1} = z_n^2+c $ at $ z_0=0 $ defines a bounded sequence. In other words, it is the set of such <code class="docutils literal notranslate"><span class="pre">c</span></code> for which there exists a real <code class="docutils literal notranslate"><span class="pre">R</span></code> such that the inequality $ |z_n|&lt;R $
+holds for all natural <code class="docutils literal notranslate"><span class="pre">n</span></code>. The definition and the name belong to the French mathematician Adrien Duadi, after the mathematician Benoit Mandelbrot.</p>
+<p><strong>Prerequisits:</strong> please be sure that Matplotlib library is installed</p>
+<section id="The-Mandelbrot-set-based-on-the-NumPy*-library">
+<h2>The Mandelbrot set based on the NumPy* library<a class="headerlink" href="#The-Mandelbrot-set-based-on-the-NumPy*-library" title="Permalink to this heading">¶</a></h2>
+<p>Let’s build the Mandelbrot set based on the NumPy* library and measure its performance. We will use these values for a baseline.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#calculating the Mandelbrot set on CPU using NumPy* library</span>
+
+<span class="c1">#set variables</span>
+<span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">800</span>
+<span class="n">OFFSET_X</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="o">*</span> <span class="n">DISPLAY_W</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">OFFSET_Y</span> <span class="o">=</span> <span class="n">DISPLAY_H</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">ZOOM</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="o">/</span> <span class="n">DISPLAY_H</span>
+<span class="n">MAX_ITER</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="c1">#import NumPy* library</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="c1">#import Matplotlib* library to make visualisation</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="c1">#create arrays</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="n">c3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+
+<span class="c1">#perform calculations</span>
+<span class="k">def</span> <span class="nf">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">):</span>
+    <span class="n">intensity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">intensity</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">intensity</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">intensity</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">c3</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">),</span>
+        <span class="n">c1</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="c1">#implementation of mandelbrot set calculation</span>
+<span class="k">def</span> <span class="nf">mandelbrot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">xx</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+    <span class="n">yy</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">xx</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">yy</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+    <span class="n">n_iter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># 2d array</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">csingle</span><span class="p">)</span>  <span class="c1"># 2d array too</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">n_iter</span> <span class="o">&lt;</span> <span class="n">MAX_ITER</span>  <span class="c1"># Initialize with True</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MAX_ITER</span><span class="p">):</span>
+        <span class="n">z</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">n_iter</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+
+    <span class="n">intensity</span> <span class="o">=</span> <span class="n">n_iter</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">MAX_ITER</span>
+    <span class="c1">#values = (color_by_intensity(intensity) * 255).astype(np.uint8)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">def</span> <span class="nf">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="c1">#return np.full((w, h, 3), 0, dtype=np.uint8)</span>
+
+<span class="k">def</span> <span class="nf">asnumpy</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">class</span> <span class="nc">Fractal</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="n">zoom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">mandelbrot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">fractal</span> <span class="o">=</span> <span class="n">Fractal</span><span class="p">(</span><span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span><span class="p">,</span> <span class="n">ZOOM</span><span class="p">,</span> <span class="p">(</span><span class="n">OFFSET_X</span><span class="p">,</span> <span class="n">OFFSET_Y</span><span class="p">))</span>
+    <span class="c1">#calculating the Mandelbrot set and measuring performance</span>
+    <span class="o">%</span><span class="k">timeit</span> fractal.calculate()
+    <span class="c1">#draw results</span>
+    <span class="n">fractal</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+497 ms ± 35.1 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_03-mandelbrot_perfomance_5_1.png" src="../_images/notebooks_03-mandelbrot_perfomance_5_1.png" />
+</div>
+</div>
+<p>Now we have the results of code execution on the CPU using the NumPy* library</p>
+</section>
+<section id="The-Mandelbrot-set-based-on-the-Data-Parallel-Extension-for-NumPy">
+<h2>The Mandelbrot set based on the Data Parallel Extension for NumPy<a class="headerlink" href="#The-Mandelbrot-set-based-on-the-Data-Parallel-Extension-for-NumPy" title="Permalink to this heading">¶</a></h2>
+<p>To run Python on the GPU, we have to make minor changes to our CPU script, namely: 1. Changing import statement(s) (call the Data Parallel Extension for NumPy) 2. Specifying on which device(s) the data is allocated 3. Explicitly copying data between devices and the host as needed</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#calculating the Mandelbrot set on GPU using dpnp library</span>
+
+<span class="c1">#set variables</span>
+<span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">800</span>
+<span class="n">OFFSET_X</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="o">*</span> <span class="n">DISPLAY_W</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">OFFSET_Y</span> <span class="o">=</span> <span class="n">DISPLAY_H</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">ZOOM</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="o">/</span> <span class="n">DISPLAY_H</span>
+<span class="n">MAX_ITER</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="c1">#specify the device type</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SYCL_DEVICE_FILTER&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;level_zero:gpu&quot;</span>
+<span class="c1">#os.environ[&quot;SYCL_DEVICE_FILTER&quot;] = &quot;opencl:gpu&quot;</span>
+<span class="c1">#os.environ[&quot;SYCL_DEVICE_FILTER&quot;] = &quot;cpu&quot;</span>
+<span class="nb">print</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SYCL_DEVICE_FILTER&quot;</span><span class="p">])</span>
+
+<span class="c1">#import dpnp library</span>
+<span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1">#import Matplotlib* library to make visualisation</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="c1">#create arrays</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="n">c3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+
+<span class="c1">#perform calculations</span>
+<span class="k">def</span> <span class="nf">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">):</span>
+    <span class="n">intensity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">intensity</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">intensity</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">intensity</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">c3</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">),</span>
+        <span class="n">c1</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="c1">#implementation of mandelbrot set calculation</span>
+<span class="k">def</span> <span class="nf">mandelbrot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">xx</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+    <span class="n">yy</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">xx</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">yy</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+
+    <span class="n">n_iter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># 2d array</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">csingle</span><span class="p">)</span>  <span class="c1"># 2d array too</span>
+
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">n_iter</span> <span class="o">&lt;</span> <span class="n">MAX_ITER</span>  <span class="c1"># Initialize with True</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MAX_ITER</span><span class="p">):</span>
+        <span class="n">z</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">n_iter</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+
+    <span class="n">intensity</span> <span class="o">=</span> <span class="n">n_iter</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">MAX_ITER</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">def</span> <span class="nf">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">asnumpy</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">class</span> <span class="nc">Fractal</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="n">zoom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">mandelbrot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#return the NumPy* array with input data</span>
+        <span class="n">cpu_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cpu_values</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">fractal</span> <span class="o">=</span> <span class="n">Fractal</span><span class="p">(</span><span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span><span class="p">,</span> <span class="n">ZOOM</span><span class="p">,</span> <span class="p">(</span><span class="n">OFFSET_X</span><span class="p">,</span> <span class="n">OFFSET_Y</span><span class="p">))</span>
+    <span class="c1">#calculating the Mandelbrot set and measuring performance</span>
+    <span class="o">%</span><span class="k">timeit</span> fractal.calculate()
+    <span class="c1">#draw results</span>
+    <span class="n">fractal</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+level_zero:gpu
+947 ms ± 19.9 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_03-mandelbrot_perfomance_9_1.png" src="../_images/notebooks_03-mandelbrot_perfomance_9_1.png" />
+</div>
+</div>
+<p>You can compare the performance of the gpu calculations with the dpnp library using the OpenCL (Open Computing Language) driver. For both type of GPU drivers performance will be 2 times faster than on cpu.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#calculating the Mandelbrot set on OpenCL GPU device using dpnp library</span>
+
+<span class="c1">#set variables</span>
+<span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">800</span>
+<span class="n">OFFSET_X</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="o">*</span> <span class="n">DISPLAY_W</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">OFFSET_Y</span> <span class="o">=</span> <span class="n">DISPLAY_H</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">ZOOM</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="o">/</span> <span class="n">DISPLAY_H</span>
+<span class="n">MAX_ITER</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="c1">#specify the device type</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="c1">#os.environ[&quot;SYCL_DEVICE_FILTER&quot;] = &quot;level_zero:gpu&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SYCL_DEVICE_FILTER&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;opencl:gpu&quot;</span>
+<span class="c1">#os.environ[&quot;SYCL_DEVICE_FILTER&quot;] = &quot;cpu&quot;</span>
+<span class="nb">print</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SYCL_DEVICE_FILTER&quot;</span><span class="p">])</span>
+
+<span class="c1">#import dpnp library</span>
+<span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1">#import Matplotlib* library to make visualisation</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="c1">#create arrays</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="n">c3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+
+<span class="c1">#perform calculations</span>
+<span class="k">def</span> <span class="nf">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">):</span>
+    <span class="n">intensity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">intensity</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">intensity</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">intensity</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">c3</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">),</span>
+        <span class="n">c1</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="c1">#implementation of mandelbrot set calculation</span>
+<span class="k">def</span> <span class="nf">mandelbrot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">xx</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+    <span class="n">yy</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">xx</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">yy</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+
+    <span class="n">n_iter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># 2d array</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">csingle</span><span class="p">)</span>  <span class="c1"># 2d array too</span>
+
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">n_iter</span> <span class="o">&lt;</span> <span class="n">MAX_ITER</span>  <span class="c1"># Initialize with True</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MAX_ITER</span><span class="p">):</span>
+        <span class="n">z</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">n_iter</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+
+    <span class="n">intensity</span> <span class="o">=</span> <span class="n">n_iter</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">MAX_ITER</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">def</span> <span class="nf">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">asnumpy</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">class</span> <span class="nc">Fractal</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="n">zoom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">mandelbrot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#return the NumPy* array with input data</span>
+        <span class="n">cpu_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cpu_values</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">fractal</span> <span class="o">=</span> <span class="n">Fractal</span><span class="p">(</span><span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span><span class="p">,</span> <span class="n">ZOOM</span><span class="p">,</span> <span class="p">(</span><span class="n">OFFSET_X</span><span class="p">,</span> <span class="n">OFFSET_Y</span><span class="p">))</span>
+    <span class="c1">#calculating the Mandelbrot set and measuring performance</span>
+    <span class="o">%</span><span class="k">timeit</span> fractal.calculate()
+    <span class="c1">#draw results</span>
+    <span class="n">fractal</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+opencl:gpu
+967 ms ± 15.1 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_03-mandelbrot_perfomance_11_1.png" src="../_images/notebooks_03-mandelbrot_perfomance_11_1.png" />
+</div>
+</div>
+<p>Calculations using the Data Parallel Extension for NumPy on the GPU will be faster than the same calculations using the same library on the CPU. Lets compare this.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#calculating the Mandelbrot set on CPU device using dpnp library</span>
+
+<span class="c1">#set variables</span>
+<span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">800</span>
+<span class="n">OFFSET_X</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="o">*</span> <span class="n">DISPLAY_W</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">OFFSET_Y</span> <span class="o">=</span> <span class="n">DISPLAY_H</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">ZOOM</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="o">/</span> <span class="n">DISPLAY_H</span>
+<span class="n">MAX_ITER</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="c1">#specify the device type</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="c1">#os.environ[&quot;SYCL_DEVICE_FILTER&quot;] = &quot;level_zero:gpu&quot;</span>
+<span class="c1">#os.environ[&quot;SYCL_DEVICE_FILTER&quot;] = &quot;opencl:gpu&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SYCL_DEVICE_FILTER&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span>
+<span class="nb">print</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;SYCL_DEVICE_FILTER&quot;</span><span class="p">])</span>
+
+<span class="c1">#import dpnp library</span>
+<span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1">#import Matplotlib* library to make visualisation</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="c1">#create arrays</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="n">c3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+
+<span class="c1">#perform calculations</span>
+<span class="k">def</span> <span class="nf">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">):</span>
+    <span class="n">intensity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">intensity</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="n">intensity</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">intensity</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">c3</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">),</span>
+        <span class="n">c1</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">),</span>
+    <span class="p">)</span>
+
+<span class="c1">#implementation of mandelbrot set calculation</span>
+<span class="k">def</span> <span class="nf">mandelbrot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">xx</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+    <span class="n">yy</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">xx</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">yy</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+
+
+    <span class="n">n_iter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># 2d array</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">csingle</span><span class="p">)</span>  <span class="c1"># 2d array too</span>
+
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">n_iter</span> <span class="o">&lt;</span> <span class="n">MAX_ITER</span>  <span class="c1"># Initialize with True</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MAX_ITER</span><span class="p">):</span>
+        <span class="n">z</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">n_iter</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+
+    <span class="n">intensity</span> <span class="o">=</span> <span class="n">n_iter</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">MAX_ITER</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="n">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">def</span> <span class="nf">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">asnumpy</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">class</span> <span class="nc">Fractal</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="n">zoom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">mandelbrot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#return the NumPy* array with input data</span>
+        <span class="n">cpu_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cpu_values</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">fractal</span> <span class="o">=</span> <span class="n">Fractal</span><span class="p">(</span><span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span><span class="p">,</span> <span class="n">ZOOM</span><span class="p">,</span> <span class="p">(</span><span class="n">OFFSET_X</span><span class="p">,</span> <span class="n">OFFSET_Y</span><span class="p">))</span>
+    <span class="c1">#calculating the Mandelbrot set and measuring performance</span>
+    <span class="o">%</span><span class="k">timeit</span> fractal.calculate()
+    <span class="c1">#draw results</span>
+    <span class="n">fractal</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+cpu
+908 ms ± 9.3 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_03-mandelbrot_perfomance_13_1.png" src="../_images/notebooks_03-mandelbrot_perfomance_13_1.png" />
+</div>
+</div>
+</section>
+<section id="The-Mandelbrot-set-on-the-Numba">
+<h2>The Mandelbrot set on the Numba<a class="headerlink" href="#The-Mandelbrot-set-on-the-Numba" title="Permalink to this heading">¶</a></h2>
+<p>If we run the Mandelbrot set on Numba, the high-performance Python compiler, we see that the computation on it is faster than on the Numpy library.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#calculating the Mandelbrot set on CPU device using dpnp library</span>
+
+<span class="c1">#set variables</span>
+<span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">800</span>
+<span class="n">OFFSET_X</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="o">*</span> <span class="n">DISPLAY_W</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">OFFSET_Y</span> <span class="o">=</span> <span class="n">DISPLAY_H</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">ZOOM</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="o">/</span> <span class="n">DISPLAY_H</span>
+<span class="n">MAX_ITER</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="c1">#import libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+
+<span class="c1">#import Matplotlib* library to make visualisation</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="n">nb</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">THREADING_LAYER</span> <span class="o">=</span> <span class="s2">&quot;omp&quot;</span>
+
+<span class="c1">#perform calculations</span>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c3</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">intensity</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">c3</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">c1</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">)</span>
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">mandel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span><span class="n">j</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MAX_ITER</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">c</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">real</span> <span class="o">*</span> <span class="n">z</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span> <span class="o">*</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">4.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">MAX_ITER</span>
+
+<span class="c1">#implementation of mandelbrot set calculation</span>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">mandelbrot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+    <span class="n">c2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+    <span class="n">c3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nb</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">h</span><span class="p">):</span>
+            <span class="n">xx</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+            <span class="n">yy</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+            <span class="n">intensity</span> <span class="o">=</span> <span class="n">mandel</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">)</span> <span class="o">/</span> <span class="n">MAX_ITER</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="n">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">c1</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">c2</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">c3</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">color</span> <span class="o">*</span> <span class="mf">255.0</span><span class="p">)</span>
+                <span class="n">values</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">color</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">def</span> <span class="nf">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">asnumpy</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">class</span> <span class="nc">Fractal</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="n">zoom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">mandelbrot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">fractal</span> <span class="o">=</span> <span class="n">Fractal</span><span class="p">(</span><span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span><span class="p">,</span> <span class="n">ZOOM</span><span class="p">,</span> <span class="p">(</span><span class="n">OFFSET_X</span><span class="p">,</span> <span class="n">OFFSET_Y</span><span class="p">))</span>
+    <span class="c1">#calculating the Mandelbrot set and measuring performance</span>
+    <span class="o">%</span><span class="k">timeit</span> fractal.calculate()
+    <span class="c1">#draw results</span>
+    <span class="n">fractal</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+     <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+7.23 ms ± 875 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_03-mandelbrot_perfomance_16_1.png" src="../_images/notebooks_03-mandelbrot_perfomance_16_1.png" />
+</div>
+</div>
+</section>
+<section id="The-Mandelbrot-set-on-the-Data-Parallel-Extension-for-Numba">
+<h2>The Mandelbrot set on the Data Parallel Extension for Numba<a class="headerlink" href="#The-Mandelbrot-set-on-the-Data-Parallel-Extension-for-Numba" title="Permalink to this heading">¶</a></h2>
+<p>The calculation on the Data Parallel Extension for Numba go faster than on the Numba or on the Data Parallel Extension for NumPy.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#calculating the Mandelbrot set on CPU device using dpnp library</span>
+
+<span class="c1">#set variables</span>
+<span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">800</span>
+<span class="n">OFFSET_X</span> <span class="o">=</span> <span class="mf">1.4</span> <span class="o">*</span> <span class="n">DISPLAY_W</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">OFFSET_Y</span> <span class="o">=</span> <span class="n">DISPLAY_H</span> <span class="o">//</span> <span class="mi">2</span>
+<span class="n">ZOOM</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="o">/</span> <span class="n">DISPLAY_H</span>
+<span class="n">MAX_ITER</span> <span class="o">=</span> <span class="mi">30</span>
+
+<span class="c1">#import libraries</span>
+<span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba_dpex</span> <span class="k">as</span> <span class="nn">nb</span>
+
+<span class="c1">#import Matplotlib* library to make visualisation</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="n">nb</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">THREADING_LAYER</span> <span class="o">=</span> <span class="s2">&quot;omp&quot;</span>
+
+<span class="c1">#perform calculations</span>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">dpjit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c3</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">intensity</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">c3</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">c1</span> <span class="o">*</span> <span class="n">intensity</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">intensity</span><span class="p">)</span>
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">dpjit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">mandel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span><span class="n">j</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MAX_ITER</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">c</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">real</span> <span class="o">*</span> <span class="n">z</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span> <span class="o">*</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">4.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">MAX_ITER</span>
+
+<span class="c1">#implementation of mandelbrot set calculation</span>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">dpjit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nopython</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">mandelbrot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+    <span class="n">c2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+    <span class="n">c3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">nb</span><span class="o">.</span><span class="n">prange</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">h</span><span class="p">):</span>
+            <span class="n">xx</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+            <span class="n">yy</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">zoom</span>
+            <span class="n">intensity</span> <span class="o">=</span> <span class="n">mandel</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">)</span> <span class="o">/</span> <span class="n">MAX_ITER</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="n">color_by_intensity</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">c1</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">c2</span><span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="n">c3</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">color</span> <span class="o">*</span> <span class="mf">255.0</span><span class="p">)</span>
+                <span class="n">values</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">color</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="k">def</span> <span class="nf">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">asnumpy</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">values</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="k">class</span> <span class="nc">Fractal</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">init_values</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="n">zoom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+
+    <span class="k">def</span> <span class="nf">calculate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">mandelbrot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">w</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#return the NumPy* array with input data</span>
+        <span class="n">cpu_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cpu_values</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">fractal</span> <span class="o">=</span> <span class="n">Fractal</span><span class="p">(</span><span class="n">DISPLAY_W</span><span class="p">,</span> <span class="n">DISPLAY_H</span><span class="p">,</span> <span class="n">ZOOM</span><span class="p">,</span> <span class="p">(</span><span class="n">OFFSET_X</span><span class="p">,</span> <span class="n">OFFSET_Y</span><span class="p">))</span>
+    <span class="c1">#calculating the Mandelbrot set and measuring performance</span>
+    <span class="o">%</span><span class="k">timeit</span> fractal.calculate()
+    <span class="c1">#draw results</span>
+    <span class="n">fractal</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+     <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\mvyasank\Anaconda3\envs\my_env\lib\site-packages\numba_dpex\decorators.py:154: RuntimeWarning: nopython is set for dpjit and is ignored
+  warnings.warn(
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">---------------------------------------------------------------------------</span>
+<span class="ansi-red-intense-fg ansi-bold">TypingError</span>                               Traceback (most recent call last)
+Cell <span class="ansi-green-intense-fg ansi-bold">In[4], line 89</span>
+<span class="ansi-green-fg">     86</span>     fractal<span style="color: rgb(98,98,98)">.</span>draw()
+<span class="ansi-green-fg">     88</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,0,135)">__name__</span> <span style="color: rgb(98,98,98)">==</span> <span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">__main__</span><span style="color: rgb(175,0,0)">&#34;</span>:
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 89</span>      <span class="ansi-yellow-bg">main</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span>
+
+Cell <span class="ansi-green-intense-fg ansi-bold">In[4], line 84</span>, in <span class="ansi-cyan-fg">main</span><span class="ansi-blue-intense-fg ansi-bold">()</span>
+<span class="ansi-green-fg">     82</span> fractal <span style="color: rgb(98,98,98)">=</span> Fractal(DISPLAY_W, DISPLAY_H, ZOOM, (OFFSET_X, OFFSET_Y))
+<span class="ansi-green-fg">     83</span> <span style="color: rgb(95,135,135)">#calculating the Mandelbrot set and measuring performance</span>
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 84</span> <span class="ansi-yellow-bg">get_ipython</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">run_line_magic</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">timeit</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">fractal.calculate()</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">     85</span> <span style="color: rgb(95,135,135)">#draw results</span>
+<span class="ansi-green-fg">     86</span> fractal<span style="color: rgb(98,98,98)">.</span>draw()
+
+File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\envs\my_env\lib\site-packages\IPython\core\interactiveshell.py:2414</span>, in <span class="ansi-cyan-fg">InteractiveShell.run_line_magic</span><span class="ansi-blue-intense-fg ansi-bold">(self, magic_name, line, _stack_depth)</span>
+<span class="ansi-green-fg">   2412</span>     kwargs[<span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">local_ns</span><span style="color: rgb(175,0,0)">&#39;</span>] <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>get_local_scope(stack_depth)
+<span class="ansi-green-fg">   2413</span> <span class="ansi-bold" style="color: rgb(0,135,0)">with</span> <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>builtin_trap:
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 2414</span>     result <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">fn</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">*</span><span class="ansi-yellow-bg">kwargs</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">   2416</span> <span style="color: rgb(95,135,135)"># The code below prevents the output from being displayed</span>
+<span class="ansi-green-fg">   2417</span> <span style="color: rgb(95,135,135)"># when using magics with decodator @output_can_be_silenced</span>
+<span class="ansi-green-fg">   2418</span> <span style="color: rgb(95,135,135)"># when the last Python token in the expression is a &#39;;&#39;.</span>
+<span class="ansi-green-fg">   2419</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> <span style="color: rgb(0,135,0)">getattr</span>(fn, magic<span style="color: rgb(98,98,98)">.</span>MAGIC_OUTPUT_CAN_BE_SILENCED, <span class="ansi-bold" style="color: rgb(0,135,0)">False</span>):
+
+File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\envs\my_env\lib\site-packages\IPython\core\magics\execution.py:1170</span>, in <span class="ansi-cyan-fg">ExecutionMagics.timeit</span><span class="ansi-blue-intense-fg ansi-bold">(self, line, cell, local_ns)</span>
+<span class="ansi-green-fg">   1168</span> <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> index <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">range</span>(<span style="color: rgb(98,98,98)">0</span>, <span style="color: rgb(98,98,98)">10</span>):
+<span class="ansi-green-fg">   1169</span>     number <span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(98,98,98)">10</span> <span style="color: rgb(98,98,98)">*</span><span style="color: rgb(98,98,98)">*</span> index
+<span class="ansi-green-intense-fg ansi-bold">-&gt; 1170</span>     time_number <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">timer</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">timeit</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">number</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">   1171</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> time_number <span style="color: rgb(98,98,98)">&gt;</span><span style="color: rgb(98,98,98)">=</span> <span style="color: rgb(98,98,98)">0.2</span>:
+<span class="ansi-green-fg">   1172</span>         <span class="ansi-bold" style="color: rgb(0,135,0)">break</span>
+
+File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\envs\my_env\lib\site-packages\IPython\core\magics\execution.py:158</span>, in <span class="ansi-cyan-fg">Timer.timeit</span><span class="ansi-blue-intense-fg ansi-bold">(self, number)</span>
+<span class="ansi-green-fg">    156</span> gc<span style="color: rgb(98,98,98)">.</span>disable()
+<span class="ansi-green-fg">    157</span> <span class="ansi-bold" style="color: rgb(0,135,0)">try</span>:
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 158</span>     timing <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">inner</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">it</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">timer</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    159</span> <span class="ansi-bold" style="color: rgb(0,135,0)">finally</span>:
+<span class="ansi-green-fg">    160</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> gcold:
+
+File <span class="ansi-green-intense-fg ansi-bold">&lt;magic-timeit&gt;:1</span>, in <span class="ansi-cyan-fg">inner</span><span class="ansi-blue-intense-fg ansi-bold">(_it, _timer)</span>
+
+Cell <span class="ansi-green-intense-fg ansi-bold">In[4], line 74</span>, in <span class="ansi-cyan-fg">Fractal.calculate</span><span class="ansi-blue-intense-fg ansi-bold">(self)</span>
+<span class="ansi-green-fg">     73</span> <span class="ansi-bold" style="color: rgb(0,135,0)">def</span> <span style="color: rgb(0,0,255)">calculate</span>(<span style="color: rgb(0,135,0)">self</span>):
+<span class="ansi-green-intense-fg ansi-bold">---&gt; 74</span>     <span style="color: rgb(0,135,0)">self</span><span style="color: rgb(98,98,98)">.</span>values <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">mandelbrot</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">w</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">h</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">zoom</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">offset</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(0,135,0)">self</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">values</span><span class="ansi-yellow-bg">)</span>
+
+File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\envs\my_env\lib\site-packages\numba\core\dispatcher.py:468</span>, in <span class="ansi-cyan-fg">_DispatcherBase._compile_for_args</span><span class="ansi-blue-intense-fg ansi-bold">(self, *args, **kws)</span>
+<span class="ansi-green-fg">    464</span>         msg <span style="color: rgb(98,98,98)">=</span> (<span style="color: rgb(175,0,0)">f</span><span style="color: rgb(175,0,0)">&#34;</span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span><span style="color: rgb(0,135,0)">str</span>(e)<span style="color: rgb(98,98,98)">.</span>rstrip()<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span style="color: rgb(175,0,0)"> </span><span class="ansi-bold" style="color: rgb(175,95,0)">\n</span><span class="ansi-bold" style="color: rgb(175,95,0)">\n</span><span style="color: rgb(175,0,0)">This error may have been caused </span><span style="color: rgb(175,0,0)">&#34;</span>
+<span class="ansi-green-fg">    465</span>                <span style="color: rgb(175,0,0)">f</span><span style="color: rgb(175,0,0)">&#34;</span><span style="color: rgb(175,0,0)">by the following argument(s):</span><span class="ansi-bold" style="color: rgb(175,95,0)">\n</span><span class="ansi-bold" style="color: rgb(175,95,135)">{</span>args_str<span class="ansi-bold" style="color: rgb(175,95,135)">}</span><span class="ansi-bold" style="color: rgb(175,95,0)">\n</span><span style="color: rgb(175,0,0)">&#34;</span>)
+<span class="ansi-green-fg">    466</span>         e<span style="color: rgb(98,98,98)">.</span>patch_message(msg)
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 468</span>     <span class="ansi-yellow-bg">error_rewrite</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">e</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">typing</span><span class="ansi-yellow-bg" style="color: rgb(175,0,0)">&#39;</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">    469</span> <span class="ansi-bold" style="color: rgb(0,135,0)">except</span> errors<span style="color: rgb(98,98,98)">.</span>UnsupportedError <span class="ansi-bold" style="color: rgb(0,135,0)">as</span> e:
+<span class="ansi-green-fg">    470</span>     <span style="color: rgb(95,135,135)"># Something unsupported is present in the user code, add help info</span>
+<span class="ansi-green-fg">    471</span>     error_rewrite(e, <span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">unsupported_error</span><span style="color: rgb(175,0,0)">&#39;</span>)
+
+File <span class="ansi-green-intense-fg ansi-bold">~\Anaconda3\envs\my_env\lib\site-packages\numba\core\dispatcher.py:409</span>, in <span class="ansi-cyan-fg">_DispatcherBase._compile_for_args.&lt;locals&gt;.error_rewrite</span><span class="ansi-blue-intense-fg ansi-bold">(e, issue_type)</span>
+<span class="ansi-green-fg">    407</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> e
+<span class="ansi-green-fg">    408</span> <span class="ansi-bold" style="color: rgb(0,135,0)">else</span>:
+<span class="ansi-green-intense-fg ansi-bold">--&gt; 409</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> e<span style="color: rgb(98,98,98)">.</span>with_traceback(<span class="ansi-bold" style="color: rgb(0,135,0)">None</span>)
+
+<span class="ansi-red-intense-fg ansi-bold">TypingError</span>: Failed in dpex_dpjit_nopython mode pipeline (step: nopython frontend)
+<span class="ansi-bold">Unknown attribute &#39;asarray&#39; of type Module(&lt;module &#39;dpnp&#39; from &#39;C:\\Users\\mvyasank\\Anaconda3\\envs\\my_env\\lib\\site-packages\\dpnp\\__init__.py&#39;&gt;)
+</span><span class="ansi-bold">
+File &#34;AppData\Local\Temp\ipykernel_29672\2269767202.py&#34;, line 41:</span>
+<span class="ansi-bold">&lt;source missing, REPL/exec in use?&gt;</span>
+
+<span class="ansi-bold">During: typing of get attribute at C:\Users\mvyasank\AppData\Local\Temp\ipykernel_29672\2269767202.py (41)</span>
+<span class="ansi-bold">
+File &#34;AppData\Local\Temp\ipykernel_29672\2269767202.py&#34;, line 41:</span>
+<span class="ansi-bold">&lt;source missing, REPL/exec in use?&gt;</span>
+
+</pre></div></div>
+</div>
+</section>
+<section id="The-conclusion">
+<h2>The conclusion<a class="headerlink" href="#The-conclusion" title="Permalink to this heading">¶</a></h2>
+<p>The Data Parallel Extension for Python libraries follow the “compute follows data” approach, with all data being created on the same device where all the computation takes place.</p>
+<p>Based on the experiment with Mandelbrot calculation we see the folliwng:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Results</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>The NumPy* library shows the slowest results</p></td>
+</tr>
+<tr class="row-odd"><td><p>The Data Parallel Extension for NumPy is faster than the NumPy* library</p></td>
+</tr>
+<tr class="row-even"><td><p>The Data Parallel Extension for NumPy on the GPU = the NumPy* library * 0,8</p></td>
+</tr>
+<tr class="row-odd"><td><p>The Data Parallel Extension for NumPy on the GPU = The Data Parallel Extension for NumPy on the CPU * 0,5</p></td>
+</tr>
+<tr class="row-even"><td><p>The Numba is faster than the NumPy* library</p></td>
+</tr>
+<tr class="row-odd"><td><p>The Data Parallel Extension for Numba is faster than the Numba and The Data Parallel Extension for NumPy</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><h3>Table of Contents</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../prerequisites_and_installation.html">Prerequisites and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parallelism.html">Parallelism in Modern Data-Parallel Architectures</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../heterogeneous_computing.html">Heterogeneous Computing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../programming_dpep.html">Programming with Data Parallel Extensions for Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../jupyter_notebook.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01-get_started.html">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02-dpnp_numpy_fallback.html">Controlling `dpnp` fallback to `numpy`</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Examples with performance using Mandelbrot calculation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful_links.html">Useful links</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../useful_links.html#to-do">To-Do</a></li>
+</ul>
+
+<form action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="02-dpnp_numpy_fallback.html"
+                          title="previous chapter">Jupyter Notebook 2: Falling back to NumPy</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="../benchmarks.html"
+                          title="next chapter">Benchmarks</a></p>
+  </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<footer class="footer">
+  <p class="pull-right"> &nbsp;
+    <a href="#">Back to Top</a></p>
+  <p>
+    &copy; Copyright 2020-2023, Intel Corporation.<br/>
+    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 7.0.1. &nbsp;
+  </p>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,490 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "a002ea61",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "# Jupyter Notebook 1: Getting started with Data Parallel Extensions for Python\n",
+    "<img src=\"https://intelpython.github.io/DPEP/main/_images/DPEP-large.png\" width=\"300\"/>\n",
+    "\n",
+    "[Data Parallel Extensions for Python](https://intelpython.github.io/DPEP/main/) allow you to run NumPy-like code beyond CPU using **Data Parallel Extension for NumPy**. It will also allow you to compile the code using **Data Parallel Extension for Numba**. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0565bf88-a3e9-4ee3-a815-3efe977c2a8f",
+   "metadata": {
+    "jp-MarkdownHeadingCollapsed": true,
+    "tags": []
+   },
+   "source": [
+    "## Modifying CPU script to run on GPU\n",
+    "\n",
+    "In many cases the process of running Python on GPU is about making minor changes to your CPU script, which are:\n",
+    "1. Changing import statement(s)\n",
+    "2. Specifying on which device(s) the data is allocated\n",
+    "3. Explicitly copying data between devices and the host as needed\n",
+    "\n",
+    "We will illustrate these concepts on series of short examples. Let's assume we have the following NumPy script originally written to run on CPU, which is nothing more than creating two matrices `x` and `y` and performing matrix-matrix multiplication with `numpy.matmul()`, and prining the resulting matrix:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "d9e8711d",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[2 2]\n",
+      " [2 2]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# CPU script for matrix-matrix multiplication using NumPy\n",
+    "\n",
+    "# 1. Import numpy\n",
+    "import numpy as np\n",
+    "\n",
+    "# 2. Create two matrices\n",
+    "x = np.array([[1, 1], [1, 1]])\n",
+    "y = np.array([[1, 1], [1, 1]])\n",
+    "\n",
+    "# 3. Perform matrix-matrix multiplication\n",
+    "res = np.matmul(x, y)\n",
+    "\n",
+    "# 4. Print resulting matrix\n",
+    "print(res)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "402c3d61",
+   "metadata": {},
+   "source": [
+    "As stated before in many cases to run the same code on GPU is a trivial modification of a few lines of the code, like this:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "c10b7d83",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[2 2]\n",
+      " [2 2]]\n",
+      "Array x is allocated on the device: Device(level_zero:gpu:0)\n",
+      "Array y is allocated on the device: Device(level_zero:gpu:0)\n",
+      "res is allocated on the device: Device(level_zero:gpu:0)\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Modified script to run the same code on GPU using dpnp\n",
+    "\n",
+    "# 1. Import dpnp\n",
+    "import dpnp as np  # Note, we changed the import statement. Since dpnp is a drop-in replacement of numpy the rest of the code will run lik regular numpy\n",
+    "\n",
+    "# 2. Create two matrices\n",
+    "x = np.array([[1, 1], [1, 1]])\n",
+    "y = np.array([[1, 1], [1, 1]])\n",
+    "\n",
+    "# 3. Perform matrix-matrix multiplication\n",
+    "res = np.matmul(x, y)\n",
+    "\n",
+    "# 4. Print what's going on under the hood\n",
+    "print(res)\n",
+    "print(\"Array x is allocated on the device:\", x.device)\n",
+    "print(\"Array y is allocated on the device:\", y.device)\n",
+    "print(\"res is allocated on the device:\", res.device)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d6a58f17",
+   "metadata": {},
+   "source": [
+    "Let's see what we actually changed.\n",
+    "\n",
+    "1. Obviously we changed the import statement. Now we import `dpnp`, which is a drop-in replacement for a subset of `numpy` that extends numpy-like codes beyond CPU\n",
+    "2. No change in matrix creation code. How does `dpnp` know that matrices `x` and `y` need to be allocated on GPU? This is because, if we do not specify the device explicitly, the driver will use the default device, which is GPU on systems with installed GPU drivers.\n",
+    "3. No change in matrix multiplication code. This is because `dpnp` programming model is the Compute-Follows-Data. It means that `dpnp.matmul()` determines which device will execute an operation based on where array inputs are allocated. Since our inputs `x` and `y` are allocated on the default device (GPU) the matrix-matrix multiplication will follow data allocation and execute on GPU too.\n",
+    "4. Note, arrays `x`, `y`, `res` all have the `device` attribute by printing which we make sure that all inputs are indeed on the GPU device, and the result is also on the GPU deivice. To be precise the data allocation (and execution) happened on GPU device 0 through Level-Zero driver."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "be340585",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "## More on data allocation and the Compute-Follows-Data\n",
+    "\n",
+    "Sometimes you may want to be specific about the device type, not relying on the default behavior. You can do so by specifying the device in a keyword arguments for `dpnp` array creation functions and random number generators."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "0435d7f0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import dpnp as np\n",
+    "\n",
+    "a = np.arange(3, 30, step = 6, device=\"gpu\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a6765095",
+   "metadata": {},
+   "source": [
+    "`dpnp.arange()` is the array creation function that has optional keyword argument `device`, using which you can specify the device you want data to be allocated on with filter selector string. In our case the string specifies device type `\"gpu\"`. The proper way of handling situations when the specified device is not available would be as follows:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "e613398f",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "The a is allocated on the device: Device(level_zero:gpu:0)\n",
+      "Reduction sum y:  75\n",
+      "Result y is located on the device: Device(level_zero:gpu:0)\n",
+      "y.shape= ()\n"
+     ]
+    }
+   ],
+   "source": [
+    "import dpnp as np\n",
+    "\n",
+    "try:\n",
+    "    a = np.arange(3, 30, step = 6, device=\"gpu\")\n",
+    "    print(\"The a is allocated on the device:\", a.device)\n",
+    "except:\n",
+    "    print(\"GPU device is not available\")\n",
+    "    # Do some fallback code\n",
+    "\n",
+    "# Do reduction on the selected device\n",
+    "y = np.sum(a)\n",
+    "\n",
+    "print(\"Reduction sum y: \", y)  # Expect 75\n",
+    "print(\"Result y is located on the device:\", y.device)\n",
+    "print(\"y.shape=\", y.shape)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "88b4915e",
+   "metadata": {},
+   "source": [
+    "Note that `y` is itself a device array (not a scalar!), its data resides on the same device as input array `a`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "94cb3b9b",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "### Advanced data and device control with Data Parallel Control library `dpctl`"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9fb4b1b5",
+   "metadata": {},
+   "source": [
+    "Data Parallel Control library, `dpctl`, among other things provide advanced capabilities for controling devices and data. Among its useful functions is `dpctl.lsplatform(verbosity)`, printing information about the list of available devices on the system with different levels of verbosity:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "b890ae71",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Intel(R) OpenCL HD Graphics OpenCL 3.0 \n",
+      "Intel(R) Level-Zero 1.3\n"
+     ]
+    }
+   ],
+   "source": [
+    "import dpctl\n",
+    "\n",
+    "dpctl.lsplatform()  # Print platform information"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "db5e8db4",
+   "metadata": {},
+   "source": [
+    "Using a different verbosity setting to print extra meta-data:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "ffcf0cfb",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Platform  0 ::\n",
+      "    Name        Intel(R) OpenCL HD Graphics\n",
+      "    Version     OpenCL 3.0 \n",
+      "    Vendor      Intel(R) Corporation\n",
+      "    Backend     opencl\n",
+      "    Num Devices 1\n",
+      "      # 0\n",
+      "        Name                Intel(R) UHD Graphics 620\n",
+      "        Version             31.0.101.2111\n",
+      "        Filter string       opencl:gpu:0\n",
+      "Platform  1 ::\n",
+      "    Name        Intel(R) Level-Zero\n",
+      "    Version     1.3\n",
+      "    Vendor      Intel(R) Corporation\n",
+      "    Backend     ext_oneapi_level_zero\n",
+      "    Num Devices 1\n",
+      "      # 0\n",
+      "        Name                Intel(R) UHD Graphics 620\n",
+      "        Version             1.3.0\n",
+      "        Filter string       level_zero:gpu:0\n"
+     ]
+    }
+   ],
+   "source": [
+    "import dpctl\n",
+    "\n",
+    "dpctl.lsplatform(2)  # Print platform information with verbocitz level 2 (highest level)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f63525d3",
+   "metadata": {},
+   "source": [
+    "You can also query whether system has GPU devices and retrieve respective device objects:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "84ff47e9",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "This system has 2 GPUs\n",
+      "    Name            Intel(R) UHD Graphics 620\n",
+      "    Driver version  31.0.101.2111\n",
+      "    Vendor          Intel(R) Corporation\n",
+      "    Filter string   opencl:gpu:0\n",
+      "\n",
+      "    Name            Intel(R) UHD Graphics 620\n",
+      "    Driver version  1.3.0\n",
+      "    Vendor          Intel(R) Corporation\n",
+      "    Filter string   level_zero:gpu:0\n",
+      "\n",
+      "Array x is on the device: Device(opencl:gpu:0)\n"
+     ]
+    }
+   ],
+   "source": [
+    "import dpctl\n",
+    "import dpnp as np\n",
+    "\n",
+    "if dpctl.has_gpu_devices():\n",
+    "    devices = dpctl.get_devices(device_type='gpu')\n",
+    "    print(f\"This system has {len(devices)} GPUs\")\n",
+    "    for device in devices:\n",
+    "        device.print_device_info()\n",
+    "        \n",
+    "    x = np.array([1, 2, 3], device=devices[0])  # Another way of selecting on which device to allocate the data\n",
+    "    print(\"Array x is on the device:\", x.device)\n",
+    "else:\n",
+    "    print(\"GPU devices are not available on this system\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e0918733-0992-41e8-bfa5-228a080bc165",
+   "metadata": {},
+   "source": [
+    "The following snapshot illustrates how to select the default GPU device using `dpctl` and generate an array of random numbers on this device:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "1c068447",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "    Name            Intel(R) UHD Graphics 620\n",
+      "    Driver version  1.3.0\n",
+      "    Vendor          Intel(R) Corporation\n",
+      "    Filter string   level_zero:gpu:0\n",
+      "\n",
+      "Array x: [0.87253657 0.87415047 0.61092713 0.1395424  0.95248436]\n",
+      "Array x.device: Device(level_zero:gpu:0)\n"
+     ]
+    }
+   ],
+   "source": [
+    "try:\n",
+    "    gpu = dpctl.select_gpu_device()\n",
+    "    gpu.print_device_info() # print GPU device information\n",
+    "    x = np.random.random(5, device=gpu)  # Create array of random numbers on the default GPU device\n",
+    "    print(\"Array x:\", x)\n",
+    "    print(\"Array x.device:\", x.device)\n",
+    "except:\n",
+    "    print (\"No GPU devices available\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c378b79d",
+   "metadata": {},
+   "source": [
+    "Or by creating GPU device object from the filter selector string:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "ad83abb5",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "    Name            Intel(R) UHD Graphics 620\n",
+      "    Driver version  1.3.0\n",
+      "    Vendor          Intel(R) Corporation\n",
+      "    Filter string   level_zero:gpu:0\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "import dpctl\n",
+    "\n",
+    "try:\n",
+    "    l0_gpu_0 = dpctl.SyclDevice(\"level_zero:gpu:0\")\n",
+    "    l0_gpu_0.print_device_info()\n",
+    "except:\n",
+    "    print(\"Cannot create the device object from a given filter selector string\")    "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "eadefe0b",
+   "metadata": {},
+   "source": [
+    "The following snapshot checks whether a given device supports certain aspects, which may be important for the application, such as support for float64 (double precision) or the amount of available global memory on the device, etc."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "a94756d7",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "    Name            Intel(R) UHD Graphics 620\n",
+      "    Driver version  1.3.0\n",
+      "    Vendor          Intel(R) Corporation\n",
+      "    Filter string   level_zero:gpu:0\n",
+      "\n",
+      "Has double precision: True\n",
+      "Has atomic operations support: True\n",
+      "Global memory size: 6284.109375 MB\n",
+      "Global memory cache size: 512.0 KB\n",
+      "Maximum compute units: 24\n"
+     ]
+    }
+   ],
+   "source": [
+    "import dpctl\n",
+    "\n",
+    "try:\n",
+    "    gpu = dpctl.select_gpu_device()\n",
+    "    gpu.print_device_info()\n",
+    "    print(\"Has double precision:\", gpu.has_aspect_fp64)\n",
+    "    print(\"Has atomic operations support:\", gpu.has_aspect_atomic64)\n",
+    "    print(f\"Global memory size: {gpu.global_mem_size/1024/1024} MB\")\n",
+    "    print(f\"Global memory cache size: {gpu.global_mem_cache_size/1024} KB\")\n",
+    "    print(f\"Maximum compute units: {gpu.max_compute_units}\")\n",
+    "except:\n",
+    "    print(\"The GPU device is not available\")   "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "97b53113-8264-4f7e-9a9d-a997e70ed3bc",
+   "metadata": {},
+   "source": [
+    "For more information about `dpctl` device selection please refer to [Data Parallel Control: Device Selection](https://intelpython.github.io/dpctl/latest/docfiles/user_guides/manual/dpctl/device_selection.html)\n",
+    "\n",
+    "For more information about `dpctl.SyclDevice` class methods and attributes please refer to [Data Parallel Control: dpctl.SyclDevice](https://intelpython.github.io/dpctl/latest/docfiles/dpctl/SyclDevice.html)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.10"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
