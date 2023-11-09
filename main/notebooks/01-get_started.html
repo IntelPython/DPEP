@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="../">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,13 +15,13 @@
     </script>
     
     <title>Jupyter Notebook 1: Getting started with Data Parallel Extensions for Python &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sdc.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/sdc.css?v=8cc1021e" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
     
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/documentation_options.js?v=2709fde1"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -87,11 +87,11 @@
           <div class="body" role="main">
             
   <section id="Jupyter-Notebook-1:-Getting-started-with-Data-Parallel-Extensions-for-Python">
-<h1>Jupyter Notebook 1: Getting started with Data Parallel Extensions for Python<a class="headerlink" href="#Jupyter-Notebook-1:-Getting-started-with-Data-Parallel-Extensions-for-Python" title="Permalink to this heading">¶</a></h1>
-<p><img alt="ecbf2af682744b32a9f2c90fd540f13d" class="no-scaled-link" src="https://intelpython.github.io/DPEP/main/_images/DPEP-large.png" style="width: 300px;" /></p>
+<h1>Jupyter Notebook 1: Getting started with Data Parallel Extensions for Python<a class="headerlink" href="#Jupyter-Notebook-1:-Getting-started-with-Data-Parallel-Extensions-for-Python" title="Link to this heading">¶</a></h1>
+<p><img alt="b61b7e7af79d48d49c49c897c9f57617" class="no-scaled-link" src="https://intelpython.github.io/DPEP/main/_images/DPEP-large.png" style="width: 300px;" /></p>
 <p><a class="reference external" href="https://intelpython.github.io/DPEP/main/">Data Parallel Extensions for Python</a> allow you to run NumPy-like code beyond CPU using <strong>Data Parallel Extension for NumPy</strong>. It will also allow you to compile the code using <strong>Data Parallel Extension for Numba</strong>.</p>
 <section id="Modifying-CPU-script-to-run-on-GPU">
-<h2>Modifying CPU script to run on GPU<a class="headerlink" href="#Modifying-CPU-script-to-run-on-GPU" title="Permalink to this heading">¶</a></h2>
+<h2>Modifying CPU script to run on GPU<a class="headerlink" href="#Modifying-CPU-script-to-run-on-GPU" title="Link to this heading">¶</a></h2>
 <p>In many cases the process of running Python on GPU is about making minor changes to your CPU script, which are: 1. Changing import statement(s) 2. Specifying on which device(s) the data is allocated 3. Explicitly copying data between devices and the host as needed</p>
 <p>We will illustrate these concepts on series of short examples. Let’s assume we have the following NumPy script originally written to run on CPU, which is nothing more than creating two matrices <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> and performing matrix-matrix multiplication with <code class="docutils literal notranslate"><span class="pre">numpy.matmul()</span></code>, and prining the resulting matrix:</p>
 <div class="nbinput docutils container">
@@ -170,7 +170,7 @@ res is allocated on the device: Device(level_zero:gpu:0)
 </ol>
 </section>
 <section id="More-on-data-allocation-and-the-Compute-Follows-Data">
-<h2>More on data allocation and the Compute-Follows-Data<a class="headerlink" href="#More-on-data-allocation-and-the-Compute-Follows-Data" title="Permalink to this heading">¶</a></h2>
+<h2>More on data allocation and the Compute-Follows-Data<a class="headerlink" href="#More-on-data-allocation-and-the-Compute-Follows-Data" title="Link to this heading">¶</a></h2>
 <p>Sometimes you may want to be specific about the device type, not relying on the default behavior. You can do so by specifying the device in a keyword arguments for <code class="docutils literal notranslate"><span class="pre">dpnp</span></code> array creation functions and random number generators.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -218,7 +218,7 @@ y.shape= ()
 </div>
 <p>Note that <code class="docutils literal notranslate"><span class="pre">y</span></code> is itself a device array (not a scalar!), its data resides on the same device as input array <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
 <section id="Advanced-data-and-device-control-with-Data-Parallel-Control-library-dpctl">
-<h3>Advanced data and device control with Data Parallel Control library <code class="docutils literal notranslate"><span class="pre">dpctl</span></code><a class="headerlink" href="#Advanced-data-and-device-control-with-Data-Parallel-Control-library-dpctl" title="Permalink to this heading">¶</a></h3>
+<h3>Advanced data and device control with Data Parallel Control library <code class="docutils literal notranslate"><span class="pre">dpctl</span></code><a class="headerlink" href="#Advanced-data-and-device-control-with-Data-Parallel-Control-library-dpctl" title="Link to this heading">¶</a></h3>
 <p>Data Parallel Control library, <code class="docutils literal notranslate"><span class="pre">dpctl</span></code>, among other things provide advanced capabilities for controling devices and data. Among its useful functions is <code class="docutils literal notranslate"><span class="pre">dpctl.lsplatform(verbosity)</span></code>, printing information about the list of available devices on the system with different levels of verbosity:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -465,7 +465,7 @@ Maximum compute units: 24
     <a href="#">Back to Top</a></p>
   <p>
     &copy; Copyright 2020-2023, Intel Corporation.<br/>
-    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 7.0.1. &nbsp;
+    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 7.2.6. &nbsp;
   </p>
 </footer>
   </body>

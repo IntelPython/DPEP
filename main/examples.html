@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,12 +15,12 @@
     </script>
     
     <title>Examples &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sdc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/sdc.css?v=8cc1021e" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="text/javascript" src="_static/sidebar.js"></script>
     <script type="text/javascript" src="_static/copybutton.js"></script>
@@ -83,7 +83,7 @@
           <div class="body" role="main">
             
   <span class="target" id="examples"></span><section id="id1">
-<h1>Examples<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
+<h1>Examples<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <p>All examples are located in the <a class="reference external" href="https://github.com/IntelPython/DPEP/tree/main/examples">GitHub repository</a>.
 Their names start with the 2-digit number followed by a descriptive name.
 You can run examples in any order, however, if
@@ -94,7 +94,7 @@ you are new to the Data Parallel Extensions for Python, it is recommended to go 
 </div>
 <p>These are listings of these examples:</p>
 <div class="literal-block-wrapper docutils container" id="examples-01-hello-dpnp">
-<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 01:</strong> Your first NumPy code running on GPU</span><a class="headerlink" href="#examples-01-hello-dpnp" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 01:</strong> Your first NumPy code running on GPU</span><a class="headerlink" href="#examples-01-hello-dpnp" title="Link to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -109,7 +109,7 @@ you are new to the Data Parallel Extensions for Python, it is recommended to go 
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="examples-02-dpnp-device">
-<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 02:</strong> Select device type while creating array</span><a class="headerlink" href="#examples-02-dpnp-device" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 02:</strong> Select device type while creating array</span><a class="headerlink" href="#examples-02-dpnp-device" title="Link to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -129,7 +129,7 @@ you are new to the Data Parallel Extensions for Python, it is recommended to go 
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="examples-03-dpnp2numba-dpex">
-<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 03:</strong> Compile dpnp code with numba-dpex</span><a class="headerlink" href="#examples-03-dpnp2numba-dpex" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 03:</strong> Compile dpnp code with numba-dpex</span><a class="headerlink" href="#examples-03-dpnp2numba-dpex" title="Link to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numba_dpex</span> <span class="kn">import</span> <span class="n">dpjit</span> <span class="k">as</span> <span class="n">njit</span>
 
@@ -156,7 +156,7 @@ you are new to the Data Parallel Extensions for Python, it is recommended to go 
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="examples-04-dpctl-device-query">
-<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 04:</strong> Get information about devices</span><a class="headerlink" href="#examples-04-dpctl-device-query" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 04:</strong> Get information about devices</span><a class="headerlink" href="#examples-04-dpctl-device-query" title="Link to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpctl</span>
 
 <span class="n">dpctl</span><span class="o">.</span><span class="n">lsplatform</span><span class="p">()</span>  <span class="c1"># Print platform information</span>
@@ -216,7 +216,7 @@ you are new to the Data Parallel Extensions for Python, it is recommended to go 
     <a href="#">Back to Top</a></p>
   <p>
     &copy; Copyright 2020-2023, Intel Corporation.<br/>
-    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 7.0.1. &nbsp;
+    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 7.2.6. &nbsp;
   </p>
 </footer>
   </body>

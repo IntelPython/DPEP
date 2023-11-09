@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,12 +15,12 @@
     </script>
     
     <title>Heterogeneous Computing &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sdc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/sdc.css?v=8cc1021e" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script type="text/javascript" src="_static/sidebar.js"></script>
     <script type="text/javascript" src="_static/copybutton.js"></script>
@@ -83,9 +83,9 @@
           <div class="body" role="main">
             
   <span class="target" id="heterogeneous-computing"></span><section id="id1">
-<h1>Heterogeneous Computing<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
+<h1>Heterogeneous Computing<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h1>
 <section id="device-offload">
-<h2>Device Offload<a class="headerlink" href="#device-offload" title="Permalink to this heading">¶</a></h2>
+<h2>Device Offload<a class="headerlink" href="#device-offload" title="Link to this heading">¶</a></h2>
 <p>Python is an interpreted language, which implies that most of the Python script will run on CPU,
 and only a few data parallel regions will execute on data parallel devices.
 That is why the concept of the host and offload devices is helpful when it comes to conceptualizing
@@ -106,7 +106,7 @@ with device queues directly. Data Parallel Extensions for Python will do necessa
 work with queues for you through the <a class="reference internal" href="#compute-follows-data"><span class="std std-ref">Compute-Follows-Data</span></a>.</p>
 </section>
 <section id="unified-shared-memory">
-<h2>Unified Shared Memory<a class="headerlink" href="#unified-shared-memory" title="Permalink to this heading">¶</a></h2>
+<h2>Unified Shared Memory<a class="headerlink" href="#unified-shared-memory" title="Link to this heading">¶</a></h2>
 <p>Each device has its memory, not necessarily accessible from another device.</p>
 <a class="reference internal image-reference" href="_images/hetero-devices.png"><img alt="SIMD" class="align-center" src="_images/hetero-devices.png" style="width: 600px;" /></a>
 <p>For example, <strong>Device 1</strong> memory may not be directly accessible from the host but accessible
@@ -133,7 +133,7 @@ However, it is much slower than the USM Device memory type.</p></li>
 </ul>
 </section>
 <section id="compute-follows-data">
-<h2>Compute-Follows-Data<a class="headerlink" href="#compute-follows-data" title="Permalink to this heading">¶</a></h2>
+<h2>Compute-Follows-Data<a class="headerlink" href="#compute-follows-data" title="Link to this heading">¶</a></h2>
 <p>Since data copying between devices is typically very expensive, for performance reasons it is essential
 to process data close to where it is allocated. This is the premise of the <em>Compute-Follows-Data</em> programming model,
 which states that the compute happens where the data resides. Tensors implemented in <code class="docutils literal notranslate"><span class="pre">dpctl</span></code> and <code class="docutils literal notranslate"><span class="pre">dpnp</span></code>
@@ -150,24 +150,24 @@ Otherwise, an exception is thrown. For example, the following usages will result
 <figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="_images/queue-exception1.png"><img alt="SIMD" src="_images/queue-exception1.png" style="width: 600px;" /></a>
 <figcaption>
-<p><span class="caption-text">Input tensors are on different devices and different queues. Exception is thrown.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">Input tensors are on different devices and different queues. Exception is thrown.</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id3">
 <a class="reference internal image-reference" href="_images/queue-exception2.png"><img alt="SIMD" src="_images/queue-exception2.png" style="width: 600px;" /></a>
 <figcaption>
-<p><span class="caption-text">Input tensors are on the same device, but queues are different. Exception is thrown.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">Input tensors are on the same device, but queues are different. Exception is thrown.</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 <figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="_images/queue-exception3.png"><img alt="SIMD" src="_images/queue-exception3.png" style="width: 600px;" /></a>
 <figcaption>
-<p><span class="caption-text">Data belongs to the same device, but queues are different and associated with different sub-devices.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+<p><span class="caption-text">Data belongs to the same device, but queues are different and associated with different sub-devices.</span><a class="headerlink" href="#id4" title="Link to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="copying-data-between-devices-and-queues">
-<h2>Copying Data Between Devices and Queues<a class="headerlink" href="#copying-data-between-devices-and-queues" title="Permalink to this heading">¶</a></h2>
+<h2>Copying Data Between Devices and Queues<a class="headerlink" href="#copying-data-between-devices-and-queues" title="Link to this heading">¶</a></h2>
 <p><strong>Data Parallel Extensions for Python</strong> create <strong>one</strong> <em>canonical queue</em> per device. Normally,
 you do not need to directly manage queues. Having one canonical queue per device
 allows you to copy data between devices using the <code class="docutils literal notranslate"><span class="pre">to_device()</span></code> method:</p>
@@ -178,20 +178,20 @@ allows you to copy data between devices using the <code class="docutils literal 
 The same queue is associated with <code class="docutils literal notranslate"><span class="pre">b</span></code> and <code class="docutils literal notranslate"><span class="pre">a_new</span></code>.</p>
 <p>Alternatively, you can do this as follows:</p>
 <div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">DPNP array</span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">DPNP array</span><a class="headerlink" href="#id5" title="Link to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a_new</span> <span class="o">=</span> <span class="n">dpnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">b</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text">DPCtl array</span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text">DPCtl array</span><a class="headerlink" href="#id6" title="Link to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a_new</span> <span class="o">=</span> <span class="n">dpctl</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">b</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </section>
 <section id="creating-additional-queues">
-<h2>Creating Additional Queues<a class="headerlink" href="#creating-additional-queues" title="Permalink to this heading">¶</a></h2>
+<h2>Creating Additional Queues<a class="headerlink" href="#creating-additional-queues" title="Link to this heading">¶</a></h2>
 <p>As said before, <strong>Data Parallel Extensions for Python</strong> automatically creates one canonical queue per device,
 and you normally work with this queue implicitly. However, you can always create as many additional queues per device
 as needed and work explicitly with them, for example, for profiling purposes.</p>
@@ -243,7 +243,7 @@ as needed and work explicitly with them, for example, for profiling purposes.</p
     <a href="#">Back to Top</a></p>
   <p>
     &copy; Copyright 2020-2023, Intel Corporation.<br/>
-    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 7.0.1. &nbsp;
+    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 7.2.6. &nbsp;
   </p>
 </footer>
   </body>

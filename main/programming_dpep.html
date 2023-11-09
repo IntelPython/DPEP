@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="en" data-content_root="./">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,12 +15,12 @@
     </script>
     
     <title>Programming with Data Parallel Extensions for Python &#8212; Data Parallel Extensions for Python* 0.1 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sdc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/sdc.css?v=8cc1021e" />
     
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -85,7 +85,7 @@
           <div class="body" role="main">
             
   <span class="target" id="programming-dpep"></span><section id="programming-with-data-parallel-extensions-for-python">
-<h1>Programming with Data Parallel Extensions for Python<a class="headerlink" href="#programming-with-data-parallel-extensions-for-python" title="Permalink to this heading">¶</a></h1>
+<h1>Programming with Data Parallel Extensions for Python<a class="headerlink" href="#programming-with-data-parallel-extensions-for-python" title="Link to this heading">¶</a></h1>
 <a class="reference internal image-reference" href="_images/dpep-all.png"><img alt="Data Parallel Extensions for Python" class="align-center" src="_images/dpep-all.png" style="width: 600px;" /></a>
 <p><strong>Data Parallel Extensions for Python</strong> consist of three foundational packages:</p>
 <ul class="simple">
@@ -96,7 +96,7 @@
 <p>Their underlying implementation is based on <a class="reference external" href="https://www.khronos.org/sycl/">SYCL*</a> standard, which is a cross-platform abstraction layer
 for heterogeneous computing on data parallel devices, such as CPU, GPU, or domain-specific accelerators.</p>
 <section id="scalars-vs-0-dimensional-arrays">
-<h2>Scalars vs. 0-Dimensional Arrays<a class="headerlink" href="#scalars-vs-0-dimensional-arrays" title="Permalink to this heading">¶</a></h2>
+<h2>Scalars vs. 0-Dimensional Arrays<a class="headerlink" href="#scalars-vs-0-dimensional-arrays" title="Link to this heading">¶</a></h2>
 <p>Primitive types, such as Python’s and Numpy’s <code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">int</span></code>, or <code class="docutils literal notranslate"><span class="pre">complex</span></code>, used to represent scalars,
 have the host storage. In contrast, <code class="docutils literal notranslate"><span class="pre">dpctl.tensor.usm_ndarray</span></code> and <code class="docutils literal notranslate"><span class="pre">dpnp.ndarray</span></code> have the USM storage
 and carry associated allocation queue. For the <a class="reference internal" href="heterogeneous_computing.html#compute-follows-data"><span class="std std-ref">Compute-Follows-Data</span></a> consistent behavior
@@ -105,12 +105,12 @@ all <code class="docutils literal notranslate"><span class="pre">dpnp</span></co
 <code class="docutils literal notranslate"><span class="pre">dpnp</span></code> array operations. See <a class="reference external" href="https://intelpython.github.io/dpnp/">Data Parallel Extension for Numpy*</a> - <strong>API Reference</strong> section for details.</p>
 </section>
 <section id="data-parallel-extension-for-numpy-dpnp">
-<h2>Data Parallel Extension for Numpy - dpnp<a class="headerlink" href="#data-parallel-extension-for-numpy-dpnp" title="Permalink to this heading">¶</a></h2>
+<h2>Data Parallel Extension for Numpy - dpnp<a class="headerlink" href="#data-parallel-extension-for-numpy-dpnp" title="Link to this heading">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">dpnp</span></code> library is a bare minimum to start programming numerical codes for data-parallel devices.
 If you already have a Python script written in <a class="reference external" href="https://numpy.org/">Numpy*</a>, then running it on a GPU will typically require
 changing just a few lines of the code:</p>
 <div class="literal-block-wrapper docutils container" id="ex-01-hello-dpnp">
-<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 01:</strong> Your first NumPy code running on GPU</span><a class="headerlink" href="#ex-01-hello-dpnp" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 01:</strong> Your first NumPy code running on GPU</span><a class="headerlink" href="#ex-01-hello-dpnp" title="Link to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
@@ -134,7 +134,7 @@ The result <code class="docutils literal notranslate"><span class="pre">y</span>
 the tensor data to be created along with the USM memory type to be used (<code class="docutils literal notranslate"><span class="pre">&quot;host&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;device&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;shared&quot;</span></code>).
 In the following example, the array <code class="docutils literal notranslate"><span class="pre">x</span></code> is created on the GPU device, and reduction sum is done on it:</p>
 <div class="literal-block-wrapper docutils container" id="ex-02-dpnp-device">
-<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 02:</strong> Select device type while creating array</span><a class="headerlink" href="#ex-02-dpnp-device" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 02:</strong> Select device type while creating array</span><a class="headerlink" href="#ex-02-dpnp-device" title="Link to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -155,14 +155,14 @@ In the following example, the array <code class="docutils literal notranslate"><
 </div>
 </section>
 <section id="data-parallel-extension-for-numba-numba-dpex">
-<h2>Data Parallel Extension for Numba - numba-dpex<a class="headerlink" href="#data-parallel-extension-for-numba-numba-dpex" title="Permalink to this heading">¶</a></h2>
+<h2>Data Parallel Extension for Numba - numba-dpex<a class="headerlink" href="#data-parallel-extension-for-numba-numba-dpex" title="Link to this heading">¶</a></h2>
 <p><a class="reference external" href="https://numba.pydata.org/">Numba*</a> is a powerful Just-In-Time (JIT) compiler that works best on <a class="reference external" href="https://numpy.org/">Numpy*</a> arrays, <a class="reference external" href="https://numpy.org/">Numpy*</a> functions, and loops.
 Data-parallel loops is where the data parallelism resides. It allows leveraging all available CPU cores,
 SIMD instructions, and schedules those in a way that exploits maximum instruction-level parallelism.
 The <code class="docutils literal notranslate"><span class="pre">numba-dpex</span></code> extension allows to compile and offload data-parallel regions to any data parallel device.
 It takes just a few lines to modify your CPU <a class="reference external" href="https://numba.pydata.org/">Numba*</a> script to run on GPU:</p>
 <div class="literal-block-wrapper docutils container" id="ex-03-dpnp2numba-dpex">
-<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 03:</strong> Compile dpnp code with numba-dpex</span><a class="headerlink" href="#ex-03-dpnp2numba-dpex" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 03:</strong> Compile dpnp code with numba-dpex</span><a class="headerlink" href="#ex-03-dpnp2numba-dpex" title="Link to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpnp</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numba_dpex</span> <span class="kn">import</span> <span class="n">dpjit</span> <span class="k">as</span> <span class="n">njit</span>
 
@@ -195,7 +195,7 @@ dynamically compiles the kernel submitted to that queue. The result resides as a
 associated with the queue, and on exit from the offload kernel it will be assigned to the tensor <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
 </section>
 <section id="data-parallel-control-dpctl">
-<h2>Data Parallel Control - dpctl<a class="headerlink" href="#data-parallel-control-dpctl" title="Permalink to this heading">¶</a></h2>
+<h2>Data Parallel Control - dpctl<a class="headerlink" href="#data-parallel-control-dpctl" title="Link to this heading">¶</a></h2>
 <p>Both <code class="docutils literal notranslate"><span class="pre">dpnp</span></code> and <code class="docutils literal notranslate"><span class="pre">numba-dpex</span></code> provide enough API versatility for programming data parallel devices but
 there are some situations when you need to use <code class="docutils literal notranslate"><span class="pre">dpctl</span></code> advanced capabilities:</p>
 <ol class="arabic">
@@ -210,7 +210,7 @@ execution of offload kernels.</p>
 </li>
 </ol>
 <div class="literal-block-wrapper docutils container" id="ex-04-dpctl-device-query">
-<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 04:</strong> Get information about devices</span><a class="headerlink" href="#ex-04-dpctl-device-query" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>EXAMPLE 04:</strong> Get information about devices</span><a class="headerlink" href="#ex-04-dpctl-device-query" title="Link to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dpctl</span>
 
 <span class="n">dpctl</span><span class="o">.</span><span class="n">lsplatform</span><span class="p">()</span>  <span class="c1"># Print platform information</span>
@@ -245,7 +245,7 @@ between tensors through <code class="docutils literal notranslate"><span class="
 </ol>
 </section>
 <section id="debugging-and-profiling-data-parallel-extensions-for-python">
-<h2>Debugging and Profiling Data Parallel Extensions for Python<a class="headerlink" href="#debugging-and-profiling-data-parallel-extensions-for-python" title="Permalink to this heading">¶</a></h2>
+<h2>Debugging and Profiling Data Parallel Extensions for Python<a class="headerlink" href="#debugging-and-profiling-data-parallel-extensions-for-python" title="Link to this heading">¶</a></h2>
 <p><a class="reference external" href="https://www.intel.com/content/www/us/en/developer/tools/oneapi/base-toolkit.html">Intel oneAPI Base Toolkit</a> provides two tools to assist programmers to analyze performance issues in programs
 that use <strong>Data Parallel Extensions for Python</strong>. They are <a class="reference external" href="https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html">Intel VTune Profiler</a> and
 <a class="reference external" href="https://www.intel.com/content/www/us/en/developer/tools/oneapi/advisor.html">Intel Advisor</a>.</p>
@@ -256,7 +256,7 @@ memory bandwidth.</p>
 <p>Below you can find how to use Intel VTune Profiler and Intel Advisor with
 heterogenous programs that use <strong>Data Parallel Extensions for Python</strong>.</p>
 <section id="profiling-with-intel-vtune-profiler">
-<h3>Profiling with Intel VTune Profiler<a class="headerlink" href="#profiling-with-intel-vtune-profiler" title="Permalink to this heading">¶</a></h3>
+<h3>Profiling with Intel VTune Profiler<a class="headerlink" href="#profiling-with-intel-vtune-profiler" title="Link to this heading">¶</a></h3>
 <p>Intel © VTune ™ Profiler provides two mechanisms to profile heterogeneous programs
 targeted to GPUs.</p>
 <ul class="simple">
@@ -274,13 +274,13 @@ atomic operations.</p>
 <p>The following instructions are used to execute the two Intel VTune Profiler analyses on programs written
 using <strong>Data Parallel Extensions for Python</strong>:</p>
 <div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text"><strong>GPU Offload</strong></span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>GPU Offload</strong></span><a class="headerlink" href="#id2" title="Link to this code">¶</a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; vtune -collect gpu-offload -r &lt;output_dir&gt; -- python &lt;script&gt;.py &lt;args&gt;</span>
 </pre></div>
 </div>
 </div>
 <div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text"><strong>GPU Hotspots</strong></span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>GPU Hotspots</strong></span><a class="headerlink" href="#id3" title="Link to this code">¶</a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; vtune -collect gpu-hotspots -r &lt;output_dir&gt; -- python &lt;script&gt;.py &lt;args&gt;</span>
 </pre></div>
 </div>
@@ -294,7 +294,7 @@ the command line and setup a web server for post processing the data.</p>
 for more details.</p>
 </section>
 <section id="profiling-with-intel-advisor">
-<h3>Profiling with Intel Advisor<a class="headerlink" href="#profiling-with-intel-advisor" title="Permalink to this heading">¶</a></h3>
+<h3>Profiling with Intel Advisor<a class="headerlink" href="#profiling-with-intel-advisor" title="Link to this heading">¶</a></h3>
 <p>The primary goal of Intel © Advisor is to help you make targeted optimizations by identifying
 appropriate kernels and characterizing the performance limiting factors. It provides mechanisms
 to analyze the performance of GPU kernels against the hardware roof-line performance. Intel Advisor gives you information
@@ -303,7 +303,7 @@ kernels for optimization. Further, it helps you to characterize if a GPU kernel 
 compute capacity or by memory bandwidth.</p>
 <p>The following instructions are used to generate GPU roof-line performance graphs using Intel Advisor.</p>
 <div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text"><strong>Collect Roofline</strong></span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>Collect Roofline</strong></span><a class="headerlink" href="#id4" title="Link to this code">¶</a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; advisor --collect=roofline --profile-gpu --project-dir=&lt;output_dir&gt; --search-dir src:r=&lt;search_dir&gt; -- &lt;executable&gt; &lt;args&gt;</span>
 </pre></div>
 </div>
@@ -312,7 +312,7 @@ compute capacity or by memory bandwidth.</p>
 <strong>Data Parallel Extensions for Python</strong>.</p>
 <p>The next command generates the roof-line graph as a HTML file in the output directory:</p>
 <div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text"><strong>Generate Roofline HTML-File</strong></span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>Generate Roofline HTML-File</strong></span><a class="headerlink" href="#id5" title="Link to this code">¶</a></div>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&gt; advisor --report=roofline --gpu --project-dir=&lt;output_dir&gt; --report-output=&lt;output_dir&gt;/roofline_gpu.html</span>
 </pre></div>
 </div>
@@ -334,7 +334,7 @@ bound depending on the roof-line that is limiting the GPU kernel.</p>
 </section>
 </section>
 <section id="writing-robust-numerical-codes-for-heterogeneous-computing">
-<h2>Writing Robust Numerical Codes for Heterogeneous Computing<a class="headerlink" href="#writing-robust-numerical-codes-for-heterogeneous-computing" title="Permalink to this heading">¶</a></h2>
+<h2>Writing Robust Numerical Codes for Heterogeneous Computing<a class="headerlink" href="#writing-robust-numerical-codes-for-heterogeneous-computing" title="Link to this heading">¶</a></h2>
 <p>Default primitive type (<code class="docutils literal notranslate"><span class="pre">dtype</span></code>) in <a class="reference external" href="https://numpy.org/">Numpy*</a> is the double precision (<code class="docutils literal notranslate"><span class="pre">float64</span></code>), which is supported by
 majority of modern CPUs. When it comes to program GPUs and especially specialized accelerators,
 the set of supported primitive data types may be limited. For example, certain GPUs may not support
@@ -344,7 +344,7 @@ It means that unlike traditional <a class="reference external" href="https://num
 careful management of hardware peculiarities to keep the Python script portable and robust on any device.</p>
 <p>There are several hints how to make the numerical code portable and robust.</p>
 <section id="sensitivity-to-floating-point-errors">
-<h3>Sensitivity to Floating-Point Errors<a class="headerlink" href="#sensitivity-to-floating-point-errors" title="Permalink to this heading">¶</a></h3>
+<h3>Sensitivity to Floating-Point Errors<a class="headerlink" href="#sensitivity-to-floating-point-errors" title="Link to this heading">¶</a></h3>
 <p>Floating-point arithmetic has a finite precision, which implies that only a tiny fraction of real numbers can be
 represented in floating-point arithmetic. It is almost certain that every floating-point operation
 induces a rounding error because the result cannot be accurately represented as a floating-point number.
@@ -373,7 +373,7 @@ arithmetic, refer to <a class="reference external" href="https://standards.ieee.
 <a class="reference external" href="https://www.itu.dk/~sestoft/bachelor/IEEE754_article.pdf&gt;">David Goldberg, What every computer scientist should know about floating-point arithmetic</a>.</p>
 </section>
 <section id="switching-between-single-and-double-precision">
-<h3>Switching Between Single and Double Precision<a class="headerlink" href="#switching-between-single-and-double-precision" title="Permalink to this heading">¶</a></h3>
+<h3>Switching Between Single and Double Precision<a class="headerlink" href="#switching-between-single-and-double-precision" title="Link to this heading">¶</a></h3>
 <ol class="arabic simple">
 <li><p>Implement your code to switch easily between single and double precision in a controlled fashion.
 For example, implement a utility function or introduce a constant that selects <code class="docutils literal notranslate"><span class="pre">dtype</span></code> for
@@ -434,7 +434,7 @@ It is likely that this part of the code requires a hardware specific implementat
     <a href="#">Back to Top</a></p>
   <p>
     &copy; Copyright 2020-2023, Intel Corporation.<br/>
-    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 7.0.1. &nbsp;
+    Created using <a href="http://www.sphinx-doc.org/en/stable/">Sphinx</a> 7.2.6. &nbsp;
   </p>
 </footer>
   </body>
