@@ -27,7 +27,7 @@ The following options are allowed:
 * `--n-batches`:  Number of batches
 
 ## Jupyter Notebook
-The Monte Carlo Pi demo is also supplemented with the [Jupyter Notebook]([https://github.com/samaid/mcpi/blob/main/mcpi.ipynb](https://github.com/IntelPython/DPEP/blob/main/demos/mcpi/mcpi.ipynb),
+The Monte Carlo Pi demo is also supplemented with the [Jupyter Notebook](https://github.com/IntelPython/DPEP/blob/main/demos/mcpi/mcpi.ipynb),
 where step by step we illustrate the idea of the algorithm.
 
 ![Pi animation](https://github.com/IntelPython/DPEP/blob/main/demos/mcpi/pi-animation.gif)
