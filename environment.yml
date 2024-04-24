@@ -1,0 +1,13 @@
+name: docs
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - ipython
+  - pip
+  - sphinx
+  - sphinxcontrib-programoutput
+  - nbsphinx
+  - nbconvert=7.3.1
+  - pip:
+    - sphinxcontrib-googleanalytics
