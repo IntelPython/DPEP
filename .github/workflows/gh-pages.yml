@@ -1,4 +1,8 @@
-name: GitHub Pages
+name: github pages
+
+# Declare default permissions as read only.
+permissions: read-all
+
 on:
   push:
     branches:
@@ -10,18 +14,31 @@ jobs:
   main:
     if: ${{ !(github.event.pull_request && github.event.action == 'closed') }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
 
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: Add conda to system path
-        run: echo $CONDA/bin >> $GITHUB_PATH
+      - name: Setup conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          run-post: false
+          miniforge-variant: Mambaforge
+          miniforge-version: latest
+          environment-file: environment.yml
+
+      - name: Conda info
+        run: |
+          conda info
+          conda list
 
       - name: Sphinx
         run: |
-          conda env update -n base -f environment.yml --prune
           cd docs
           make html
 

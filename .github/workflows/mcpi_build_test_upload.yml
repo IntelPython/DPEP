@@ -1,4 +1,7 @@
-name: mcpi build package
+name: mcpi package
+
+# Declare default permissions as read only.
+permissions: read-all
 
 on:
   push:
