@@ -82,10 +82,8 @@ def main(argv=None):
     do_game = True
 
     stop_frame = parse_args(argv).frames_count
-    if stop_frame == 0 and not VISUALIZE_GAME:
+    if stop_frame == 0:
         stop_frame = MAX_FRAMES
-    else:
-        stop_frame = 1000000000
 
     print(get_variant_string())
     print(get_task_size_string(w, h))
