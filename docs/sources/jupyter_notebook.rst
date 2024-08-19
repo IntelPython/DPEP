@@ -38,3 +38,4 @@ For more information please refer to `Jupyter documentation <https://docs.jupyte
 
    Getting Started <notebooks/01-get_started.ipynb>
    Controlling `dpnp` fallback to `numpy` <notebooks/02-dpnp_numpy_fallback.ipynb>
+   Examples with performance using Mandelbrot calculation <notebooks/03-mandelbrot_perfomance.ipynb>
